@@ -1,3 +1,20 @@
+/* 容器 */
+.content{
+    max-width: 1300px;
+    margin: 0 auto;
+}
+.bg{
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+/* 鼠标手 */
+.cursor-p{
+    cursor: pointer;
+}
+
 /* 字体大小 */
 .font-size-1{
     font-size: 12px;
