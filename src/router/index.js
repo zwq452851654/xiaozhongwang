@@ -46,6 +46,14 @@ Vue.use(VueRouter)
     }
   },
   {
+    path: '/learn/courseInfo',
+    name: 'CourseInfo',
+    component: () => import('../views/learn/courseInfo.vue'),
+    meta:{
+      keepAlive: true
+    }
+  },
+  {
     path: '/shared',
     name: 'Shared',
     component: () => import('../views/shared/index.vue'),
