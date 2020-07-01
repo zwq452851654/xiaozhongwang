@@ -29,8 +29,8 @@
               <div class="media-body">
                 <div class="d-flex">
                   <!-- <h5 class="mt-0 cursor-p course-title"></h5> -->
-                  <router-link target="_blank" class="mt-0 cursor-p course-title" to="/learn/courseInfo" >动效临摹</router-link>
-                  <div class="ml-auto font-size-2 color-b8c4ce"><i class="el-icon-time icon"></i>2020 6-29 17:54</div>
+                  <router-link target="_blank" class="mt-0 cursor-p course-title" to="/learn/courseInfo" >Ps知识点：快速上手插画风</router-link>
+                  <div class="ml-auto font-size-2 color-b8c4ce"><i class="el-icon-time icon"></i>2020-06-29 17:54</div>
                 </div>
                 <p class="sourse-synopsis">Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.</p>
                 <div class="d-flex align-items-center font-size-1 related-info">
@@ -145,9 +145,6 @@ export default {
     color: #b8c4ce;
     margin-right: 5px;
     line-height: 13px;
-  }
-  .color-b8c4ce{
-    color: #b8c4ce;
   }
   .right{
     min-width: 300px;

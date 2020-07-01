@@ -1,3 +1,4 @@
+
 /* 容器 */
 .content{
     max-width: 1300px;
@@ -30,4 +31,24 @@
 }
 .font-size-5{
     font-size: 20px;
+}
+
+/* 标题 */
+.title{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* 字体颜色 */
+.color-b8c4ce{
+    color: #b8c4ce;
+}
+
+/* 课程中常用样式 */
+.step-con-i{
+    font-style: normal;
+    text-decoration: underline;
+    margin: 0 3px;
+    cursor: pointer;
+    color: #3dbdffb3;
 }
