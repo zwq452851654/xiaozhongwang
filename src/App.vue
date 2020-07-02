@@ -4,14 +4,19 @@
       <Nav v-if="$route.meta.keepAlive"></Nav>
     </keep-alive>
     <router-view/>
+    <keep-alive>
+      <Foot v-if="!$route.meta.showFoot"></Foot>
+    </keep-alive>
   </div>
 </template>
 <script>
 import Nav from './components/Nav'
+import Foot from './components/Foot'
 
 export default {
   components: {
-    Nav
+    Nav,
+    Foot
   }
 }
 </script>

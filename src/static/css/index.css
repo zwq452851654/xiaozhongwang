@@ -52,3 +52,9 @@
     cursor: pointer;
     color: #3dbdffb3;
 }
+
+
+/* 清除默认样式 */
+li{
+    list-style: none;
+}

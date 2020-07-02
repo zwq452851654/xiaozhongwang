@@ -1,7 +1,10 @@
 <template>
   <div class="nav">
     <div class="d-flex align-items-center" style="width:1300px;margin:0 auto">
-      <div class="mr-5"><b>小众网</b></div>
+      <!-- <div class="mr-5"><b>小众网</b></div> -->
+      <div class="logo">
+        <img src="../static/img/xzw-logo.png" alt="">
+      </div>
       <div class="ml-5">
         <ul class="m-0 d-flex anv-ul align-items-center font-size-2">
           <router-link tag="li" class="mr-5" to="/" exact >首页</router-link>
@@ -35,7 +38,8 @@ export default {
       hours:"",
       minutes:"",
       seconds:"",
-      week:""
+      week:"",
+      url: require('../static/img/xzw-logo.png')
     }
   },
   mounted(){
@@ -94,5 +98,17 @@ export default {
     font-style: inherit;
     font-weight: bold;
     margin: 0 8px;
+  }
+  .logo{
+    width: 180px;
+    height: 59px;
+    overflow: hidden;
+    position: relative;
+  }
+  .logo img{
+    width: 320px;
+    position: absolute;
+    top: -120px;
+    left: -70px;
   }
 </style>

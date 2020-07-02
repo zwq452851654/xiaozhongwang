@@ -4,101 +4,126 @@
       <div>这里可以是一句很长很长的说明</div>
     </div>
     <div class="d-flex">
-      <div class="bg mr-3 w-100">
-        <!-- 教程标题信息 -->
-        <div class="title">标题：Ps知识点：快速上手插画风</div>
-        <div class="d-flex mt-3 sourse-info font-size-2">
-          <div class="mr-4">原创作品</div>
-          <div class="mr-4 color-b8c4ce">版权：<i class="el-icon-s-check icon"></i></div>
-          <div class="mr-4 color-b8c4ce"><i class="el-icon-view icon"></i>1000</div>
-          <div class="mr-4 color-b8c4ce"><i class="el-icon-s-comment icon"></i>99+</div>
-          <div class="mr-4 color-b8c4ce"><i class="el-icon-star-on icon"></i>9</div>
-          <div class="mr-4 color-b8c4ce"><i class="el-icon-time icon"></i>2020-06-29</div>
-        </div>
-        <!-- 教程内容 -->
-        <div class="mt-3 border-bottom" style="padding-bottom:60px">
-          <div>
-            <div class="title">成品展示(点击图片预览大图)</div>
-            <div class="w-50 m-auto">
-              <div class="demo-image__preview">
-                <el-image 
-                  style="width: 300px"
-                  :src="url" 
-                  :preview-src-list="srcList">
-                </el-image>
+      <div class=" mr-3">
+        <div class="bg w-100">
+          <!-- 教程标题信息 -->
+          <div class="title">标题：Ps知识点：快速上手插画风</div>
+          <div class="d-flex mt-3 sourse-info font-size-2">
+            <div class="mr-4">原创作品</div>
+            <div class="mr-4 color-b8c4ce">版权：<i class="el-icon-s-check icon"></i></div>
+            <div class="mr-4 color-b8c4ce"><i class="el-icon-view icon"></i>1000</div>
+            <div class="mr-4 color-b8c4ce"><i class="el-icon-s-comment icon"></i>99+</div>
+            <div class="mr-4 color-b8c4ce"><i class="el-icon-star-on icon"></i>9</div>
+            <div class="mr-4 color-b8c4ce"><i class="el-icon-time icon"></i>2020-06-29</div>
+          </div>
+          <!-- 教程内容 -->
+          <div class="mt-3 border-bottom" style="padding-bottom:60px">
+            <div>
+              <div class="title">成品展示(点击图片预览大图)</div>
+              <div class="w-50 m-auto">
+                <div class="demo-image__preview">
+                  <el-image 
+                    style="width: 300px"
+                    :src="url" 
+                    :preview-src-list="srcList">
+                  </el-image>
+                </div>
+              </div>
+            </div>
+            <div class="mt-3">
+              <div class="title">设计思路</div>
+              <p class="step-con">PS的隐藏地图，我还没有完全发现，让我们一起慢慢探索，没有手绘板，打开photoshop就行了。近来，插画风越来越流行，翻看618的商家图，成以上都用上了插画，今天带大家用ps快速上手插画风。本篇教程需要一丢丢软件基础，弄不清楚的欢迎留言。</p>
+            </div>
+            
+            
+            <div class="mt-3">
+              <div class="title">素材下载</div>
+              <ul class="list-group w-50 m-auto">
+                <li class="list-group-item">
+                  Cras justo odio
+                  <span class="badge badge-pill float-right cursor-p">
+                    <i class="el-icon-download font-size-2"></i>
+                  </span>
+                </li>
+                <li class="list-group-item">
+                  Dapibus ac facilisis in
+                  <span class="badge badge-pill float-right cursor-p">
+                    <i class="el-icon-download font-size-2"></i>
+                  </span>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="mt-3">
+              <div class="title">开始制作</div>
+              <div class="ml-3" v-for="item in stepData" :key="item.id">
+                <p class="step-con"><b>{{ item.step }}</b><span v-html="resetVal(item.explain)" @click="see(item, $event)"></span></p>
+                <el-collapse-transition>
+                  <div v-show="showItem == item.step" class="zwq-prompt">
+                    <div class="d-flex align-items-center">
+                      <div class="items-alignm-center">
+                        <p>讲解：{{ explainMsg }}</p>
+                        <el-button size="mini" icon="el-icon-microphone ab" round>语音讲解</el-button>
+                        <el-button size="mini" icon="el-icon-video-camera ab" round>视频讲解</el-button>
+                      </div>
+                      <i class="el-icon-close ml-auto cursor-p font-size-5" @click="closeHandle()"></i>
+                    </div>
+                  </div>
+                </el-collapse-transition>
+                <div class="text-center">
+                  <img :src="item.img" alt="">
+                </div>
               </div>
             </div>
           </div>
-          <div class="mt-3">
-            <div class="title">设计思路</div>
-            <p class="step-con">PS的隐藏地图，我还没有完全发现，让我们一起慢慢探索，没有手绘板，打开photoshop就行了。近来，插画风越来越流行，翻看618的商家图，成以上都用上了插画，今天带大家用ps快速上手插画风。本篇教程需要一丢丢软件基础，弄不清楚的欢迎留言。</p>
-          </div>
-          
-          
-          <div class="mt-3">
-            <div class="title">素材下载</div>
-            <ul class="list-group w-50 m-auto">
-              <li class="list-group-item">
-                Cras justo odio
-                <span class="badge badge-pill float-right cursor-p">
-                  <i class="el-icon-download font-size-2"></i>
-                </span>
-              </li>
-              <li class="list-group-item">
-                Dapibus ac facilisis in
-                <span class="badge badge-pill float-right cursor-p">
-                  <i class="el-icon-download font-size-2"></i>
-                </span>
-              </li>
-            </ul>
-          </div>
-          
-          <div class="mt-3">
-            <div class="title">开始制作</div>
-            <div class="ml-3" v-for="item in stepData" :key="item.id">
-              <p class="step-con"><b>{{ item.step }}</b><span v-html="resetVal(item.explain)"></span></p>
-              <div class="text-center">
-                <img :src="item.img" alt="">
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- 课程尾部 -->
-        <div class="d-flex justify-content-between sourse-foot align-items-center">
-          <div>
-            <div class="d-flex">
-              <div class="icon-box cursor-p">
-                <el-tooltip class="item" effect="dark" content="生成海报并分享" placement="top-start">
-                  <i class="iconfont icontupian icon-size"></i>
-                </el-tooltip>
+          <!-- 课程尾部 -->
+          <div class="d-flex justify-content-between sourse-foot align-items-center">
+            <div>
+              <div class="d-flex">
+                <div class="icon-box cursor-p">
+                  <el-tooltip class="item" effect="dark" content="生成海报并分享" placement="top-start">
+                    <i class="iconfont icontupian icon-size"></i>
+                  </el-tooltip>
+                </div>
+                <div class="icon-box cursor-p">
+                  <el-tooltip class="item" effect="dark" content="分享到微信" placement="top-start">
+                    <i class="iconfont iconweixin1 icon-size"></i>
+                  </el-tooltip>
+                </div>
+                <div class="icon-box cursor-p">
+                  <el-tooltip class="item" effect="dark" content="分享到朋友圈" placement="top-start">
+                    <i class="iconfont iconpengyouquan icon-size"></i>
+                  </el-tooltip>
+                </div>
+                <div class="icon-box cursor-p">
+                  <el-tooltip class="item" effect="dark" content="分享到QQ" placement="top-start">
+                    <i class="iconfont iconQQ icon-size"></i>
+                  </el-tooltip>
+                </div>
               </div>
-              <div class="icon-box cursor-p">
-                <el-tooltip class="item" effect="dark" content="分享到微信" placement="top-start">
-                  <i class="iconfont iconweixin1 icon-size"></i>
-                </el-tooltip>
-              </div>
-              <div class="icon-box cursor-p">
-                <el-tooltip class="item" effect="dark" content="分享到朋友圈" placement="top-start">
-                  <i class="iconfont iconpengyouquan icon-size"></i>
-                </el-tooltip>
-              </div>
-              <div class="icon-box cursor-p">
-                <el-tooltip class="item" effect="dark" content="分享到QQ" placement="top-start">
-                  <i class="iconfont iconQQ icon-size"></i>
-                </el-tooltip>
+              <div class="color-b8c4ce font-size-2 mt-1">快给朋友分享吧！</div>
+            </div>
+            <div class="awesome d-flex align-items-center">
+              <i class="el-icon-thumb awesome-icon"></i>
+              <span class="awesome-text">赞</span>
+              <span class="awesome-count ml-auto">2</span>
+            </div>
+            <div>
+              <div class="collect">
+                <i class="el-icon-star-on collect-icon"></i>收藏
               </div>
             </div>
-            <div class="color-b8c4ce font-size-2 mt-1">快给朋友分享吧！</div>
           </div>
-          <div class="awesome d-flex align-items-center">
-            <i class="el-icon-thumb awesome-icon"></i>
-            <span class="awesome-text">赞</span>
-            <span class="awesome-count ml-auto">2</span>
-          </div>
-          <div>
-            <div class="collect">
-              <i class="el-icon-star-on collect-icon"></i>收藏
+        </div>
+        <div class="reviews">
+          <div class="h-100 w-100 d-flex align-items-center justify-content-center">
+            <div class="no-login d-flex align-items-center font-size-2">
+              <div class="ml-4">对就你，别默默的看了，快登录帮我点评一下吧！:)</div>
+              <div class="ml-auto mr-4">
+                <span class="mr-3 cursor-p">立即注册</span>
+                <span class="login-btn">登录</span>
+              </div>
             </div>
           </div>
         </div>
@@ -109,6 +134,7 @@
         <courseInfoRight></courseInfoRight>
       </div>
     </div>
+    
   </div>
 </template>
 <script>
@@ -142,6 +168,7 @@ const stepData = [
   },
 ]
 
+var keywords = ["滤镜","图层","投影","画布"];
 
 export default {
   components:{
@@ -153,7 +180,10 @@ export default {
       url: require('../../static/img/minT.jpg'),
       srcList: [
         require('../../static/img/maxT.png')
-      ]
+      ],
+      showItem: "",
+      explainMsg: "",
+      keywords: keywords
     }
   },
   mounted(){
@@ -161,15 +191,30 @@ export default {
   },
   methods:{
     resetVal(value){
-      var keywords=["滤镜","图层","投影","画布"];
-      for(var i=0;i<keywords.length;i++){
-          var reg = new RegExp(keywords[i],"g");
+      let keywords = this.keywords;
+      for(let i=0;i<keywords.length;i++){
+          let reg = new RegExp(keywords[i],"g");
           if(value.indexOf(keywords[i])!=-1){
-              var result = value.replace(reg, "<i class='step-con-i'>$&</i>");
+              let result = value.replace(reg, "<i class='step-con-i'>$&</i>");
               value = result;
           }
       }
       return value
+    },
+    see(item,e){
+      let text = e.target.innerText;
+      let keywords = this.keywords;
+      for(let i=0; i<=keywords.length; i++){
+        if(keywords[i] == text){
+          this.explainMsg = ` 我是${text}，然后后面跟一系列的讲解`;
+          this.showItem = item.step;
+          break;
+        }
+      }
+      
+    },
+    closeHandle(){
+      this.showItem = "";
     }
   }
 }
@@ -241,5 +286,31 @@ export default {
     min-width: 300px;
     max-width: 300px;
     height: 100%;
+  }
+  .reviews{
+    padding: 0 15px;
+    height: 130px;
+    background: #f0f0f0;
+  }
+  .no-login{
+    width: 100%;
+    height: 80px;
+    border: 1px solid #ffeaea;
+    background: #fff5f6;
+  }
+  .login-btn{
+    display: inline-block;
+    padding: 5px 22px;
+    background: #a0e3e3;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+  }
+  .zwq-prompt{
+    padding: 10px;
+    max-height: 100px;
+    background: #e4e4e4;
+    font-size: 14px;
+    margin-bottom: 20px;
   }
 </style>
