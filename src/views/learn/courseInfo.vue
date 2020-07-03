@@ -20,7 +20,7 @@
           <div class="mt-3 border-bottom" style="padding-bottom:60px">
             <div>
               <div class="title">成品展示(点击图片预览大图)</div>
-              <div class="w-50 m-auto">
+              <div class="text-center">
                 <div class="demo-image__preview">
                   <el-image 
                     style="width: 300px"
@@ -115,15 +115,13 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="reviews">
-          <div class="h-100 w-100 d-flex align-items-center justify-content-center">
-            <div class="no-login d-flex align-items-center font-size-2">
-              <div class="ml-4">对就你，别默默的看了，快登录帮我点评一下吧！:)</div>
-              <div class="ml-auto mr-4">
-                <span class="mr-3 cursor-p">立即注册</span>
-                <span class="login-btn">登录</span>
-              </div>
+          
+          <!-- 未登陆状态下显示 -->
+          <div class="no-login d-flex align-items-center font-size-2">
+            <div class="ml-4">对就你，别默默的看了，快登录帮我点评一下吧！:)</div>
+            <div class="ml-auto mr-4">
+              <span class="mr-3 cursor-p">立即注册</span>
+              <span class="login-btn">登录</span>
             </div>
           </div>
         </div>

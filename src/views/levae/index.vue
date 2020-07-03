@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    心灵鸡汤
+  <div>
+    <div class="content bg">留言墙</div>
   </div>
 </template>
 <script>

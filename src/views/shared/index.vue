@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    共享资料
+  <div>
+    <div class="content bg">共享资料</div>
   </div>
 </template>
 <script>

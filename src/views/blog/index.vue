@@ -1,6 +1,6 @@
 <template>
-  <div class="home">
-    博客
+  <div>
+    <div class="content bg">博客</div>
   </div>
 </template>
 <script>
