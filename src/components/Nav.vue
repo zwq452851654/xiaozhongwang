@@ -7,7 +7,7 @@
       </div>
       <div class="ml-5">
         <ul class="m-0 d-flex anv-ul align-items-center font-size-2">
-          <router-link tag="li" class="mr-5" to="/" exact >首页</router-link>
+          <router-link tag="li" class="mr-5" to="/home" >首页</router-link>
           <router-link tag="li" class="mr-5" to="/soup" >营养鸡汤</router-link>
           <router-link tag="li" class="mr-5" to="/blog" >博客</router-link>
           <router-link tag="li" class="mr-5" to="/levae" >留言墙</router-link>

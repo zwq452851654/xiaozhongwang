@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="text-right">
-      <router-link to="/setOftenNav" tag="i" class="el-icon-menu ml-1 font-size-5 cursor-p"></router-link>
+      <router-link to="/home/setOftenNav" tag="i" class="el-icon-menu ml-1 font-size-5 cursor-p"></router-link>
       <!-- <i class="el-icon-menu ml-1 font-size-5 cursor-p" @click="setOftenNav()"></i> -->
     </div>
   </div>

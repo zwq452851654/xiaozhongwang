@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 
   const routes = [
   {
-    path: '/',
+    path: '/home',
     name:"Home",
     component: Home,
     meta:{
@@ -14,8 +14,8 @@ Vue.use(VueRouter)
     }
   },
   {
-    path: '/setOftenNav',
-    name:"setOftenNav",
+    path: '/home/setOftenNav',
+    name:"SetOftenNav",
     component: () => import('../views/home/setOftenNav.vue'),
     meta:{
       keepAlive:true
