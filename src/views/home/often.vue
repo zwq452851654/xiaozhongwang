@@ -4,12 +4,12 @@
       <el-switch v-model="edit" :inactive-text="edit ? '拖拽移动' : ''"></el-switch>
     </div>
     <div v-if="!edit">
-      <div class="item" v-for="(item, index) in divList" :key="index">{{item.name}}</div>
+      <div class="item" v-for="(item, index) in oftenNav" :key="index">{{item.name}}</div>
     </div>
     <div v-else>
       <div
         class="item"
-        v-for="(item, index) in divList"
+        v-for="(item, index) in oftenNav"
         :key="index"
         draggable="true"
         @dragstart="handleDragStart($event, item)"
@@ -24,58 +24,25 @@
       </div>
     </div>
     <div class="text-right">
-      <i class="el-icon-menu ml-1 font-size-5 cursor-p" @click="setOftenDialog = true"></i>
+      <router-link to="/setOftenNav" tag="i" class="el-icon-menu ml-1 font-size-5 cursor-p"></router-link>
+      <!-- <i class="el-icon-menu ml-1 font-size-5 cursor-p" @click="setOftenNav()"></i> -->
     </div>
-
-    <!-- 设置常用导航 -->
-    <el-dialog :visible.sync="setOftenDialog" width="900px">
-      <div class="title">常用地址<i class="prompt-text">你可以将常用的地址添加到首页首栏</i></div>
-      <div class="d-flex flex-wrap">
-        <div class="text-center p-3 often-box" v-for="t in divList" :key="t.id">
-          <div><i class="el-icon-platform-eleme often-icon"></i></div>
-          <div class="font-size-1">{{ t.name }}</div>
-          <div class="del-often-icon cursor-p"><i class="el-icon-error"></i></div>
-        </div>
-      </div>
-      <el-divider></el-divider>
-      <div class="title">全部地址</div>
-      <div class="d-flex flex-wrap">
-        <div class="text-center p-3 often-box" v-for="t in divList" :key="t.id">
-          <div><i class="el-icon-platform-eleme often-icon"></i></div>
-          <div class="font-size-1">{{ t.name }}</div>
-          <div class="add-often-icon cursor-p"><i class="el-icon-circle-plus"></i></div>
-        </div>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="setOftenDialog = false" size="mini">关 闭</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
-      divList: [
-        { id: 1, name: "百度", icon: "", url: "" },
-        { id: 2, name: "google", icon: "", url: "" },
-        { id: 3, name: "知乎", icon: "", url: "" },
-        { id: 4, name: "简书", icon: "", url: "" },
-        { id: 5, name: "github", icon: "", url: "" },
-        { id: 6, name: "csdn", icon: "", url: "" },
-        { id: 7, name: "掘金", icon: "", url: "" },
-        { id: 8, name: "oschina", icon: "", url: "" },
-        { id: 9, name: "思否", icon: "", url: "" },
-        { id: 10, name: "必应", icon: "", url: "" },
-        { id: 11, name: "UI中国", icon: "", url: "" },
-        { id: 12, name: "千图网", icon: "", url: "" },
-        { id: 13, name: "小众网", icon: "", url: "" }
-      ],
+      allNav: [],
+      oftenNav:[],
       dragging: null,
       curEl: "",
       edit: false,
-      setOftenDialog: true
+      activeName: ''
     };
+  },
+  mounted(){
+    this.query_often_nav()
   },
   methods: {
     // 当某元素被拖拽时，记录拖拽项
@@ -114,12 +81,12 @@ export default {
       if (item === this.dragging) {
         return;
       }
-      const newItems = [...this.divList];
+      const newItems = [...this.oftenNav];
       const from = newItems.indexOf(this.dragging);
       const to = newItems.indexOf(item);
       newItems[from] = item;
       newItems[to] = this.dragging;
-      this.divList = newItems;
+      this.oftenNav = newItems;
     },
     // 完成元素拖动后触发
     handleDragEnd() {
@@ -127,6 +94,22 @@ export default {
     },
     delItem(item) {
       console.log("删除", item);
+    },
+    // 获取常用导航地址
+    query_often_nav() {
+      var url = "/query_often_nav";
+      this.$axios
+        .get(url)
+        .then(res => {
+          let data = res.data.data;
+          this.oftenNav = data;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    setOftenNav(){
+      this.$router.push({path: '/setoftenNav'})
     }
   }
 };
@@ -145,44 +128,5 @@ export default {
   cursor: pointer;
 }
 
-.delete-icon {
-  float: right;
-  margin-top: 12px;
-}
-.often-icon{
-  font-size: 25px;
-  color: #9abdf2;
-}
-.often-box{
-  position: relative;
-}
-.often-box:hover{
-  background: #f5f7faba;
-}
-.del-often-icon, .add-often-icon{
-  position: absolute;
-  top: 0;
-  right: 0;
-  color: #ccc;
-}
-.del-often-icon:hover{
-  color: #fb7e13;
-}
-.add-often-icon{
-  color: #9abdf2;
-}
-.add-often-icon:hover{
-  color: #06f7b5;
-}
-.title{
-  font-size: 13px;
-  font-weight: bold;
-  margin-bottom: 16px;
-}
-.prompt-text{
-  font-size: 10px;
-  font-style: normal;
-  margin-left: 6px;
-  color: #9f9f9f;
-}
+
 </style>

@@ -14,6 +14,14 @@ Vue.use(VueRouter)
     }
   },
   {
+    path: '/setOftenNav',
+    name:"setOftenNav",
+    component: () => import('../views/home/setOftenNav.vue'),
+    meta:{
+      keepAlive:true
+    }
+  },
+  {
     path: '/soup',
     name: 'Soup',
     component: () => import('../views/soup/index.vue'),

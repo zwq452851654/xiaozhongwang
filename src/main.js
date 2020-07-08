@@ -3,11 +3,16 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+import axios from 'axios'
+Vue.prototype.$axios = axios;
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./static/css/index.css";
 
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
+
+import './mock/mock.js'
 
 Vue.use(ElementUI);
 
