@@ -21,6 +21,9 @@ export const mavType = [
     // 服务端 001003
     // 博客/论坛 001004
     // 其他 001006
+// 设计、视觉 002
+    // 设计 002001
+    // 视觉 002002
 
 
 /**
@@ -65,7 +68,6 @@ export const allwebNav = [
     { id: Mock.mock('@id'), name: "css88", icon: "", url: "", parentName: "技术栏", parentValue: "001", childName:"前端技术", childvalue:"001001" },
     { id: Mock.mock('@id'), name: "小度鱼", icon: "", url: "", parentName: "技术栏", parentValue: "001", childName:"", childvalue:"" },
     { id: Mock.mock('@id'), name: "脚本之家", icon: "", url: "", parentName: "技术栏", parentValue: "001", childName:"博客/论坛", childvalue:"001004" },
-    { id: Mock.mock('@id'), name: "ITPub", icon: "", url: "", parentName: "技术栏", parentValue: "001", childName:"", childvalue:"" },
     { id: Mock.mock('@id'), name: "素材火", icon: "", url: "", parentName: "技术栏", parentValue: "001", childName:"", childvalue:"" },
     { id: Mock.mock('@id'), name: "dalbll", icon: "", url: "", parentName: "技术栏", parentValue: "001", childName:"", childvalue:"" },
     { id: Mock.mock('@id'), name: "前端里", icon: "", url: "", parentName: "技术栏", parentValue: "001", childName:"博客/论坛", childvalue:"001004" },
@@ -150,12 +152,34 @@ export const allwebNav = [
     { id: Mock.mock('@id'), name: "Stylus", icon: "", url: "", parentName: "技术栏", parentValue: "001", childName:"", childvalue:"" },
     { id: Mock.mock('@id'), name: "百度一下", icon: "", url: "", parentName: "", parentValue: "", childName:"", childvalue:"" },
     { id: Mock.mock('@id'), name: "google", icon: "", url: "", parentName: "", parentValue: "", childName:"", childvalue:"" },
-    { id: Mock.mock('@id'), name: "知乎", icon: "", url: "", parentName: "", parentValue: "", childName:"", childvalue:""},
-    { id: Mock.mock('@id'), name: "简书", icon: "", url: "", parentName: "", parentValue: "", childName:"", childvalue:"" },
-    { id: Mock.mock('@id'), name: "csdn", icon: "", url: "", parentName: "", parentValue: "", childName:"", childvalue:"" },
-    { id: Mock.mock('@id'), name: "oschina", icon: "", url: "", parentName: "", parentValue: "", childName:"", childvalue:"" },
-    { id: Mock.mock('@id'), name: "思否", icon: "", url: "" , parentName: "", parentValue: "", childName:"", childvalue:"" },
-    { id: Mock.mock('@id'), name: "必应", icon: "", url: "", parentName: "", parentValue: "", childName:"", childvalue:"" }
+    { id: Mock.mock('@id'), name: "知乎", icon: "", url: "", parentName: "技术栏", parentValue: "001", childName:"博客/论坛", childvalue:"001004"},
+    { id: Mock.mock('@id'), name: "简书", icon: "", url: "", parentName: "技术栏", parentValue: "001", childName:"博客/论坛", childvalue:"001004" },
+    { id: Mock.mock('@id'), name: "csdn", icon: "", url: "", parentName: "技术栏", parentValue: "001", childName:"博客/论坛", childvalue:"001004" },
+    { id: Mock.mock('@id'), name: "oschina", icon: "", url: "", parentName: "技术栏", parentValue: "001", childName:"博客/论坛", childvalue:"001004" },
+    { id: Mock.mock('@id'), name: "思否", icon: "", url: "" , parentName: "技术栏", parentValue: "001", childName:"博客/论坛", childvalue:"001004" },
+    { id: Mock.mock('@id'), name: "必应", icon: "", url: "", parentName: "技术栏", parentValue: "001", childName:"博客/论坛", childvalue:"001004" },
+    { id: Mock.mock('@id'), name: "必应", icon: "", url: "", parentName: "技术栏", parentValue: "001", childName:"博客/论坛", childvalue:"001004" },
+    { id: Mock.mock('@id'), name: "必应", icon: "", url: "", parentName: "技术栏", parentValue: "001", childName:"博客/论坛", childvalue:"001004" },
+    { id: Mock.mock('@id'), name: "UIGreat", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "花瓣", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "Dribbble", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "Behance", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "Pinterest", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "站酷", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "FWA", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "Lapa", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "UIMovement", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "UI中国", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "LandBook", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "PSDRepo", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "BestWebsite", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "FontAwesome", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "Iconfont", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "IcoMoon", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "EasyIcon", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "icons8", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "IconStore", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" },
+    { id: Mock.mock('@id'), name: "iconninja", icon: "", url: "", parentName: "设计/视觉", parentValue: "002", childName:"设计", childvalue:"002001" }
 ]
 
 // 常用网站

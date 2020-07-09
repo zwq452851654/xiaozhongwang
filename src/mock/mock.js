@@ -29,3 +29,18 @@ Mock.mock('/query_skill_nav', {
   "code":0,
   data: skill(),
 });
+
+// 设计类网站
+let design = ()=>{
+  let data = [];
+  allwebNav.forEach((item)=>{
+    if(item.parentValue == '002'){
+      data.push(item)
+    }
+  })
+  return data;
+}
+Mock.mock('/query_design_nav', {
+  "code":0,
+  data: design(),
+});
