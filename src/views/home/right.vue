@@ -1,0 +1,102 @@
+<template>
+  <div>
+    <el-card class="box-card mt-3">
+      <div slot="header" class="clearfix">
+        <b class="font-size-2">技术栏</b>
+        <el-button style="float: right; padding: 3px 0" type="text">遗漏补充</el-button>
+      </div>
+      <el-tabs v-model="activeName">
+        <el-tab-pane :label="itemName[key]" :name="key" v-for="(item, key) in itemName" :key="key">
+            <div class="skill-div">
+                <div class="skill-con">
+                    <div class="col skill-con-item" v-for="child in skillNav[key]" :key="child.id">{{  child.name }}</div>
+                </div>
+            </div>
+        </el-tab-pane>
+      </el-tabs>
+    </el-card>
+    <el-card class="box-card mt-3">
+      <div slot="header" class="clearfix">
+        <b class="font-size-2">设计/ 视觉/ 软件</b>
+        <el-button style="float: right; padding: 3px 0" type="text">遗漏补充</el-button>
+      </div>
+    </el-card>
+  </div>
+</template>
+<script>
+// const a = [
+//     {lable:'前端技术', name:'a', list:"前端技术"},
+//     {lable:'后端技术', name:'b', list:"后端技术"},
+//     {lable:'服务端', name:'c', list:"服务端"},
+//     {lable:'运维', name:'d', list:"运维"},
+//     {lable:'其他', name:'e', list:"其他"}
+// ]
+
+export default {
+  data() {
+    return {
+      activeName: "001001",
+      skillNav: [],
+      itemName:{
+        '001001': '前端',
+        '001002': '后端',
+        '001003': '服务端',
+        '001004': '博客/论坛',
+        '001006': '其他'
+      }
+    };
+  },
+  mounted() {
+    this.query_skill_nav();
+  },
+  methods: {
+    // 技术类型
+    query_skill_nav() {
+      var url = "/query_skill_nav";
+      this.$axios
+        .get(url)
+        .then(res => {
+          let data = res.data.data;
+          let obj = {};
+          obj['001006'] = [];
+          data.forEach(item => {
+            if (item.childvalue) {
+              if (obj[item.childvalue]) {
+                obj[item.childvalue].push(item);
+              } else {
+                obj[item.childvalue] = [];
+                obj[item.childvalue].push(item);
+              }
+            }else{
+                obj['001006'].push(item)
+            }
+          });
+          
+          this.skillNav = obj;
+          console.log(this.skillNav)
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }
+};
+</script>
+<style scoped>
+    .skill-div{
+        height: 255px;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+    .skill-con{
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        
+    }
+    .skill-con-item{
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+        margin-bottom: 15px;
+    }
+</style>

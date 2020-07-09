@@ -127,6 +127,8 @@ export default {
   border-radius: 10px;
   cursor: pointer;
 }
-
-
+.delete-icon {
+  float: right;
+  margin-top: 12px;
+}
 </style>

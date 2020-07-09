@@ -25,7 +25,7 @@
         <div v-for="(item,index) in allNav" :key="index">
           <div class="mb-3 pl-4 font-size-2">{{ item[0].t_v }}</div>
           <div class="d-flex flex-wrap">
-            <div class="text-center p-2 ml-2 mr-2 often-box" v-for="child in item" :key="child.id">
+            <div class="text-center p-2 ml-2 mr-2 mb-3 often-box" v-for="child in item" :key="child.id">
               <div>
                 <i class="el-icon-platform-eleme often-icon"></i>
               </div>
@@ -125,10 +125,6 @@ export default {
 }
 </style>
 <style scoped>
-.delete-icon {
-  float: right;
-  margin-top: 12px;
-}
 .often-icon {
   font-size: 25px;
   color: #9abdf2;
@@ -138,7 +134,6 @@ export default {
   cursor: pointer;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-  
 }
 
 .prompt-name{

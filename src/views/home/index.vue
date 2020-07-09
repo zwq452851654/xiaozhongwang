@@ -23,15 +23,27 @@
       <div class="bg">
         <often />
       </div>
+      <div class="d-flex">
+        <div class="left bg mr-3">
+          <left></left>
+        </div>
+        <div class="right w-100">
+          <right></right>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import often from "./often.vue"
+import right from './right.vue'
+import left from './left.vue'
 
 export default {
   components: {
-    often
+    often,
+    right,
+    left
   },
   data(){
     return{
@@ -49,6 +61,7 @@ export default {
       ],
       curSearchAim: "baidu",
       input2:"",
+      
       
     }
   },
@@ -109,6 +122,9 @@ export default {
     font-weight: bold;
     background: #7f9eff;
     color: #fff;
+  }
+  .left{
+    width: 350px;
   }
 
 </style>
