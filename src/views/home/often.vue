@@ -4,7 +4,11 @@
       <el-switch v-model="edit" :inactive-text="edit ? '拖拽移动' : ''"></el-switch>
     </div>
     <div v-if="!edit">
-      <div class="item" v-for="(item, index) in oftenNav" :key="index">{{item.name}}</div>
+      <div class="item" v-for="(item, index) in oftenNav" :key="index">
+        <!-- <i class="el-icon-platform-eleme font-size-4"></i> -->
+        <img :src="item.icon" style="width:16px;height:16px" alt="">
+        {{item.name}}
+      </div>
     </div>
     <div v-else>
       <div
@@ -19,6 +23,7 @@
         @drop="handleDrop($event, item)"
         @dragend="handleDragEnd($event, item)"
       >
+        <i class="el-icon-platform-eleme font-size-4"></i>
         {{item.name}}
         <i class="el-icon-close delete-icon" v-show="edit" @click="delItem(item)"></i>
       </div>
@@ -102,6 +107,9 @@ export default {
         .get(url)
         .then(res => {
           let data = res.data.data;
+          data.forEach(item => {
+            item.icon = require('../../static/icon/'+ item.icon)
+          })
           this.oftenNav = data;
         })
         .catch(error => {

@@ -24,7 +24,7 @@
         <often />
       </div>
       <div class="d-flex">
-        <div class="left bg mr-3">
+        <div class="left mr-3">
           <left></left>
         </div>
         <div class="right w-100">
@@ -124,7 +124,8 @@ export default {
     color: #fff;
   }
   .left{
-    width: 350px;
+    min-width: 300px;
+    max-width: 300px;
   }
 
 </style>

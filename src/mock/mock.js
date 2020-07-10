@@ -44,3 +44,18 @@ Mock.mock('/query_design_nav', {
   "code":0,
   data: design(),
 });
+
+// 辅助工具
+let tool = ()=>{
+  let data = [];
+  allwebNav.forEach((item)=>{
+    if(item.parentValue == '003'){
+      data.push(item)
+    }
+  })
+  return data;
+}
+Mock.mock('/query_tool_nav', {
+  "code":0,
+  data: tool(),
+});

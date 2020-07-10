@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 技术栏 -->
     <el-card class="box-card mt-3">
       <div slot="header" class="clearfix">
         <b class="font-size-2">技术栏</b>
@@ -10,23 +11,42 @@
             <div class="skill-div">
                 <div class="skill-con">
                     <div class="col skill-con-item font-size-1" v-for="child in skillNav[key]" :key="child.id">
-                      <i class="el-icon-platform-eleme font-size-4"></i>
-                      {{  child.name }}
+                      <!-- <i class="el-icon-platform-eleme font-size-4"></i> -->
+                      <img v-if="child.icon" :src="child.icon" style="width:16px;height:16px" alt="">
+                      {{ child.name }}
                     </div>
                 </div>
             </div>
         </el-tab-pane>
       </el-tabs>
     </el-card>
+
+    <!-- 设计/视觉 -->
     <el-card class="box-card mt-3">
       <div slot="header" class="clearfix">
         <b class="font-size-2">设计/视觉</b>
         <el-button style="float: right; padding: 3px 0" type="text">遗漏补充</el-button>
       </div>
-      <div class="skill-div">
+      <div class="design-div">
           <div class="skill-con">
               <div class="col skill-con-item font-size-1" v-for="item in designNav" :key="item.id">
-                <i class="el-icon-platform-eleme font-size-4"></i>
+                <!-- <i class="el-icon-platform-eleme font-size-4"></i> -->
+                <img v-if="item.icon" :src="item.icon" style="width:16px;height:16px" alt="">
+                {{ item.name }}
+              </div>
+          </div>
+      </div>
+    </el-card>
+    <el-card class="box-card mt-3">
+      <div slot="header" class="clearfix">
+        <b class="font-size-2">辅助工具</b>
+        <el-button style="float: right; padding: 3px 0" type="text">遗漏补充</el-button>
+      </div>
+      <div class="design-div">
+          <div class="skill-con">
+              <div class="col skill-con-item font-size-1" v-for="item in toolNav" :key="item.id">
+                <!-- <i class="el-icon-platform-eleme font-size-4"></i> -->
+                <img v-if="item.icon" :src="item.icon" style="width:16px;height:16px" alt="">
                 {{ item.name }}
               </div>
           </div>
@@ -55,12 +75,14 @@ export default {
         '001004': '博客/论坛',
         '001006': '其他'
       },
-      designNav: []
+      designNav: [],
+      toolNav: [],
     };
   },
   mounted() {
     this.query_skill_nav();
     this.query_design_nav();
+    this.query_tool_nav();
   },
   methods: {
     // 技术类型
@@ -73,6 +95,7 @@ export default {
           let obj = {};
           obj['001006'] = [];
           data.forEach(item => {
+            item.icon = require('../../static/icon/'+ item.icon)
             if (item.childvalue) {
               if (obj[item.childvalue]) {
                 obj[item.childvalue].push(item);
@@ -98,8 +121,26 @@ export default {
         .get(url)
         .then(res => {
           let data = res.data.data;
+          data.forEach(item => {
+            item.icon = require('../../static/icon/'+ item.icon)
+          })
           this.designNav = data;
-          console.log(this.designNav)
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    // 获取设计类网站
+    query_tool_nav(){
+      var url = "/query_tool_nav";
+      this.$axios
+        .get(url)
+        .then(res => {
+          let data = res.data.data;
+          data.forEach(item => {
+            item.icon = require('../../static/icon/'+ item.icon)
+          })
+          this.toolNav = data;
         })
         .catch(error => {
           console.log(error);
