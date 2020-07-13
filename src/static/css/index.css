@@ -53,6 +53,11 @@
     color: #3dbdffb3;
 }
 
+.navIcon{
+    width: 16px;
+    height: 16px;
+    margin-right: 2px;
+}
 
 /* 清除默认样式 */
 li{

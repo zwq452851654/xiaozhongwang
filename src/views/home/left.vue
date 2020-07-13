@@ -35,8 +35,9 @@
         <el-tab-pane :label="tab.label" :name="tab.name" v-for="tab in newTabs" :key="tab.name">
           <ul class="newa">
             <li class="list-item" v-for="(list,index) in 6" :key="index">
+              <span class="heat">{{ ++index }}</span>
               <span>Cras justo odio </span>
-              <i>100W</i>
+              <i class="ml-auto">100W</i>
             </li>
           </ul>
           <div class="text-right font-size-1 text-primary">
@@ -46,13 +47,14 @@
       </el-tabs>
     </div>
 
-    <!-- 技术栏 -->
+    <!-- 技术资讯 -->
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span><i class="iconfont iconshuxian"></i>技术资讯</span>
       </div>
       <ul class="newa">
         <li class="list-item" v-for="(list,index) in 6" :key="index">
+          <span class="heat">{{ ++index }}</span>
           <span>Cras justo odio </span>
           <i>100W</i>
         </li>
@@ -94,14 +96,25 @@ export default {
     line-height: 30px;
     padding-bottom: 8px;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
     color: #626366;
     font-size: 15px;
+    margin-bottom: 3px;
     cursor: pointer;
   }
 
   .list-item span:hover{
     text-decoration: underline;
+  }
+  .heat{
+    display: block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    background: #ccc;
+    text-align: center;
+    border-radius: 5px;
+    margin-right: 5px;
   }
 
   .list-item i{

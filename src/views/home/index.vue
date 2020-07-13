@@ -14,8 +14,13 @@
         </li>
       </ul>
       <div class="search-text">
-        <el-input placeholder="请输入内容" size="medium" v-model="input2">
-          <el-button slot="append" class="search-btn">立即搜索</el-button>
+        <el-input 
+          placeholder="请输入搜索内容" 
+          size="medium" 
+          @keyup.enter.native="searchHandle" 
+          v-model="searchValue"
+          clearable>
+          <el-button slot="append" class="search-btn" @click="searchHandle()">立即搜索</el-button>
         </el-input>
       </div>
     </div>
@@ -47,27 +52,39 @@ export default {
   },
   data(){
     return{
-      searchList:[
-        { name: '百度一下', value: 'baidu' },
-        { name: 'github', value: 'github' },
-        { name: 'google', value: 'google' },
-        { name: 'csdn', value: 'csdn' },
-        { name: '掘金', value: 'juejin' },
-        { name: 'oschina', value: 'oschina' },
-        { name: '思否', value: 'sifou' },
-        { name: '知乎', value: 'zhihu' },
-        { name: '必应', value: 'biying' },
-        { name: '简书', value: 'jianshu' }
-      ],
-      curSearchAim: "baidu",
-      input2:"",
-      
-      
+      searchList: [],
+      curSearchAim: "",
+      searchValue: "",
+      aimsObj: {}
     }
   },
+  mounted(){
+    this.queryList();
+  },
   methods:{
+    // 搜索目标list
+    queryList(){
+      var url = "/search";
+      this.$axios.get(url).then(res => {
+        let data = res.data.data;
+        this.aimsObj = data[0];
+        this.curSearchAim = data[0].value;
+        this.searchList = data;
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    },
     setSearch(item){
+      this.aimsObj = item;
       this.curSearchAim = item.value;
+    },
+    searchHandle(){
+      // let p = window.location.protocol;
+      let a = document.createElement("a");
+      a.setAttribute("href", `${this.aimsObj.url}${this.searchValue}`);
+      a.setAttribute("target", "_blank");
+      a.click();
     }
   }
 }
@@ -75,11 +92,13 @@ export default {
 
 <style>
   .search-text{
-    width: 30%;
+    width: 400px;
     margin: 25px auto;
   }
   .search-text .el-input__inner{
-    border-radius: 25px;
+    /* border-radius: 25px; */
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
   }
   .search-btn{
     width: 100px;
@@ -126,6 +145,9 @@ export default {
   .left{
     min-width: 300px;
     max-width: 300px;
+  }
+  .right{
+    width: 100%;
   }
 
 </style>

@@ -128,7 +128,7 @@
       </div>
 
       <!-- 右侧部分 -->
-      <div class="bg right">
+      <div class="bg learn-right">
         <courseInfoRight></courseInfoRight>
       </div>
     </div>
@@ -217,7 +217,7 @@ export default {
   }
 }
 </script>
-<style scoped="scope">
+<style scoped>
   .sourse-info{
     border-bottom: 1px solid #f4eded;
     padding-bottom: 10px;
@@ -280,7 +280,7 @@ export default {
     font-size: 20px;
   }
 
-  .right{
+  .learn-right{
     min-width: 300px;
     max-width: 300px;
     height: 100%;

@@ -117,7 +117,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
   .course span:hover{
     color: #3d7eff;
   }

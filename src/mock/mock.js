@@ -1,14 +1,23 @@
 import Mock from 'mockjs'
 
 
-import { allwebNav, oftenNav } from './home.js';
+import { allwebNav, oftenNav, searchList } from './home.js';
 
 
+// 返回搜索项
+Mock.mock('/search', {
+  "code":0,
+  data: searchList,
+});
+
+
+// 返回所有导航
 Mock.mock('/query_all_nav', {
     "code":0,
     data: allwebNav,
 });
 
+// 返回常用导航
 Mock.mock('/query_often_nav', {
   "code":0,
   data: oftenNav,

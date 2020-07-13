@@ -9,7 +9,8 @@
         <div class="d-flex flex-wrap mb-3">
           <div class="text-center p-2 ml-2 mr-2 often-box" v-for="t in oftenNav" :key="t.id">
             <div>
-              <i class="el-icon-platform-eleme often-icon"></i>
+              <img :src="t.icon" class="navIcon" alt="" v-if="t.icon">
+              <i class="iconfont iconmorentu often-icon" v-else></i>
             </div>
             <div class="font-size-1">{{ t.name }}</div>
             <div class="del-often-icon cursor-p">
@@ -27,7 +28,8 @@
           <div class="d-flex flex-wrap">
             <div class="text-center p-2 ml-2 mr-2 mb-3 often-box" v-for="child in item" :key="child.id">
               <div>
-                <i class="el-icon-platform-eleme often-icon"></i>
+                <img :src="child.icon" class="navIcon" alt="" v-if="child.icon">
+                <i class="iconfont iconmorentu often-icon" v-else></i>
               </div>
               <div class="font-size-1 prompt-name">{{ child.name }}</div>
               <div class="add-often-icon cursor-p">
@@ -87,9 +89,11 @@ export default {
         .get(url)
         .then(res => {
           let data = res.data.data;
-
           let obj = {};
           data.forEach(item => {
+            if(item.icon){
+              item.icon = require('../../static/icon/'+ item.icon)
+            }
             if (obj[item.t_k]) {
               obj[item.t_k].push(item);
             } else {
@@ -110,6 +114,11 @@ export default {
         .get(url)
         .then(res => {
           let data = res.data.data;
+          data.forEach(item => {
+            if(item.icon){
+              item.icon = require('../../static/icon/'+ item.icon)
+            }
+          })
           this.oftenNav = data;
         })
         .catch(error => {
@@ -127,7 +136,7 @@ export default {
 <style scoped>
 .often-icon {
   font-size: 25px;
-  color: #9abdf2;
+  /* color: #9abdf2; */
 }
 .often-box {
   position: relative;

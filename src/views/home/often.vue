@@ -5,8 +5,7 @@
     </div>
     <div v-if="!edit">
       <div class="item" v-for="(item, index) in oftenNav" :key="index">
-        <!-- <i class="el-icon-platform-eleme font-size-4"></i> -->
-        <img :src="item.icon" style="width:16px;height:16px" alt="">
+        <img :src="item.icon" class="navIcon" alt="">
         {{item.name}}
       </div>
     </div>
@@ -23,14 +22,13 @@
         @drop="handleDrop($event, item)"
         @dragend="handleDragEnd($event, item)"
       >
-        <i class="el-icon-platform-eleme font-size-4"></i>
+        <img :src="item.icon" class="navIcon" alt="">
         {{item.name}}
         <i class="el-icon-close delete-icon" v-show="edit" @click="delItem(item)"></i>
       </div>
     </div>
     <div class="text-right">
       <router-link to="/home/setOftenNav" tag="i" class="el-icon-menu ml-1 font-size-5 cursor-p"></router-link>
-      <!-- <i class="el-icon-menu ml-1 font-size-5 cursor-p" @click="setOftenNav()"></i> -->
     </div>
   </div>
 </template>
@@ -108,7 +106,10 @@ export default {
         .then(res => {
           let data = res.data.data;
           data.forEach(item => {
-            item.icon = require('../../static/icon/'+ item.icon)
+            if(item.icon){
+              item.icon = require('../../static/icon/'+ item.icon)
+            }
+            
           })
           this.oftenNav = data;
         })
