@@ -66,29 +66,18 @@
             clearable>
           </el-cascader>
         </el-form-item>
-        <el-form-item label="网站图标">
-          <el-upload
-            class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-            multiple
-            :limit="1"
-            :on-exceed="handleExceed"
-            :file-list="fileList">
-            <el-button size="mini" type="primary" >点击上传</el-button>
-            <!-- <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div> -->
-          </el-upload>
-        </el-form-item>
         <el-form-item label="网站地址">
           <el-input v-model="newForm.name" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="">
+          <div class="font-size-1 color-b8c4ce">注:您所提交的将会在审核通过后进行展示</div>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="addNewNavDialog = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="addNewNavDialog = false" size="mini">确 定</el-button>
+        <el-button type="primary" @click="addNewNavDialog = false" size="mini">提 交</el-button>
       </div>
+      
     </el-dialog>
 
   </div>
@@ -149,8 +138,7 @@ export default {
             label: 'Button 按钮'
           }]
         }
-      ],
-      fileList: []
+      ]
     };
   },
   mounted() {
@@ -230,19 +218,6 @@ export default {
     addNewNavHandle(){
       // name: "", icon: "", url: "", parentName: "", parentValue: "", childName:"", childvalue:""
       this.addNewNavDialog = true;
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-    },
-    beforeRemove(file, fileList) {
-      console.log( fileList);
-      return this.$confirm(`确定移除 ${ file.name }？`);
     }
   }
 };

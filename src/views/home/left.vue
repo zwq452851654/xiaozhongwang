@@ -35,7 +35,7 @@
         <el-tab-pane :label="tab.label" :name="tab.name" v-for="tab in newTabs" :key="tab.name">
           <ul class="newa">
             <li class="list-item" v-for="(list,index) in 6" :key="index">
-              <span class="heat">{{ ++index }}</span>
+              <span class="heat" :style="{background: reatColor[index]}">{{ ++index }}</span>
               <span>Cras justo odio </span>
               <i class="ml-auto">100W</i>
             </li>
@@ -54,7 +54,7 @@
       </div>
       <ul class="newa">
         <li class="list-item" v-for="(list,index) in 6" :key="index">
-          <span class="heat">{{ ++index }}</span>
+          <span class="heat" :style="{background: reatColor[index]}">{{ ++index }}</span>
           <span>Cras justo odio </span>
           <i>100W</i>
         </li>
@@ -77,7 +77,8 @@ export default {
         { label:'本地', name:'city' }
       ],
       showForm: false,
-      newsForm: {}
+      newsForm: {},
+      reatColor:['#fdcd14', '#b6d3f2', '#efdac6']
     };
   }
 };
@@ -115,6 +116,7 @@ export default {
     text-align: center;
     border-radius: 5px;
     margin-right: 5px;
+    color: #fff;
   }
 
   .list-item i{
