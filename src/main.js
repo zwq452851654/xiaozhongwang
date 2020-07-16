@@ -6,6 +6,9 @@ import store from './store'
 import axios from 'axios'
 Vue.prototype.$axios = axios;
 
+import http from './utils/http'
+Vue.prototype.$http = http;
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./static/css/index.css";
 

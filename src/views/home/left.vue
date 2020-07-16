@@ -34,13 +34,13 @@
       <el-tabs v-model="activeName" :stretch="true">
         <el-tab-pane :label="tab.label" :name="tab.name" v-for="tab in newTabs" :key="tab.name">
           <ul class="newa">
-            <li class="list-item" v-for="(list,index) in 6" :key="index">
-              <span class="heat" :style="{background: reatColor[index]}">{{ ++index }}</span>
-              <span>Cras justo odio </span>
-              <i class="ml-auto">100W</i>
+            <li class="list-item" v-for="list in weiboObj.list" :key="list.rank">
+              <span class="heat" :style="{background: reatColor[list.rank]}">{{ list.rank }}</span>
+              <span class="news-title">{{ list.title }}</span>
+              <i class="ml-auto">{{ list.hotValue }}</i>
             </li>
           </ul>
-          <div class="text-right font-size-1 text-primary">
+          <div class="text-right font-size-1 text-primary cursor-p change-btn" @click="changeList('weibo', weiboObj.page)">
             <i class="el-icon-refresh mr-1 font-size-2"></i>换一换
           </div>
         </el-tab-pane>
@@ -78,8 +78,40 @@ export default {
       ],
       showForm: false,
       newsForm: {},
-      reatColor:['#fdcd14', '#b6d3f2', '#efdac6']
+      reatColor:['#fdcd14', '#b6d3f2', '#efdac6'],
+      weibo: [],
+      weiboObj:{
+        list: [],
+        page: 0
+      }
     };
+  },
+  mounted(){
+    this.$http.get('/news/news', {
+      'q': 'weibo_hot'
+    }).then( res =>{
+      let data = res.data;
+      if(data.code){
+        this.weibo = data.data;
+        this.changeList('weibo', this.weiboObj.page)
+      }
+    })
+    
+  },
+  methods:{
+    changeList(m, page){
+      this[m+'Obj']['list'] = [];
+      let s,e;
+      if(page > 0){
+        s = Number(page * 6);
+      }else{
+        s = Number(page * 5);
+      }
+       e = s + 6;
+      this[m+'Obj']['list'] = this[m].slice(s, e);
+      this[m+'Obj']['page'] = ++page;
+      if(e > this[m].length) this[m+'Obj']['page'] = 0;
+    },
   }
 };
 </script>
@@ -122,6 +154,16 @@ export default {
   .list-item i{
     font-size: 14px;
     font-style: inherit;
+  }
+  .list-item .news-title{
+    width: 180px;
+    font-size: 12px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .change-btn{
+    user-select:none;
   }
   .iconshuxian{
     font-size: 16px;
