@@ -33,15 +33,36 @@
     <div class="bg mb-3">
       <el-tabs v-model="activeName" :stretch="true">
         <el-tab-pane :label="tab.label" :name="tab.name" v-for="tab in newTabs" :key="tab.name">
-          <ul class="newa">
-            <li class="list-item" v-for="list in weiboObj.list" :key="list.rank">
-              <span class="heat" :style="{background: reatColor[list.rank]}">{{ list.rank }}</span>
+          <ul class="newa" v-if="tab.name == 'weibo'">
+            <li class="font-size-2 text-center" v-if="weiboObj.list.length == 0">(⊙o⊙)…我好像遇到了点小麻烦</li>
+            <li class="list-item" v-else v-for="(list,index) in weiboObj.list" :key="list.rank">
+              <span class="heat" :style="{background: reatColor[index]}">{{ list.rank }}</span>
               <span class="news-title">{{ list.title }}</span>
               <i class="ml-auto">{{ list.hotValue }}</i>
             </li>
           </ul>
-          <div class="text-right font-size-1 text-primary cursor-p change-btn" @click="changeList('weibo', weiboObj.page)">
-            <i class="el-icon-refresh mr-1 font-size-2"></i>换一换
+          <ul class="newa" v-if="tab.name == 'baidu'">
+            <li class="font-size-2 text-center" v-if="baiduObj.list.length == 0">(⊙o⊙)…我好像遇到了点小麻烦</li>
+            <li class="list-item" v-else v-for="(list,index) in baiduObj.list" :key="list.rank">
+              <span class="heat" :style="{background: reatColor[index]}">{{ list.rank }}</span>
+              <span class="news-title">{{ list.title }}</span>
+              <i class="ml-auto">{{ list.hotValue }}</i>
+            </li>
+          </ul>
+          <ul class="newa" v-if="tab.name == 'zhengquan'">
+            <li class="font-size-2 text-center" v-if="zhengquanObj.list.length == 0">(⊙o⊙)…我好像遇到了点小麻烦</li>
+            <li class="list-item" v-else v-for="(list,index) in zhengquanObj.list" :key="index">
+              <span class="heat" :style="{background: reatColor[index]}">{{ ++index }}</span>
+              <span class="news-title">{{ list.title }}</span>
+              <i class="ml-auto">999+</i>
+            </li>
+          </ul>
+          <ul class="newa" v-if="tab.name == 'city'">
+            <li class="list-item">内容暂定</li> 
+          </ul>
+          <div class="text-right font-size-1 text-primary cursor-p change-btn" @click="changeList(tab.name)">
+            <!-- <i class="el-icon-refresh mr-1 font-size-2"></i> -->
+            <el-button type="text" icon="el-icon-refresh" class="mr-1 font-size-2">换一换</el-button>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -53,14 +74,16 @@
         <span><i class="iconfont iconshuxian"></i>技术资讯</span>
       </div>
       <ul class="newa">
-        <li class="list-item" v-for="(list,index) in 6" :key="index">
-          <span class="heat" :style="{background: reatColor[index]}">{{ ++index }}</span>
-          <span>Cras justo odio </span>
-          <i>100W</i>
-        </li>
+        <li class="font-size-2 text-center" v-if="jishuObj.list.length == 0">(⊙o⊙)…我好像遇到了点小麻烦</li>
+          <li class="list-item" v-else v-for="(list,index) in jishuObj.list" :key="index">
+            <span class="heat" :style="{background: reatColor[index]}">{{ ++index }}</span>
+            <span class="news-title">{{ list.title }}</span>
+            <i class="ml-auto">999+</i>
+          </li>
       </ul>
-      <div class="text-right font-size-1 text-primary">
-        <i class="el-icon-refresh mr-1 font-size-2"></i>换一换
+      <div class="text-right font-size-1 text-primary cursor-p change-btn" @click="changeList('jishu')">
+        <!-- <i class="el-icon-refresh mr-1 font-size-2"></i>换一换 -->
+        <el-button type="text" icon="el-icon-refresh" class="mr-1 font-size-2">换一换</el-button>
       </div>
     </el-card>
   </div>
@@ -69,12 +92,12 @@
 export default {
   data() {
     return {
-      activeName: "wb",
+      activeName: "weibo",
       newTabs:[
-        { label:'微博', name:'wb' },
-        { label:'百度', name:'bd' },
-        { label:'头条', name:'tt' },
-        { label:'本地', name:'city' }
+        { label:'微博', name:'weibo' },
+        { label:'百度', name:'baidu' },
+        { label:'证券', name:'zhengquan' },
+        { label:'北京', name:'city' }
       ],
       showForm: false,
       newsForm: {},
@@ -83,23 +106,46 @@ export default {
       weiboObj:{
         list: [],
         page: 0
-      }
+      },
+      baidu: [],
+      baiduObj:{
+        list: [],
+        page: 0
+      },
+      zhengquan: [],
+      zhengquanObj:{
+        list: [],
+        page: 0
+      },
+      jishu: [],
+      jishuObj:{
+        list: [],
+        page: 0
+      },
     };
   },
   mounted(){
-    this.$http.get('/news/news', {
-      'q': 'weibo_hot'
-    }).then( res =>{
-      let data = res.data;
-      if(data.code){
-        this.weibo = data.data;
-        this.changeList('weibo', this.weiboObj.page)
-      }
-    })
-    
+    this.queryHotData('weibo');
+    this.queryHotData('baidu');
+    this.queryHotData('zhengquan');
+    this.queryHotData('jishu');
   },
   methods:{
-    changeList(m, page){
+    // 获取微博热搜数据
+    queryHotData(name){
+      this.$http.get('/news/news', {
+        'q': name + '_hot'
+      }).then( res =>{
+        let data = res.data;
+        if(data.code){
+          this[name] = data.data;
+          this.changeList(name)
+        }
+      })
+    },
+    // 点击换一换执行
+    changeList(m){
+      let page = this[m+'Obj']['page'];
       this[m+'Obj']['list'] = [];
       let s,e;
       if(page > 0){
@@ -110,7 +156,7 @@ export default {
        e = s + 6;
       this[m+'Obj']['list'] = this[m].slice(s, e);
       this[m+'Obj']['page'] = ++page;
-      if(e > this[m].length) this[m+'Obj']['page'] = 0;
+      if(e >= this[m].length) this[m+'Obj']['page'] = 0;
     },
   }
 };

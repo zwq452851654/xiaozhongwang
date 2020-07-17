@@ -1,10 +1,11 @@
-
 /* 容器 */
-.content{
+
+.content {
     max-width: 1300px;
     margin: 0 auto;
 }
-.bg{
+
+.bg {
     padding: 20px;
     background-color: #fff;
     border-radius: 5px;
@@ -12,40 +13,49 @@
 }
 
 /* 鼠标手 */
-.cursor-p{
+
+.cursor-p {
     cursor: pointer;
 }
 
 /* 字体大小 */
-.font-size-1{
+
+.font-size-1 {
     font-size: 12px;
 }
-.font-size-2{
+
+.font-size-2 {
     font-size: 14px;
 }
-.font-size-3{
+
+.font-size-3 {
     font-size: 16px;
 }
-.font-size-4{
+
+.font-size-4 {
     font-size: 18px;
 }
-.font-size-5{
+
+.font-size-5 {
     font-size: 20px;
 }
 
 /* 标题 */
-.title{
+
+.title {
     font-size: 16px;
     font-weight: bold;
 }
 
 /* 字体颜色 */
-.color-b8c4ce{
+
+.color-b8c4ce {
     color: #b8c4ce;
 }
 
 /* 课程中常用样式 */
-.step-con-i{
+
+.step-con-i {
     font-style: normal;
     text-decoration: underline;
     margin: 0 3px;
@@ -53,18 +63,20 @@
     color: #3dbdffb3;
 }
 
-.navIcon{
+.navIcon {
     width: 16px;
     height: 16px;
     margin-right: 2px;
 }
 
 /* 清除默认样式 */
-li{
+
+li {
     list-style: none;
 }
-button{
-    outline:none !important;
+
+button {
+    outline: none !important;
 }
 
 /* padding */
