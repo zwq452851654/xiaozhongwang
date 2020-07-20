@@ -19,7 +19,7 @@
         <div class="mr-3"><i class="day">{{month}}</i>月<i class="day">{{day}}</i>日</div>
         <div class="mr-3">{{hours}}:{{minutes}}:{{seconds}}</div>
         <div class="mr-5">{{week}}</div>
-        <div>登录</div>
+        <div class="cursor-p">登录</div>
       </div>
     </div>
   </div>

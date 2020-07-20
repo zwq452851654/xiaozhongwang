@@ -1,3 +1,4 @@
+
 module.exports = {
     css: {
         loaderOptions: {
@@ -14,7 +15,7 @@ module.exports = {
     devServer: {
         proxy: {
             '/api': {
-                target: 'http://localhost:8088/api',
+                target: 'http://localhost:9000/api',
                 changeOrigin: true
             }
         }
