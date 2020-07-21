@@ -10,7 +10,7 @@
         <el-tab-pane :label="itemName[key]" :name="key" v-for="(item, key) in itemName" :key="key">
             <div class="skill-div">
                 <div class="skill-con">
-                    <div class="col skill-con-item font-size-1" v-for="child in skillNav[key]" :key="child.id">
+                    <div class="col skill-con-item font-size-1" v-for="child in skillNav[key]" :key="child.id" @click="toThirdParty(child)">
                       <img v-if="child.icon" :src="child.icon" class="navIcon" alt="">
                       {{ child.name }}
                     </div>
@@ -28,7 +28,7 @@
       </div>
       <div class="design-div">
           <div class="skill-con">
-              <div class="col skill-con-item font-size-1" v-for="item in designNav" :key="item.id">
+              <div class="col skill-con-item font-size-1" v-for="item in designNav" :key="item.id" @click="toThirdParty(item)">
                 <img v-if="item.icon" :src="item.icon" class="navIcon" alt="">
                 {{ item.name }}
               </div>
@@ -44,7 +44,11 @@
       </div>
       <div class="design-div">
           <div class="skill-con">
-              <div class="col skill-con-item font-size-1" v-for="item in toolNav" :key="item.id">
+              <div 
+                class="col skill-con-item font-size-1" 
+                v-for="item in toolNav" 
+                :key="item.id"
+                @click="toThirdParty(item)">
                 <img v-if="item.icon" :src="item.icon" class="navIcon" alt="">
                 {{ item.name }}
               </div>
@@ -149,70 +153,68 @@ export default {
   methods: {
     // 获取技术类网站
     query_skill_nav() {
-      var url = "/query_skill_nav";
-      this.$axios
-        .get(url)
-        .then(res => {
-          let data = res.data.data;
-          let obj = {};
-          obj['001006'] = [];
-          data.forEach(item => {
-            if(item.icon){
-              item.icon = require('../../static/icon/'+ item.icon)
-            }
-            if (item.childvalue) {
-              if (obj[item.childvalue]) {
-                obj[item.childvalue].push(item);
-              } else {
-                obj[item.childvalue] = [];
-                obj[item.childvalue].push(item);
-              }
-            }else{
-                obj['001006'].push(item)
-            }
-          });
+      this.$http.get('/nav/queryNav', {
+        parentValue: '001'
+      }).then( res =>{
+        console.log(res.data.data);
+        let data = res.data.data;
           
-          this.skillNav = obj;
-        })
-        .catch(error => {
-          console.log(error);
+        let obj = {};
+        obj['001006'] = [];
+        data.forEach(item => {
+          if(item.icon){
+            item.icon = require('../../static/icon/'+ item.icon)
+          }
+          if (item.childvalue) {
+            if (obj[item.childvalue]) {
+              obj[item.childvalue].push(item);
+            } else {
+              obj[item.childvalue] = [];
+              obj[item.childvalue].push(item);
+            }
+          }else{
+              obj['001006'].push(item)
+          }
         });
+        
+        this.skillNav = obj;
+      })
     },
     // 获取设计类网站
     query_design_nav(){
-      var url = "/query_design_nav";
-      this.$axios
-        .get(url)
-        .then(res => {
-          let data = res.data.data;
-          data.forEach(item => {
-            if(item.icon){
-              item.icon = require('../../static/icon/'+ item.icon)
-            }
-          })
-          this.designNav = data;
+      this.$http.get('/nav/queryNav', {
+        parentValue: '002'
+      }).then(res =>{
+        let data = res.data.data;
+        data.forEach(item => {
+          if(item.icon){
+            item.icon = require('../../static/icon/'+ item.icon)
+          }
         })
-        .catch(error => {
-          console.log(error);
-        });
+        this.designNav = data;
+      })
     },
     // 获取工具类网站
     query_tool_nav(){
       var url = "/query_tool_nav";
-      this.$axios
-        .get(url)
-        .then(res => {
-          let data = res.data.data;
-          data.forEach(item => {
-            if(item.icon){
-              item.icon = require('../../static/icon/'+ item.icon)
-            }
-          })
-          this.toolNav = data;
+      this.$http.get('/nav/queryNav', {
+        parentValue: '003'
+      }).then(res =>{
+        let data = res.data.data;
+        data.forEach(item => {
+          if(item.icon){
+            item.icon = require('../../static/icon/'+ item.icon)
+          }
         })
-        .catch(error => {
-          console.log(error);
-        });
+        this.toolNav = data;
+      })
+    },
+    // 跳往第三方导航地址
+    toThirdParty(item){
+      let a = document.createElement("a");
+      a.setAttribute("href", item.url);
+      a.setAttribute("target", "_blank");
+      a.click();
     },
     // 遗漏补充
     addNewNavHandle(){

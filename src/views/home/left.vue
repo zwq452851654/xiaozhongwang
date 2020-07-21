@@ -37,7 +37,7 @@
             <li class="font-size-2 text-center" v-if="weiboObj.list.length == 0">(⊙o⊙)…我好像遇到了点小麻烦</li>
             <li class="list-item" v-else v-for="(list,index) in weiboObj.list" :key="list.rank">
               <span class="heat" :style="{background: reatColor[index]}">{{ list.rank }}</span>
-              <span class="news-title">{{ list.title }}</span>
+              <span class="news-title" @click="seeNews(list)">{{ list.title }}</span>
               <i class="ml-auto">{{ list.hotValue }}</i>
             </li>
           </ul>
@@ -45,7 +45,7 @@
             <li class="font-size-2 text-center" v-if="baiduObj.list.length == 0">(⊙o⊙)…我好像遇到了点小麻烦</li>
             <li class="list-item" v-else v-for="(list,index) in baiduObj.list" :key="list.rank">
               <span class="heat" :style="{background: reatColor[index]}">{{ list.rank }}</span>
-              <span class="news-title">{{ list.title }}</span>
+              <span class="news-title" @click="seeNews(list)">{{ list.title }}</span>
               <i class="ml-auto">{{ list.hotValue }}</i>
             </li>
           </ul>
@@ -53,7 +53,7 @@
             <li class="font-size-2 text-center" v-if="zhengquanObj.list.length == 0">(⊙o⊙)…我好像遇到了点小麻烦</li>
             <li class="list-item" v-else v-for="(list,index) in zhengquanObj.list" :key="index">
               <span class="heat" :style="{background: reatColor[index]}">{{ ++index }}</span>
-              <span class="news-title">{{ list.title }}</span>
+              <span class="news-title" @click="seeNews(list)">{{ list.title }}</span>
               <i class="ml-auto">999+</i>
             </li>
           </ul>
@@ -61,7 +61,6 @@
             <li class="list-item">内容暂定</li> 
           </ul>
           <div class="text-right font-size-1 text-primary cursor-p change-btn" @click="changeList(tab.name)">
-            <!-- <i class="el-icon-refresh mr-1 font-size-2"></i> -->
             <el-button type="text" icon="el-icon-refresh" class="mr-1 font-size-2">换一换</el-button>
           </div>
         </el-tab-pane>
@@ -76,13 +75,12 @@
       <ul class="newa">
         <li class="font-size-2 text-center" v-if="jishuObj.list.length == 0">(⊙o⊙)…我好像遇到了点小麻烦</li>
           <li class="list-item" v-else v-for="(list,index) in jishuObj.list" :key="index">
-            <span class="heat" :style="{background: reatColor[index]}">{{ ++index }}</span>
-            <span class="news-title">{{ list.title }}</span>
+            <span class="heat" :style="{background: reatColor[index]}">{{ list.rank }}</span>
+            <span class="news-title" @click="seeNews(list)">{{ list.title }}</span>
             <i class="ml-auto">999+</i>
           </li>
       </ul>
       <div class="text-right font-size-1 text-primary cursor-p change-btn" @click="changeList('jishu')">
-        <!-- <i class="el-icon-refresh mr-1 font-size-2"></i>换一换 -->
         <el-button type="text" icon="el-icon-refresh" class="mr-1 font-size-2">换一换</el-button>
       </div>
     </el-card>
@@ -138,6 +136,11 @@ export default {
       }).then( res =>{
         let data = res.data;
         if(data.code){
+          if(name == 'jishu'){
+            data.data.forEach((item,i) =>{
+              item.rank = ++i;
+            })
+          }
           this[name] = data.data;
           this.changeList(name)
         }
@@ -158,6 +161,12 @@ export default {
       this[m+'Obj']['page'] = ++page;
       if(e >= this[m].length) this[m+'Obj']['page'] = 0;
     },
+    seeNews(item){
+      let a = document.createElement('a');
+      a.setAttribute("href", item.link);
+      a.setAttribute("target", "_blank");
+      a.click();
+    }
   }
 };
 </script>
