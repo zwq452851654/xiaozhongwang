@@ -156,7 +156,6 @@ export default {
       this.$http.get('/nav/queryNav', {
         parentValue: '001'
       }).then( res =>{
-        console.log(res.data.data);
         let data = res.data.data;
           
         let obj = {};

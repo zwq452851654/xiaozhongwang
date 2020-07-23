@@ -87,7 +87,7 @@
   </div>
 </template>
 <script>
-import md5 from 'js-md5';
+
 export default {
   data() {
     return {
@@ -124,9 +124,6 @@ export default {
     };
   },
   mounted(){
-    let str = "zhang132639";
-    let v = md5(md5(md5(str)))
-    console.log(v)
     this.queryHotData('weibo');
     this.queryHotData('baidu');
     this.queryHotData('zhengquan');

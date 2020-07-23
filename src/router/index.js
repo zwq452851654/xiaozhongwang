@@ -72,6 +72,14 @@ Vue.use(VueRouter)
     meta:{
       keepAlive: true
     }
+  },
+  {
+    path: '/user/login',
+    name: 'Login',
+    component: () => import('../views/user/login.vue'),
+    meta:{
+      keepAlive: true
+    }
   }
 ]
 
