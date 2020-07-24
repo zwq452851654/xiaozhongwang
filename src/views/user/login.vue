@@ -32,10 +32,17 @@
                         <el-button type="success" size="medium" class="ml-3" plain>发送验证码</el-button>
                     </div>
 
-                    <div class="d-flex mt-4" v-if="accountType == 'account'">
+                    <div class="d-flex mt-4 align-items-center" v-if="accountType == 'account'">
                         <el-input placeholder="请输入登录密码" autocomplete="off" type="password" size="medium" v-model="accForm.pass"></el-input>
+                        <div class="ml-3 font-size-2 pass-strength">
+                            <div class="strength-text" :style="{marginTop: topVal }">
+                                <span>低</span>
+                                <span>中</span>
+                                <span>高</span>
+                            </div>
+                        </div>
                     </div>
-
+                    
                     <div class="mt-4">
                         <el-button v-if="czfs == 'reg'" size="small" type="success" class="w-100" @click="regHandle()">注册</el-button>
                         <el-button v-else size="small" type="success" class="w-100">登录</el-button>
@@ -58,9 +65,10 @@ export default {
             accForm:{
                 select: 'china'
             },
-            accountType:"phone", // 账户类型  手机：phone  账户：account
+            accountType:"account", // 账户类型  手机：phone  账户：account
             accText: "请输入常用手机号",
             czfs:"reg", //操作方式  登录：login   注册：reg
+            topVal: "0",
         }
     },
     mounted(){
@@ -77,18 +85,54 @@ export default {
         operatingHandle(t){
             this.czfs = t;
         },
-        // 验证账户格式
+        // 登录/注册手机号、用户名格式验证
         testAccount(){
-            console.log(testPhoneHandle(this.accForm.account))
+            if(this.accountType == 'phone'){
+                if(!testPhoneHandle(this.accForm.account)){
+                    this.$message({
+                        type: 'warning',
+                        message: '手机号填写有误'
+                    })
+                    return false;
+                }
+            }else{
+                if(this.accForm.account.length <3 ){
+                     this.$message({
+                        type: 'warning',
+                        message: '用户名由3位以上的数字或者字母组成'
+                    })
+                    return false;
+                }
+            }
+            return true;
+            
         },
         //验证 图形验证码
-        testPicCode(){},
+        testPicCode(){
+            return true;
+        },
         // 注册
         regHandle(){
             this.accForm.accountType = this.accountType;
-            this.testAccount();
-            // 手机号： 判断account、picCode、phoneCode、
-            // 用户名：account、picCode、pass
+            if(this.testAccount() && this.testPicCode()){
+                // 手机号方式注册
+                if(this.accountType == 'phone'){
+                    if(!this.accForm.phoneCode){
+                        this.$message({
+                            type: 'warning',
+                            message: '手机验证码不能为空'
+                        })
+                    }
+                }else{
+                    // 用户名方式注册
+                    if(this.accForm.pass.length < 6){
+                        this.$message({
+                            type: 'warning',
+                            message: '密码不能空且不少于六位数'
+                        })
+                    }
+                }
+            }
         }
     }
 }
@@ -111,4 +155,17 @@ export default {
     width: 320px;
     margin: 0 auto;
 }
+.pass-strength{
+    height: 30px;
+    overflow: hidden;
+}
+.strength-text{
+    transition: margin .5s;
+}
+.strength-text span{
+    display: block;
+    height: 30px;
+    line-height: 30px;
+}
+
 </style>
