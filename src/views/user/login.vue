@@ -35,7 +35,7 @@
                     <div class="d-flex mt-4 align-items-center" v-if="accountType == 'account'">
                         <el-input placeholder="请输入登录密码" autocomplete="off" type="password" size="medium" v-model="accForm.pass"></el-input>
                         <div class="ml-3 font-size-2 pass-strength">
-                            <div class="strength-text" :style="{marginTop: topVal }">
+                            <div class="strength-text" :style="{marginTop: topVal + 'px' }">
                                 <span>低</span>
                                 <span>中</span>
                                 <span>高</span>
@@ -59,11 +59,14 @@
 <script>
 import md5 from 'js-md5';
 import { testPhoneHandle } from '@/utils/regExp'
+import qs from 'qs'
 export default {
     data(){
         return{
             accForm:{
-                select: 'china'
+                select: 'china',
+                account: 'admin',
+                pass: 'admin'
             },
             accountType:"account", // 账户类型  手机：phone  账户：account
             accText: "请输入常用手机号",
@@ -96,7 +99,7 @@ export default {
                     return false;
                 }
             }else{
-                if(this.accForm.account.length <3 ){
+                if(this.accForm.account.length < 3){
                      this.$message({
                         type: 'warning',
                         message: '用户名由3位以上的数字或者字母组成'
@@ -111,24 +114,29 @@ export default {
         testPicCode(){
             return true;
         },
+        testPhoneCode(){
+            return true;
+        },
         // 注册
         regHandle(){
             this.accForm.accountType = this.accountType;
             if(this.testAccount() && this.testPicCode()){
                 // 手机号方式注册
-                if(this.accountType == 'phone'){
-                    if(!this.accForm.phoneCode){
-                        this.$message({
-                            type: 'warning',
-                            message: '手机验证码不能为空'
-                        })
-                    }
-                }else{
-                    // 用户名方式注册
-                    if(this.accForm.pass.length < 6){
+                if(this.accountType == 'phone' && this.testPhoneCode()){
+                    console.log('可以进行手机注册')                    
+                }
+
+                // 账号注册方式
+                if(this.accountType == 'account' && this.testPicCode()){
+                    if(this.accForm.pass.length < 5){
                         this.$message({
                             type: 'warning',
                             message: '密码不能空且不少于六位数'
+                        })
+                    }else{
+                        let postData = qs.stringify(this.accForm)
+                        this.$http.post('/user/reg', postData).then( res=>{
+
                         })
                     }
                 }

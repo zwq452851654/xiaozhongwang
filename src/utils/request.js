@@ -2,6 +2,7 @@
 import config from '../common/config'
 // 导入axios
 import axios from 'axios'
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 // 使用element-ui Message做消息提醒
 import { Message} from 'element-ui';
 //1. 创建新的axios实例，
