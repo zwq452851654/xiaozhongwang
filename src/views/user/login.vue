@@ -45,7 +45,7 @@
                     
                     <div class="mt-4">
                         <el-button v-if="czfs == 'reg'" size="small" type="success" class="w-100" @click="regHandle()">注册</el-button>
-                        <el-button v-else size="small" type="success" class="w-100">登录</el-button>
+                        <el-button v-else size="small" type="success" class="w-100" @click="login()">登录</el-button>
                     </div>
                     <div class="text-right font-size-1 mt-2">
                         <div v-if="czfs !== 'reg'">没有账号？<a href="##" @click="operatingHandle('reg')">立即注册</a></div>
@@ -75,8 +75,7 @@ export default {
         }
     },
     mounted(){
-        let str = "zhang132639";
-        let v = md5(md5(md5(str)))
+        
     },
     methods:{
         // 账户/手机号
@@ -134,8 +133,39 @@ export default {
                             message: '密码不能空且不少于六位数'
                         })
                     }else{
-                        let postData = qs.stringify(this.accForm)
-                        this.$http.post('/user/reg', postData).then( res=>{
+                        this.accForm.pass = md5(md5(md5(this.accForm.pass)))
+                        this.$http.post('/user/reg', this.accForm).then( res=>{
+                            if(res.code){
+                                this.$message({
+                                    type: 'success',
+                                    message: '完成注册，请直接登录'
+                                })
+                            }else{
+                                this.$message({
+                                    type: 'warning',
+                                    message: res.msg
+                                })
+                            }
+                        })
+                    }
+                }
+            }
+        },
+        login(){
+            this.accForm.accountType = this.accountType;
+            if(this.testAccount() && this.testPicCode()){
+                if(this.accountType == 'phone' && this.testPhoneCode()){
+                    console.log('进行手机登录')                    
+                }
+                if(this.accountType == 'account'){
+                    if(this.accForm.pass.length < 5){
+                        this.$message({
+                            type: 'warning',
+                            message: '密码输入有误'
+                        })
+                    }else{
+                        this.accForm.pass = md5(md5(md5(this.accForm.pass)))
+                        this.$http.post('/user/login', this.accForm).then( res=>{
 
                         })
                     }

@@ -1,5 +1,6 @@
 /****   request.js   ****/
 import config from '../common/config'
+import qs from 'qs'
 // 导入axios
 import axios from 'axios'
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
@@ -16,7 +17,8 @@ const service = axios.create({
 service.interceptors.request.use(config => {
   //发请求前做的一些处理，数据转化，配置请求头，设置token,设置loading等
    // const token = getCookie('名称');注意使用的时候需要引入cookie方法，推荐js-cookie
-   config.data = JSON.stringify(config.data);
+  //  config.data = JSON.stringify(config.data);
+  config.data = qs.stringify(config.data)
    config.headers = {
      'Content-Type':'application/x-www-form-urlencoded'
    }
