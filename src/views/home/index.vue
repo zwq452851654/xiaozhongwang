@@ -92,7 +92,7 @@ export default {
 
 <style>
   .search-text{
-    width: 400px;
+    width: 600px;
     margin: 25px auto;
   }
   .search-text .el-input__inner{

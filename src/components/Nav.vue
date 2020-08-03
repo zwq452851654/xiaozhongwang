@@ -19,13 +19,30 @@
         <div class="mr-3"><i class="day">{{month}}</i>月<i class="day">{{day}}</i>日</div>
         <div class="mr-3">{{hours}}:{{minutes}}:{{seconds}}</div>
         <div class="mr-5">{{week}}</div>
-        <router-link class="cursor-p" tag="div" to="/user/login">登录</router-link> 
+        <router-link v-if="!isLogin" class="cursor-p" tag="div" to="/user/login">登录</router-link>
+        <div v-else >
+          <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link">
+              <el-avatar 
+                size="small" 
+                src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png">
+              </el-avatar>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item command='msg'>消息中心</el-dropdown-item>
+              <el-dropdown-item command='info'>个人信息</el-dropdown-item>
+              <el-dropdown-item command='logout'>退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+         
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from 'vuex';
 
 export default {
   props: {
@@ -41,6 +58,11 @@ export default {
       week:"",
       url: require('../static/img/xzw-logo.png')
     }
+  },
+  computed:{
+    ...mapState({
+      isLogin: state=> state.isLogin
+    })
   },
   mounted(){
     this.time();
@@ -69,6 +91,12 @@ export default {
     },
     resetVal(v){
       return v<10 ? '0'+v : v;
+    },
+    handleCommand(command){
+      if(command == 'logout'){
+        localStorage.removeItem('token');
+        this.$store.dispatch('loginFun', false);
+      }
     }
   }
 }

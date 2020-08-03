@@ -1,11 +1,13 @@
 /****   request.js   ****/
 import config from '../common/config'
 import qs from 'qs'
+const store = require('@/store');
+import router from '../router'
 // 导入axios
 import axios from 'axios'
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 // 使用element-ui Message做消息提醒
-import { Message} from 'element-ui';
+import { Message } from 'element-ui';
 //1. 创建新的axios实例，
 const service = axios.create({
   // 公共接口--这里注意后面会讲
@@ -15,16 +17,17 @@ const service = axios.create({
 })
 // 2.请求拦截器
 service.interceptors.request.use(config => {
-  //发请求前做的一些处理，数据转化，配置请求头，设置token,设置loading等
-   // const token = getCookie('名称');注意使用的时候需要引入cookie方法，推荐js-cookie
-  //  config.data = JSON.stringify(config.data);
-  config.data = qs.stringify(config.data)
-   config.headers = {
-     'Content-Type':'application/x-www-form-urlencoded'
-   }
-   // if(token){
-   //   config.params = {'token':token}
-   // }
+  config.headers = {
+    'Content-Type':'application/x-www-form-urlencoded',
+    'token': localStorage.getItem('token')
+  }
+  // 为避免因页面手动刷新登录状态丢失，在这做一个根据token的判断进行登录状态保持
+  let isLogin = store.default.state.isLogin;
+  let token = localStorage.getItem('token');
+  if(!isLogin && token){
+    store.default.dispatch('loginFun', true);
+  }
+  config.data = qs.stringify(config.data);
   return config
 }, error => {
   Promise.reject(error)
@@ -33,7 +36,17 @@ service.interceptors.request.use(config => {
 // 3.响应拦截器
 service.interceptors.response.use(response => {
   //接收到响应数据并成功后的一些共有的处理，关闭loading等
-  
+  let state = response.data.state;
+  if(state !== undefined && !state){
+    Message({
+      type:'error',
+      message: response.data.info
+    })
+    store.default.dispatch('loginFun', false);
+    localStorage.removeItem('token')
+    router.push('/user/login');
+    return false
+  }
   return response
 }, error => {
    /***** 接收到异常响应的处理开始 *****/

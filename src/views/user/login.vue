@@ -134,8 +134,8 @@ export default {
                         })
                     }else{
                         this.accForm.pass = md5(md5(md5(this.accForm.pass)))
-                        this.$http.post('/user/reg', this.accForm).then( res=>{
-                            if(res.code){
+                        this.$http.post('/user/reg', this.accForm).then( res =>{
+                            if(res.data.code){
                                 this.$message({
                                     type: 'success',
                                     message: '完成注册，请直接登录'
@@ -143,7 +143,7 @@ export default {
                             }else{
                                 this.$message({
                                     type: 'warning',
-                                    message: res.msg
+                                    message: res.data.msg
                                 })
                             }
                         })
@@ -166,7 +166,11 @@ export default {
                     }else{
                         this.accForm.pass = md5(md5(md5(this.accForm.pass)))
                         this.$http.post('/user/login', this.accForm).then( res=>{
-
+                            if(res.data.code){
+                                localStorage.setItem('token', res.data.token);
+                                this.$store.dispatch('loginFun', true);
+                                this.$router.go('/home');
+                            }
                         })
                     }
                 }
