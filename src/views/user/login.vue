@@ -70,7 +70,7 @@ export default {
             },
             accountType:"account", // 账户类型  手机：phone  账户：account
             accText: "请输入常用手机号",
-            czfs:"reg", //操作方式  登录：login   注册：reg
+            czfs:"login", //操作方式  登录：login   注册：reg
             topVal: "0",
         }
     },
@@ -169,7 +169,7 @@ export default {
                             if(res.data.code){
                                 localStorage.setItem('token', res.data.token);
                                 this.$store.dispatch('loginFun', true);
-                                this.$router.go('/home');
+                                this.$router.replace('/');
                             }
                         })
                     }

@@ -4,32 +4,32 @@ import Home from '../views/home/index.vue'
 
 Vue.use(VueRouter)
 
-  const routes = [
-    {
-      path: '/',
-      redirect: '/home'
-    },
+const routes = [
+  {
+    path: '/',
+    redirect: '/home'
+  },
   {
     path: '/home',
-    name:"Home",
+    name: "Home",
     component: Home,
-    meta:{
-      keepAlive:true
+    meta: {
+      keepAlive: true
     }
   },
   {
     path: '/home/setOftenNav',
-    name:"SetOftenNav",
+    name: "SetOftenNav",
     component: () => import('../views/home/setOftenNav.vue'),
-    meta:{
-      keepAlive:true
+    meta: {
+      keepAlive: true
     }
   },
   {
     path: '/soup',
     name: 'Soup',
     component: () => import('../views/soup/index.vue'),
-    meta:{
+    meta: {
       keepAlive: true
     }
   },
@@ -37,7 +37,7 @@ Vue.use(VueRouter)
     path: '/blog',
     name: 'Blog',
     component: () => import('../views/blog/index.vue'),
-    meta:{
+    meta: {
       keepAlive: true
     }
   },
@@ -45,7 +45,7 @@ Vue.use(VueRouter)
     path: '/levae',
     name: 'Levae',
     component: () => import('../views/levae/index.vue'),
-    meta:{
+    meta: {
       keepAlive: true
     }
   },
@@ -53,7 +53,7 @@ Vue.use(VueRouter)
     path: '/learn',
     name: 'Learn',
     component: () => import('../views/learn/index.vue'),
-    meta:{
+    meta: {
       keepAlive: true
     }
   },
@@ -61,7 +61,7 @@ Vue.use(VueRouter)
     path: '/learn/courseInfo',
     name: 'CourseInfo',
     component: () => import('../views/learn/courseInfo.vue'),
-    meta:{
+    meta: {
       keepAlive: true
     }
   },
@@ -69,7 +69,7 @@ Vue.use(VueRouter)
     path: '/shared',
     name: 'Shared',
     component: () => import('../views/shared/index.vue'),
-    meta:{
+    meta: {
       keepAlive: true
     }
   },
@@ -77,14 +77,14 @@ Vue.use(VueRouter)
     path: '/user/login',
     name: 'Login',
     component: () => import('../views/user/login.vue'),
-    meta:{
+    meta: {
       keepAlive: true
     }
   }
 ]
 
 const router = new VueRouter({
-  linkActiveClass:'active',
+  linkActiveClass: 'active',
   routes
 })
 

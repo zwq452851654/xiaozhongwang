@@ -100,6 +100,11 @@ export default {
     },
     // 获取常用导航地址
     query_often_nav() {
+      this.$http.get('/nav/query_often_nav', {}).then( res =>{
+        
+      })
+
+
       var url = "/query_often_nav";
       this.$axios
         .get(url)
