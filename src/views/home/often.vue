@@ -101,26 +101,36 @@ export default {
     // 获取常用导航地址
     query_often_nav() {
       this.$http.get('/nav/query_often_nav', {}).then( res =>{
-        
-      })
-
-
-      var url = "/query_often_nav";
-      this.$axios
-        .get(url)
-        .then(res => {
+        console.log(res.code)
+        if(res.data.code){
           let data = res.data.data;
           data.forEach(item => {
             if(item.icon){
               item.icon = require('../../static/icon/'+ item.icon)
             }
-            
           })
           this.oftenNav = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+          console.log(data)
+        }
+      })
+
+
+      // var url = "/query_often_nav";
+      // this.$axios
+      //   .get(url)
+      //   .then(res => {
+      //     let data = res.data.data;
+      //     data.forEach(item => {
+      //       if(item.icon){
+      //         item.icon = require('../../static/icon/'+ item.icon)
+      //       }
+            
+      //     })
+      //     this.oftenNav = data;
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
     },
     setOftenNav(){
       this.$router.push({path: '/setoftenNav'})

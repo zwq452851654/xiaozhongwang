@@ -32,7 +32,7 @@
                 <i class="iconfont iconmorentu often-icon" v-else></i>
               </div>
               <div class="font-size-1 prompt-name">{{ child.name }}</div>
-              <div class="add-often-icon cursor-p">
+              <div class="add-often-icon cursor-p" @click="addOften(child)">
                 <i class="el-icon-circle-plus"></i>
               </div>
             </div>
@@ -84,10 +84,8 @@ export default {
   methods: {
     // 获取常用导航地址
     query_all_nav() {
-      var url = "/query_all_nav";
-      this.$axios
-        .get(url)
-        .then(res => {
+      this.$http.get('/nav/queryAllNav').then( res => {
+        if(res.data.code){
           let data = res.data.data;
           let obj = {};
           data.forEach(item => {
@@ -102,17 +100,13 @@ export default {
             }
           });
           this.allNav = obj;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+        }
+      })
     },
     // 获取常用导航地址
     query_often_nav() {
-      var url = "/query_often_nav";
-      this.$axios
-        .get(url)
-        .then(res => {
+      this.$http.get('/nav/query_often_nav').then(res => {
+        if(res.data.code){
           let data = res.data.data;
           data.forEach(item => {
             if(item.icon){
@@ -120,10 +114,33 @@ export default {
             }
           })
           this.oftenNav = data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+        }
+      })
+
+      // var url = "/query_often_nav";
+      // this.$axios
+      //   .get(url)
+      //   .then(res => {
+      //     let data = res.data.data;
+      //     data.forEach(item => {
+      //       if(item.icon){
+      //         item.icon = require('../../static/icon/'+ item.icon)
+      //       }
+      //     })
+      //     this.oftenNav = data;
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
+    },
+    // 添加
+    addOften(item){
+      console.log(item)
+      this.$http.post('/nav/addOftenNav', {
+        dhbh: item.dhbh
+      }).then( res => {
+
+      })
     }
   }
 };
