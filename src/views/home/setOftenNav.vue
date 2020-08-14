@@ -13,7 +13,7 @@
               <i class="iconfont iconmorentu often-icon" v-else></i>
             </div>
             <div class="font-size-1">{{ t.name }}</div>
-            <div class="del-often-icon cursor-p">
+            <div class="del-often-icon cursor-p" @click="delOften(t)">
               <i class="el-icon-error"></i>
             </div>
           </div>
@@ -116,30 +116,26 @@ export default {
           this.oftenNav = data;
         }
       })
-
-      // var url = "/query_often_nav";
-      // this.$axios
-      //   .get(url)
-      //   .then(res => {
-      //     let data = res.data.data;
-      //     data.forEach(item => {
-      //       if(item.icon){
-      //         item.icon = require('../../static/icon/'+ item.icon)
-      //       }
-      //     })
-      //     this.oftenNav = data;
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //   });
     },
     // 添加
     addOften(item){
-      console.log(item)
       this.$http.post('/nav/addOftenNav', {
+        dhbh: item.dhbh,
+        len: this.oftenNav.length
+      }).then( res => {
+        if(res.data.code){
+          this.query_often_nav();
+        }
+      })
+    },
+    // 删除
+    delOften(item){
+      this.$http.post('/nav/delOftenNav', {
         dhbh: item.dhbh
       }).then( res => {
-
+        if(res.data.code){
+          this.query_often_nav();
+        }
       })
     }
   }

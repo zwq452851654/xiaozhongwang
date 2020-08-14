@@ -96,7 +96,13 @@ export default {
       this.dragging = null;
     },
     delItem(item) {
-      console.log("删除", item);
+      this.$http.post('/nav/delOftenNav', {
+        dhbh: item.dhbh
+      }).then( res => {
+        if(res.data.code){
+          this.query_often_nav();
+        }
+      })
     },
     // 获取常用导航地址
     query_often_nav() {
@@ -113,24 +119,6 @@ export default {
           console.log(data)
         }
       })
-
-
-      // var url = "/query_often_nav";
-      // this.$axios
-      //   .get(url)
-      //   .then(res => {
-      //     let data = res.data.data;
-      //     data.forEach(item => {
-      //       if(item.icon){
-      //         item.icon = require('../../static/icon/'+ item.icon)
-      //       }
-            
-      //     })
-      //     this.oftenNav = data;
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //   });
     },
     setOftenNav(){
       this.$router.push({path: '/setoftenNav'})
