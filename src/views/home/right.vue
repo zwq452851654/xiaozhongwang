@@ -156,27 +156,28 @@ export default {
       this.$http.get('/nav/queryNav', {
         parentValue: '001'
       }).then( res =>{
-        let data = res.data.data;
-          
-        let obj = {};
-        obj['001006'] = [];
-        data.forEach(item => {
-          if(item.icon){
-            item.icon = require('../../static/icon/'+ item.icon)
-          }
-          if (item.childvalue) {
-            if (obj[item.childvalue]) {
-              obj[item.childvalue].push(item);
-            } else {
-              obj[item.childvalue] = [];
-              obj[item.childvalue].push(item);
+        if(res.data.code){
+          let data = res.data.data;
+          let obj = {};
+          obj['001006'] = [];
+          data.forEach(item => {
+            if(item.icon){
+              item.icon = require('../../static/icon/'+ item.icon)
             }
-          }else{
-              obj['001006'].push(item)
-          }
-        });
+            if (item.childvalue) {
+              if (obj[item.childvalue]) {
+                obj[item.childvalue].push(item);
+              } else {
+                obj[item.childvalue] = [];
+                obj[item.childvalue].push(item);
+              }
+            }else{
+                obj['001006'].push(item)
+            }
+          });
+          this.skillNav = obj;
+        }
         
-        this.skillNav = obj;
       })
     },
     // 获取设计类网站
@@ -184,13 +185,16 @@ export default {
       this.$http.get('/nav/queryNav', {
         parentValue: '002'
       }).then(res =>{
-        let data = res.data.data;
-        data.forEach(item => {
-          if(item.icon){
-            item.icon = require('../../static/icon/'+ item.icon)
-          }
-        })
-        this.designNav = data;
+        if(res.data.code){
+          let data = res.data.data;
+          data.forEach(item => {
+            if(item.icon){
+              item.icon = require('../../static/icon/'+ item.icon)
+            }
+          })
+          this.designNav = data;
+        }
+        
       })
     },
     // 获取工具类网站
@@ -199,13 +203,16 @@ export default {
       this.$http.get('/nav/queryNav', {
         parentValue: '003'
       }).then(res =>{
-        let data = res.data.data;
-        data.forEach(item => {
-          if(item.icon){
-            item.icon = require('../../static/icon/'+ item.icon)
-          }
-        })
-        this.toolNav = data;
+        if(res.data.code){
+          let data = res.data.data;
+          data.forEach(item => {
+            if(item.icon){
+              item.icon = require('../../static/icon/'+ item.icon)
+            }
+          })
+          this.toolNav = data;
+        }
+        
       })
     },
     // 跳往第三方导航地址

@@ -37,11 +37,13 @@ export default {
   data() {
     return {
       allNav: [],
-      oftenNav:[],
+      oftenNav: [],
       dragging: null,
       curEl: "",
       edit: false,
-      activeName: ''
+      activeName: '',
+      initiative: {}, //主动项
+      passive: {},  //被动项（被替换项）
     };
   },
   mounted(){
@@ -50,6 +52,7 @@ export default {
   methods: {
     // 当某元素被拖拽时，记录拖拽项
     handleDragStart(e, item) {
+      this.initiative = item;
       this.dragging = item;
       this.curEl = e;
       event.target.style.border = "1px solid #736efe";
@@ -66,9 +69,7 @@ export default {
     },
     // 离开被替换项时执行
     dragLeave(e, item) {
-      if (item.id !== this.dragging.id) {
-        event.target.style.border = "";
-      }
+      event.target.style.border = "1px solid #fff";
     },
     // 当某被拖动的对象在另一对象容器范围内拖动时触发此事件
     handleDragover(e) {
@@ -79,11 +80,12 @@ export default {
     // 当放置被拖元素时
     handleDrop(e, item) {
       e.dataTransfer.dropEffect = "move";
-      event.target.style.border = "";
-      this.curEl.target.style.border = "";
+      event.target.style.border = "1px solid #fff";
+      this.curEl.target.style.border = "1px solid #fff";
       if (item === this.dragging) {
         return;
       }
+      this.passive = item;
       const newItems = [...this.oftenNav];
       const from = newItems.indexOf(this.dragging);
       const to = newItems.indexOf(item);
@@ -93,9 +95,17 @@ export default {
     },
     // 完成元素拖动后触发
     handleDragEnd() {
+      this.setOftenNavOrder();
       this.dragging = null;
     },
     delItem(item) {
+      if(this.oftenNav.length < 7){
+        this.$message({
+          type: "warning",
+          message: "常用导航数量不得小于6项"
+        })
+        return false;
+      }
       this.$http.post('/nav/delOftenNav', {
         dhbh: item.dhbh
       }).then( res => {
@@ -107,7 +117,6 @@ export default {
     // 获取常用导航地址
     query_often_nav() {
       this.$http.get('/nav/query_often_nav', {}).then( res =>{
-        console.log(res.code)
         if(res.data.code){
           let data = res.data.data;
           data.forEach(item => {
@@ -116,12 +125,28 @@ export default {
             }
           })
           this.oftenNav = data;
-          console.log(data)
         }
       })
     },
     setOftenNav(){
       this.$router.push({path: '/setoftenNav'})
+    },
+    setOftenNavOrder(){
+      let zd = this.initiative.order;
+      let bd = this.passive.order;
+      if(!zd || !bd || zd==bd){
+        return false;
+      }
+      this.$http.post('/nav/setOftenNavOrder', {
+        zd: zd,
+        bd: bd
+      }).then( res =>{
+        if(res.data.code){
+          this.initiative = {};
+          this.passive = {};
+          this.query_often_nav();
+        }
+      })
     }
   }
 };

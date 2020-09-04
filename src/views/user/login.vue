@@ -164,7 +164,7 @@ export default {
                             message: '密码输入有误'
                         })
                     }else{
-                        this.accForm.pass = md5(md5(md5(this.accForm.pass)))
+                        this.accForm.md5Pass = md5(md5(md5(this.accForm.pass)))
                         this.$http.post('/user/login', this.accForm).then( res=>{
                             if(res.data.code){
                                 localStorage.setItem('token', res.data.token);

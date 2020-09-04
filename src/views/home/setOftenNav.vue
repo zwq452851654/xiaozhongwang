@@ -130,6 +130,13 @@ export default {
     },
     // 删除
     delOften(item){
+      if(this.oftenNav.length < 7){
+        this.$message({
+          type: "warning",
+          message: "常用导航数量不得小于6项"
+        })
+        return false;
+      }
       this.$http.post('/nav/delOftenNav', {
         dhbh: item.dhbh
       }).then( res => {
