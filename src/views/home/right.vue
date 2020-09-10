@@ -199,7 +199,6 @@ export default {
     },
     // 获取工具类网站
     query_tool_nav(){
-      var url = "/query_tool_nav";
       this.$http.get('/nav/queryNav', {
         parentValue: '003'
       }).then(res =>{

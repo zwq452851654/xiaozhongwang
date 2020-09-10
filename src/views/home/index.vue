@@ -54,8 +54,7 @@ export default {
     return{
       searchList: [],
       curSearchAim: "",
-      searchValue: "",
-      aimsObj: {}
+      searchValue: ""
     }
   },
   mounted(){
@@ -64,20 +63,24 @@ export default {
   methods:{
     // 搜索目标list
     queryList(){
-      var url = "/search";
-      this.$axios.get(url).then(res => {
-        let data = res.data.data;
-        this.aimsObj = data[0];
-        this.curSearchAim = data[0].value;
-        this.searchList = data;
+      this.$http.get('/nav/querySearchList').then(res =>{
+        if(res.data.code){
+          let data = res.data.data;
+          if(data.length == 0) return false;
+          this.curSearchAim = data[0].searchIAims;
+          this.searchList = data;
+        }
       })
-      .catch(error => {
-        console.log(error);
-      });
     },
     setSearch(item){
-      this.aimsObj = item;
-      this.curSearchAim = item.value;
+      this.$http.get('/nav/setSearchAims', {
+        'value': item.value
+      }).then( res =>{
+        if(res.data.code){
+          this.curSearchAim = item.value;
+        }
+      })
+      
     },
     searchHandle(){
       // let p = window.location.protocol;

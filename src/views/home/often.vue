@@ -1,38 +1,53 @@
 <template>
   <div>
-    <div class="text-right mb-3">
+    <div class="text-right mb-3" v-show="isLogin">
       <el-switch v-model="edit" :inactive-text="edit ? '拖拽移动' : ''"></el-switch>
     </div>
-    <div v-if="!edit">
-      <div class="item" v-for="(item, index) in oftenNav" :key="index">
-        <img :src="item.icon" class="navIcon" alt="">
-        {{item.name}}
+    <div v-if="isLogin">
+      <div v-if="!edit">
+        <div class="item" v-for="(item, index) in oftenNav" :key="index">
+          <img :src="item.icon" class="navIcon" alt="">
+          {{item.name}}
+        </div>
+      </div>
+      <div v-else>
+        <div
+          class="item"
+          v-for="(item, index) in oftenNav"
+          :key="index"
+          draggable="true"
+          @dragstart="handleDragStart($event, item)"
+          @dragenter="handleDragEnter($event, item)"
+          @dragover.prevent="handleDragover($event, item)"
+          @dragleave="dragLeave($event, item)"
+          @drop="handleDrop($event, item)"
+          @dragend="handleDragEnd($event, item)"
+        >
+          <img :src="item.icon" class="navIcon" alt="">
+          {{item.name}}
+          <i class="el-icon-close delete-icon" v-show="edit" @click="delItem(item)"></i>
+        </div>
       </div>
     </div>
-    <div v-else>
-      <div
-        class="item"
-        v-for="(item, index) in oftenNav"
-        :key="index"
-        draggable="true"
-        @dragstart="handleDragStart($event, item)"
-        @dragenter="handleDragEnter($event, item)"
-        @dragover.prevent="handleDragover($event, item)"
-        @dragleave="dragLeave($event, item)"
-        @drop="handleDrop($event, item)"
-        @dragend="handleDragEnd($event, item)"
-      >
-        <img :src="item.icon" class="navIcon" alt="">
-        {{item.name}}
-        <i class="el-icon-close delete-icon" v-show="edit" @click="delItem(item)"></i>
-      </div>
+    <div v-else class="text-center font-size-2">
+      <el-popover
+        placement="top-end"
+        title="展示"
+        trigger="hover">
+        <img src="../../static/img/often_nav.jpg" style="width: 600px" alt="">
+        <div slot="reference">
+          <span>登录后可设置属于自己的常用导航，</span>
+          <span class="to-login" @click="toLogin()">去登录</span>
+        </div>
+      </el-popover>
     </div>
-    <div class="text-right">
+    <div class="text-right" v-show="isLogin">
       <router-link to="/home/setOftenNav" tag="i" class="el-icon-menu ml-1 font-size-5 cursor-p"></router-link>
     </div>
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
 export default {
   data() {
     return {
@@ -46,8 +61,13 @@ export default {
       passive: {},  //被动项（被替换项）
     };
   },
+  computed:{
+    ...mapState({
+      isLogin: state=> state.isLogin
+    })
+  },
   mounted(){
-    this.query_often_nav()
+    this.query_often_nav();
   },
   methods: {
     // 当某元素被拖拽时，记录拖拽项
@@ -147,25 +167,32 @@ export default {
           this.query_often_nav();
         }
       })
+    },
+    toLogin(){
+      this.$router.push({path: '/user/login'});
     }
   }
 };
 </script>
 <style scoped="scoped">
-.item {
-  display: inline-block;
-  margin-left: 20px;
-  margin-bottom: 20px;
-  width: 180px;
-  height: 40px;
-  line-height: 40px;
-  padding: 0 10px;
-  box-shadow: 0 0 10px hsla(0, 0%, 40%, 0.2);
-  border-radius: 10px;
-  cursor: pointer;
-}
-.delete-icon {
-  float: right;
-  margin-top: 12px;
-}
+  .item {
+    display: inline-block;
+    margin-left: 20px;
+    margin-bottom: 20px;
+    width: 180px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0 10px;
+    box-shadow: 0 0 10px hsla(0, 0%, 40%, 0.2);
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .delete-icon {
+    float: right;
+    margin-top: 12px;
+  }
+  .to-login{
+    color: #409EFF;
+    cursor: pointer;
+  }
 </style>
