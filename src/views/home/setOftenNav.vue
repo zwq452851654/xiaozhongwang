@@ -19,37 +19,24 @@
           </div>
         </div>
         <el-divider></el-divider>
-        <div class="title">
-          全部地址
-          <i class="prompt-text">点击加号添加至常用栏</i>
-        </div>
-        <div class="d-flex">
-          <div>
-            <el-menu
-              default-active="1"
-              class="el-menu-vertical-demo">
-              <el-menu-item index="1">
-                <i class="el-icon-menu"></i>
-                <span slot="title">导航一</span>
-              </el-menu-item>
-              <el-menu-item index="2">
-                <i class="el-icon-menu"></i>
-                <span slot="title">导航二</span>
-              </el-menu-item>
-              <el-menu-item index="3">
-                <i class="el-icon-document"></i>
-                <span slot="title">导航三</span>
-              </el-menu-item>
-              <el-menu-item index="4">
-                <i class="el-icon-setting"></i>
-                <span slot="title">导航四</span>
-              </el-menu-item>
-            </el-menu>
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="title" style="margin-bottom: 0">
+            全部地址
+            <i class="prompt-text">点击加号添加至常用栏</i>
           </div>
-          <div v-for="(item,index) in allNav" :key="index">
-            <div class="mb-3 pl-4 font-size-2">{{ item[0].t_v }}</div>
+          <!-- <div>
+            <el-input style="width: 250px" v-model="input" size="mini" placeholder="输入内容进行搜索"></el-input>
+          </div> -->
+        </div>
+
+
+        <div>
+          <div v-for="(value,key,index) in allNav" :key="index">
+            <div style="width:200px;margin:0 auto;">
+              <el-divider>{{allNav[key][0].parentName ? allNav[key][0].parentName : '其它'}}</el-divider>
+            </div>
             <div class="d-flex flex-wrap">
-              <div class="text-center p-2 ml-2 mr-2 mb-3 often-box" v-for="child in item" :key="child.id">
+              <div class="text-center p-2 ml-2 mr-2 mb-3 often-box" v-for="child in allNav[key]" :key="child.id">
                 <div>
                   <img :src="child.icon" class="navIcon" alt="" v-if="child.icon">
                   <i class="iconfont iconmorentu often-icon" v-else></i>
@@ -60,7 +47,6 @@
                 </div>
               </div>
             </div>
-            <hr />
           </div>
         </div>
         
@@ -99,7 +85,9 @@ export default {
     return {
       oftenNav: [],
       allNav: {},
-      navForm: {}
+      navForm: {},
+      input:"",
+      navArr:[]
     };
   },
   mounted() {
@@ -112,19 +100,28 @@ export default {
       this.$http.get('/nav/queryAllNav').then( res => {
         if(res.data.code){
           let data = res.data.data;
-          let obj = {};
+          let obj_A = {};
           data.forEach(item => {
             if(item.icon){
               item.icon = require('../../static/icon/'+ item.icon)
             }
-            if (obj[item.t_k]) {
-              obj[item.t_k].push(item);
-            } else {
-              obj[item.t_k] = [];
-              obj[item.t_k].push(item);
+
+            if(obj_A[item.parentValue]){
+              obj_A[item.parentValue].push(item);
+            }else{
+              if(!item.parentValue){
+                item.parentValue = '999';
+                if(obj_A[item.parentValue]){
+                  obj_A[item.parentValue].push(item);
+                }else{
+                  obj_A['999'] = [];
+                }
+              }else{
+                obj_A[`${item.parentValue}`] = [];
+              }
             }
-          });
-          this.allNav = obj;
+          })
+          this.allNav = obj_A;
         }
       })
     },
