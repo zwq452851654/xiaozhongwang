@@ -28,6 +28,7 @@ export default {
   color: #2c3e50;
   background-color: #f8f8f8;
   padding-bottom: 15px;
+	padding-top: 60px;
 }
 
 </style>

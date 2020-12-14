@@ -1,5 +1,6 @@
 <template>
   <div>
+		<!-- 搜索栏 -->
     <div class="search">
       <ul class="d-flex justify-content-center">
         <li 
@@ -24,7 +25,9 @@
         </el-input>
       </div>
     </div>
-    <div class="content">
+    
+		<!-- 内容区 -->
+		<div class="content">
       <div class="bg">
         <often />
       </div>
@@ -37,6 +40,9 @@
         </div>
       </div>
     </div>
+		
+		<!-- 左侧悬浮 -->
+		
   </div>
 </template>
 <script>

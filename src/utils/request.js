@@ -33,20 +33,25 @@ service.interceptors.request.use(config => {
   Promise.reject(error)
 })
 
+
+
+let intercept_flag = true;
 // 3.响应拦截器
 service.interceptors.response.use(response => {
   //接收到响应数据并成功后的一些共有的处理，关闭loading等
-  let state = response.data.state;
-  if(state !== undefined && !state){
-    Message({
-      type:'error',
-      message: response.data.info
-    })
-    store.default.dispatch('loginFun', false);
-    localStorage.removeItem('token')
-    router.push('/user/login');
-    return false
-  }
+	if(response.data.code && response.data.msg == '未登录' && intercept_flag){
+		// Message({
+		//   type:'warning',
+		//   message: response.data.msg
+		// })
+		store.default.dispatch('loginFun', false);
+		localStorage.removeItem('token')
+		// router.push('/user/login');
+		intercept_flag = false;
+		let t = setTimeout(()=>{
+			intercept_flag = true;
+		},5000)
+	}
   return response
 }, error => {
    /***** 接收到异常响应的处理开始 *****/
