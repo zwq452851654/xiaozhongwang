@@ -7,16 +7,19 @@
     <keep-alive>
       <Foot v-if="!$route.meta.showFoot"></Foot>
     </keep-alive>
+    <Collection />
   </div>
 </template>
 <script>
 import Nav from './components/Nav'
 import Foot from './components/Foot'
+import Collection from './components/Collection.vue'
 
 export default {
   components: {
     Nav,
-    Foot
+    Foot,
+    Collection
   }
 }
 </script>
@@ -30,5 +33,4 @@ export default {
   padding-bottom: 15px;
 	padding-top: 60px;
 }
-
 </style>
