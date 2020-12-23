@@ -1,5 +1,4 @@
 /* 容器 */
-
 .content {
     max-width: 1300px;
     margin: 0 auto;
@@ -11,6 +10,11 @@
     border-radius: 5px;
     margin-top: 15px;
     box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+}
+
+/* flex */
+.d-flex{
+  display: flex;
 }
 
 /* 鼠标手 */
@@ -81,4 +85,7 @@ button {
 }
 
 /* padding */
+.p{
+  padding: 10px;
+}
 

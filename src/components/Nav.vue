@@ -35,7 +35,6 @@
             </el-dropdown-menu>
           </el-dropdown>
         </div>
-         
       </div>
     </div>
   </div>
@@ -44,10 +43,10 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex';
 
+
 export default {
-  props: {
-    
-  },
+  props: {},
+  components:{},
   data(){
     return {
       month:"",
