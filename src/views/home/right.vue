@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 技术栏 -->
-    <el-card class="box-card mt-3">
+    <el-card class="box-card mt-3 set-bg-color">
       <div slot="header" class="clearfix">
         <b class="font-size-2">技术栏</b>
         <el-button style="float: right; padding: 3px 0" type="text" @click="addNewNavHandle()">遗漏补充</el-button>
@@ -21,7 +21,7 @@
     </el-card>
 
     <!-- 设计/视觉 -->
-    <el-card class="box-card mt-3">
+    <el-card class="box-card mt-3 set-bg-color">
       <div slot="header" class="clearfix">
         <b class="font-size-2">设计/视觉</b>
         <el-button style="float: right; padding: 3px 0" type="text" @click="addNewNavHandle()">遗漏补充</el-button>
@@ -37,7 +37,7 @@
     </el-card>
 
     <!-- 辅助工具 -->
-    <el-card class="box-card mt-3">
+    <el-card class="box-card mt-3 set-bg-color">
       <div slot="header" class="clearfix">
         <b class="font-size-2">辅助工具</b>
         <el-button style="float: right; padding: 3px 0" type="text" @click="addNewNavHandle()">遗漏补充</el-button>

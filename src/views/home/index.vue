@@ -1,7 +1,7 @@
 <template>
   <div>
 		<!-- 搜索栏 -->
-    <div class="search">
+    <div class="search" :class="{'nav-bg':bgImg}">
       <ul class="d-flex justify-content-center">
         <li 
           class="search-tag mr-1" 
@@ -49,12 +49,18 @@
 import often from "./often.vue"
 import right from './right.vue'
 import left from './left.vue'
+import { mapState, mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
     often,
     right,
     left
+  },
+  computed:{
+    ...mapState({
+      bgImg: state=> state.bgImg
+    })
   },
   data(){
     return{

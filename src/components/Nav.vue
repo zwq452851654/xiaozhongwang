@@ -1,5 +1,5 @@
 <template>
-  <div class="nav">
+  <div class="nav" :class="{'nav-bg':bgImg}">
     <div class="d-flex align-items-center" style="width:1300px;margin:0 auto">
       <!-- <div class="mr-5"><b>小众网</b></div> -->
       <div class="logo">
@@ -31,6 +31,7 @@
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command='msg'>消息中心</el-dropdown-item>
               <el-dropdown-item command='info'>个人信息</el-dropdown-item>
+              <el-dropdown-item command='info'>个性设置</el-dropdown-item>
               <el-dropdown-item command='logout'>退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -60,7 +61,8 @@ export default {
   },
   computed:{
     ...mapState({
-      isLogin: state=> state.isLogin
+      isLogin: state=> state.isLogin,
+      bgImg: state=> state.bgImg
     })
   },
   mounted(){

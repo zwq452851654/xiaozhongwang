@@ -21,7 +21,6 @@ service.interceptors.request.use(config => {
     'Content-Type':'application/x-www-form-urlencoded',
     'token': localStorage.getItem('token')
   }
-	console.log(config)
   // 为避免因页面手动刷新登录状态丢失，在这做一个根据token的判断进行登录状态保持
   let isLogin = store.default.state.isLogin;
   let token = localStorage.getItem('token');

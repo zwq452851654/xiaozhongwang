@@ -179,13 +179,14 @@ export default {
   .item {
     display: inline-block;
     margin-left: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     width: 180px;
-    height: 40px;
-    line-height: 40px;
+    height: 32px;
+    line-height: 32px;
     padding: 0 10px;
     box-shadow: 0 0 10px hsla(0, 0%, 40%, 0.2);
     border-radius: 10px;
+    font-size: 14px;
     cursor: pointer;
   }
   .delete-icon {
