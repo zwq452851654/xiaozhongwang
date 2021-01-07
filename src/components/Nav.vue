@@ -1,5 +1,5 @@
 <template>
-  <div class="nav" :class="{'nav-bg':bgImg}">
+  <div class="nav" :class="{'nav-bg':img_url}">
     <div class="d-flex align-items-center" style="width:1300px;margin:0 auto">
       <!-- <div class="mr-5"><b>小众网</b></div> -->
       <div class="logo">
@@ -18,7 +18,8 @@
       <div class="d-flex ml-auto font-size-2 align-items-center">
         <div class="mr-3"><i class="day">{{month}}</i>月<i class="day">{{day}}</i>日</div>
         <div class="mr-3">{{hours}}:{{minutes}}:{{seconds}}</div>
-        <div class="mr-5">{{week}}</div>
+        <div class="mr-3">{{week}}</div>
+				<div class="mr-3 cursor-p" @click="showToolsHandle()"><i class="el-icon-s-tools font-size-5"></i></div>
         <router-link v-if="!isLogin" class="cursor-p" tag="div" to="/user/login">登录</router-link>
         <div v-else >
           <el-dropdown @command="handleCommand">
@@ -38,16 +39,21 @@
         </div>
       </div>
     </div>
-  </div>
+  
+		<collect :showTools="showTools" @closeTools="closeToolsHandle()"></collect>
+	</div>
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState } from 'vuex';
+import collect from './new_collect.vue'
 
 
 export default {
   props: {},
-  components:{},
+  components:{
+		collect
+	},
   data(){
     return {
       month:"",
@@ -56,13 +62,14 @@ export default {
       minutes:"",
       seconds:"",
       week:"",
-      url: require('../static/img/xzw-logo.png')
+      url: require('../static/img/xzw-logo.png'),
+			showTools: false
     }
   },
   computed:{
     ...mapState({
       isLogin: state=> state.isLogin,
-      bgImg: state=> state.bgImg
+      img_url: state=> state.userInfo.img_url
     })
   },
   mounted(){
@@ -97,8 +104,15 @@ export default {
       if(command == 'logout'){
         localStorage.removeItem('token');
         this.$store.dispatch('loginFun', false);
+				this.$store.dispatch('dis_user_info', {});
       }
-    }
+    },
+		showToolsHandle(){
+			this.showTools = !this.showTools;
+		},
+		closeToolsHandle(){
+			this.showTools = false
+		}
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
 		<!-- 搜索栏 -->
-    <div class="search" :class="{'nav-bg':bgImg}">
+    <div class="search" :class="{'nav-bg':img_url}">
       <ul class="d-flex justify-content-center">
         <li 
           class="search-tag mr-1" 
@@ -41,15 +41,13 @@
       </div>
     </div>
 		
-		<!-- 左侧悬浮 -->
-		
   </div>
 </template>
 <script>
 import often from "./often.vue"
 import right from './right.vue'
 import left from './left.vue'
-import { mapState, mapGetters, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   components: {
@@ -59,14 +57,15 @@ export default {
   },
   computed:{
     ...mapState({
-      bgImg: state=> state.bgImg
+      img_url: state=> state.userInfo.img_url
     })
   },
   data(){
     return{
       searchList: [],
       curSearchAim: "",
-      searchValue: ""
+      searchValue: "",
+			aimsObj: {}
     }
   },
   mounted(){
@@ -81,6 +80,11 @@ export default {
           if(data.length == 0) return false;
           this.curSearchAim = data[0].searchIAims;
           this.searchList = data;
+					data.forEach(item =>{
+						if(this.curSearchAim == item.value){
+							this.aimsObj = item;
+						}
+					})
         }
       })
     },
@@ -90,12 +94,14 @@ export default {
       }).then( res =>{
         if(res.data.code){
           this.curSearchAim = item.value;
+					this.aimsObj = item;
         }
       })
       
     },
     searchHandle(){
       // let p = window.location.protocol;
+			
       let a = document.createElement("a");
       a.setAttribute("href", `${this.aimsObj.url}${this.searchValue}`);
       a.setAttribute("target", "_blank");

@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :style="{backgroundImage: 'url('+img_url+')'}">
+  <div id="app" :style="{backgroundImage: 'url('+ img_url +')'}">
     <div class="content-1" :style="{width: CW, height: CH}">
       <keep-alive>
         <Nav v-if="$route.meta.keepAlive"></Nav>
@@ -8,39 +8,37 @@
       <keep-alive>
         <Foot v-if="!$route.meta.showFoot"></Foot>
       </keep-alive>
-      <Collection />
     </div>
   </div>
 </template>
 <script>
 import Nav from './components/Nav'
 import Foot from './components/Foot'
-import Collection from './components/Collection.vue'
+import { mapState } from 'vuex';
 
 export default {
   components: {
     Nav,
     Foot,
-    Collection
   },
+	computed:{
+	  ...mapState({
+	    img_url: state=> state.userInfo.img_url
+	  })
+	},
   data(){
     return{
       CW: "",
-      CH: "",
-      bgImg: this.$store.state.bgImg,
-      img_url: ""
+      CH: ""
     }
   },
   mounted(){
-    console.log('===', this.bgImg)
-    this.obtainClientWH()
+    this.obtainClientWH();
   },
   methods:{
     obtainClientWH(){
       this.CW = document.documentElement.clientWidth + "px";
       this.CH = document.documentElement.clientHeight + "px";
-      let url = "https://dss0.bdstatic.com/l4oZeXSm1A5BphGlnYG/skin/859.jpg?2";
-      this.img_url = this.bgImg ? url : ""
     }
   }
 }
