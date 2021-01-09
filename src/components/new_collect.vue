@@ -21,21 +21,26 @@
 			v-show="showModal"
 			:style="{top:top, left: left}">
 			<ul>
-				<li class="collect_item border-bottom" @click="editCollect()">添加当前收藏夹</li>
+				<li class="collect_item border-bottom" @click="editCollect()">
+					<i class="el-icon-star-off mr-1"></i>添加当前收藏夹
+				</li>
 				<li 
 					class="collect_item" 
 					v-for="(item, index) in collect" 
-					:key="index"
+					:key="item.bh"
 					@mouseover="secondLevel(item, index)">
 					<div 
-						v-if="item.type == 1">
-						{{ item.title }}
+						v-if="item.type == 1"
+						style="display: flex;align-items: center;"
+						@click="openWebsite(item)">
+						<i class="seat mr-1" :class="item.icon"></i>
+						<span>{{ item.mc }}</span>
 					</div>
 					<div 
 						v-if="item.type == 2" 
 						style="display: flex;align-items: center;">
 						<i class="el-icon-folder mr-1 font-size-4" style="color: #f6b95f;"></i>
-						<span>{{ item.title }}</span>
+						<span>{{ item.mc }}</span>
 						<i class="el-icon-arrow-right font-size-4 ml-auto"></i>
 					</div>
 				</li>
@@ -49,13 +54,10 @@
 			v-show="second"
 			:style="{top: secondTop, left: secondLeft}">
 			<ul>
-				<li class="collect_item border-bottom">添加当前收藏夹</li>
-				<li 
-					class="collect_item" 
-					v-for="item in secondLeftList" 
-					:key="item.id">
-					{{item.title}}
+				<li class="collect_item border-bottom" @click="editCollect()">
+					<i class="el-icon-star-off mr-1"></i>添加收藏
 				</li>
+				<li class="collect_item" v-for="item in secondLeftList" :key="item.bh" @click="openWebsite(item)">{{item.mc}}</li>
 			</ul>
 		</div>
 		
@@ -77,12 +79,12 @@
 					<ul>
 						<li 
 							v-for="item in folderList" 
-							:key="item.id"
+							:key="item.bh"
 							@click="clickFolder(item)"
-							:class="{active: activeID == item.id}">
+							:class="{active: activeID == item.bh}">
 							<i v-if="item.type == 2" class="el-icon-folder mr-1 font-size-4 ml-4" style="color: #f6b95f;"></i>
 							<i v-else class="el-icon-user-solid font-size-5"></i>
-							<span :contenteditable="false">{{ item.title }}</span>
+							<span :contenteditable="false">{{ item.mc }}</span>
 							<i v-if="item.type == 2" class="el-icon-edit font-size-4 ml-auto mr-2 cursor-p"></i>
 						</li>
 					</ul>
@@ -139,18 +141,18 @@
 				toolsList:[
 					{ id:"01", mc:"个人中心", icon:"", value:"grzx", child: true },
 					{ id:"02", mc:"收藏夹", icon:"el-icon-star-off", value:"scj", child: true },
-					{ id:"03", mc:"更换皮肤", icon:"", value:"ghpf", child: true },
+					{ id:"03", mc:"更换皮肤", icon:"", value:"ghpf", child: false },
 					{ id:"04", mc:"退出登录", icon:"", value:"tcdl", child: false }
 				],
 		    collect:[
-		      { id:1, title:"使用查询", type: "2", list: list },
-		      { id:2, title:"技术博客", type: "2", list: list2 },
-		      { id:3, title:"我是百度派来的", type: "1", url:"https://www.iviewui.com/", list: [] }
+		      // { id:1, title:"使用查询", type: "2", list: list },
+		      // { id:2, title:"技术博客", type: "2", list: list2 },
+		      // { id:3, title:"我是百度派来的", type: "1", url:"https://www.iviewui.com/", list: [] }
 		    ],
 				folderList:[
-					{ id:1, title:"网络收藏夹", type: "1" },
-					{ id:2, title:"使用查询", type: "2" },
-					{ id:3, title:"技术博客", type: "2" },
+					// { id:1, title:"网络收藏夹", type: "1" },
+					// { id:2, bh:"SC001", title:"使用查询", type: "2" },
+					// { id:3, bh:"SC002", title:"技术博客", type: "2" },
 				],
 				showModal: false,
 				top: "",
@@ -162,15 +164,34 @@
 				CH: "",
 				editCollectDialog: false,
 				collectForm: {},
-				activeID: "1",
+				activeID: "zdy_001",
+				oldBH: ""
 		  }
 		},
 		mounted(){
 			this.CH = window.innerHeight;
+			
 		},
 		methods:{
+			queryCollect(){
+				this.folderList = [];
+				this.$http.get('/collect/queryCollect', {}).then(res =>{
+					let data = res.data;
+					if(data.code){
+						this.collect = data.data;
+						this.collect.forEach(item=>{
+							item['list'] = [];
+						})
+					}else{
+						this.$message({type: 'waring', message: data.msg});
+					}
+				})
+			},
 			mouseItem(item, index){
 				if(item.value == 'scj'){
+					if(this.collect.length == 0){
+						this.queryCollect();
+					}
 					this.showModal = true;
 					this.$refs.mask.style.height = this.CH + "px";
 					this.$nextTick(()=>{
@@ -194,13 +215,29 @@
 				}
 			},
 			secondLevel(item, index){
-				let list = item.list;
-				if(list.length == 0){
+				if(item.type == 1){
 					this.second = false;
 					return false;
 				}
+				if(this.oldBH != item.bh && item.list.length == 0){
+					this.oldBH = item.bh;
+					this.$http.get('/collect/querySecondCollect',{
+						bh: item.bh
+					}).then(res =>{
+						if(res.data.code){
+							this.collect.forEach(row =>{
+								if(row.bh == item.bh){
+									row.list = res.data.data;
+									this.secondLeftList = res.data.data;
+								}
+							})
+						}
+					})
+				}else{
+					this.secondLeftList = item.list;
+				}
+
 				this.second = true;
-				this.secondLeftList = list;
 				this.$nextTick(()=>{
 					let eH = this.secondLeftList.length * 38;
 					let h;
@@ -224,13 +261,21 @@
 				this.$emit('closeTools');
 			},
 			editCollect(){
+				// this.queryCollect();
+				let newData = this.collect.filter(item =>{
+					return item.type == 2
+				})
+				newData.unshift({
+					bh:"zdy_001", mc:"网络收藏夹", type: "1"
+				})
+				this.folderList = newData;
 				this.editCollectDialog = true;
 				this.hideMask();
 			},
 			clickFolder(item){
-				this.activeID = item.id;
+				this.activeID = item.bh;
 				if(item.type == 2){
-					this.collectForm['parendID'] = item.id;
+					this.collectForm['parentID'] = item.bh;
 				}
 				this.collectForm['type'] = item.type;
 			},
@@ -240,12 +285,21 @@
 				  ...this.collectForm
 				}).then( res => {
 				  if(res.data.code){
-						
+						this.$message({type: 'success', message: '添加成功'});
+						this.editCollectDialog = false;
 				  }
 				})
 			},
 			// 新建收藏文件夹
-			addFolder(){}
+			addFolder(){},
+			// 打开网址
+			openWebsite(item){
+				let a = document.createElement("a");
+				a.setAttribute("href", item.url);
+				a.setAttribute("target", "_blank");
+				a.click();
+				this.hideMask();
+			},
 		}
 	}
 </script>
@@ -266,6 +320,7 @@
 		position: absolute;
 		top: 60px;
 		right: 100px;
+		color: #000;
 	}
 	.tools_item{
 		display: flex;
@@ -313,6 +368,7 @@
 		overflow: hidden;
 		z-index: 9;
 		background-color: #fff;
+		color: #000;
 	}
 	.collect::-webkit-scrollbar {/*滚动条整体样式*/
 	    width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/

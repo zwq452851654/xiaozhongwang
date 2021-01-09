@@ -137,7 +137,6 @@ export default {
     // 获取常用导航地址
     query_often_nav() {
       this.$http.get('/nav/query_often_nav', {}).then( res =>{
-				
         if(res.data.code){
           let data = res.data.data;
           data.forEach(item => {
