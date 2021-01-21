@@ -4,7 +4,9 @@
       <keep-alive>
         <Nav v-if="$route.meta.keepAlive"></Nav>
       </keep-alive>
-      <router-view/>
+			<keep-alive>
+				<router-view/>
+			</keep-alive>
       <keep-alive>
         <Foot v-if="!$route.meta.showFoot"></Foot>
       </keep-alive>
@@ -23,7 +25,7 @@ export default {
   },
 	computed:{
 	  ...mapState({
-	    img_url: state=> state.userInfo.img_url
+	    img_url: state=> state.userInfo.path
 	  })
 	},
   data(){

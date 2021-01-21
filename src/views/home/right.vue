@@ -81,12 +81,87 @@
         <el-button @click="addNewNavDialog = false" size="mini">取 消</el-button>
         <el-button type="primary" @click="addNewNavDialog = false" size="mini">提 交</el-button>
       </div>
-      
     </el-dialog>
-  </div>
+  
+		<!-- 遗漏补充 -->
+		<el-drawer
+		  title="遗漏补充"
+		  :visible.sync="drawer">
+		  <div>
+				<el-form :model="newForm" style="padding: 20px;">
+					<el-form-item>
+						<el-input v-model="newForm.name" placeholder="输入名称"></el-input>
+					</el-form-item>
+					<el-form-item>
+						<el-input v-model="newForm.name" placeholder="输入网址"></el-input>
+					</el-form-item>
+					<el-form-item>
+						<el-cascader
+							v-model="newForm.type"
+							placeholder="选择类型"
+							:props="{ checkStrictly: true }"
+							class="w-100"
+							:options="options"
+							clearable>
+						</el-cascader>
+					</el-form-item>
+					<el-form-item v-if="newForm.type == '006'" >
+						<el-input v-model="newForm.name" placeholder="输入您认为的所属类型名称"></el-input>
+					</el-form-item>
+				</el-form>
+				<div style="display: flex;justify-content: center;">
+					<el-button type="primary" style="width: 40%;" round>添加</el-button>
+					<el-button style="width: 40%;" round>取消</el-button>
+				</div>
+			</div>
+		</el-drawer>
+	</div>
 </template>
 <script>
+	
+let options = [
+	{
+		value: '001',
+		label: '技术栏',
+		children: [{
+			value: '001001',
+			label: '前端技术'
+		}, {
+			value: '001002',
+			label: '后端技术'
+		}, {
+			value: '001003',
+			label: '服务端'
+		}, {
+			value: '001004',
+			label: '博客/论坛'
+		},{
+			value: '001006',
+			label: '其他'
+		}]
+	},
+	{
+		value: '002',
+		label: '设计/视觉',
+		children: [{
+			value: '002001',
+			label: '设计'
+		}, {
+			value: '002002',
+			label: '视觉'
+		}]
+	},
+	{
+		value: '003',
+		label: '辅助工具',
+	},
+	{
+		value: '006',
+		label: '其他',
+	}]
 
+
+import service from './service.js'
 export default {
   data() {
     return {
@@ -103,46 +178,9 @@ export default {
       toolNav: [],
       addNewNavDialog: false,
       newForm: {},
-      options: [
-        {
-          value: 'zhinan',
-          label: '指南',
-          children: [{
-            value: 'yizhi',
-            label: '一致'
-          }, {
-            value: 'fankui',
-            label: '反馈'
-          }, {
-            value: 'xiaolv',
-            label: '效率'
-          }, {
-            value: 'kekong',
-            label: '可控'
-          }]
-        },
-        {
-          value: 'zujian',
-          label: '组件',
-          children: [{
-            value: 'layout',
-            label: 'Layout 布局'
-          }, {
-            value: 'color',
-            label: 'Color 色彩'
-          }, {
-            value: 'typography',
-            label: 'Typography 字体'
-          }, {
-            value: 'icon',
-            label: 'Icon 图标'
-          }, {
-            value: 'button',
-            label: 'Button 按钮'
-          }]
-        }
-      ]
-    };
+      options: options,
+			drawer: false,
+		};
   },
   mounted() {
     this.query_skill_nav();
@@ -152,7 +190,7 @@ export default {
   methods: {
     // 获取技术类网站
     query_skill_nav() {
-      this.$http.get('/nav/queryNav', {
+      service.queryNav({
         parentValue: '001'
       }).then( res =>{
         if(res.data.code){
@@ -181,7 +219,7 @@ export default {
     },
     // 获取设计类网站
     query_design_nav(){
-      this.$http.get('/nav/queryNav', {
+      service.queryNav({
         parentValue: '002'
       }).then(res =>{
         if(res.data.code){
@@ -198,7 +236,7 @@ export default {
     },
     // 获取工具类网站
     query_tool_nav(){
-      this.$http.get('/nav/queryNav', {
+      service.queryNav({
         parentValue: '003'
       }).then(res =>{
         if(res.data.code){
@@ -223,7 +261,9 @@ export default {
     // 遗漏补充
     addNewNavHandle(){
       // name: "", icon: "", url: "", parentName: "", parentValue: "", childName:"", childvalue:""
-      this.addNewNavDialog = true;
+      // this.addNewNavDialog = true;
+			
+			this.drawer = true;
     }
   }
 };
@@ -263,4 +303,5 @@ export default {
 .skill-con-item:hover{
   color: deepskyblue;
 }
+
 </style>

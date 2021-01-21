@@ -87,7 +87,7 @@
   </div>
 </template>
 <script>
-
+import service from './service.js'
 export default {
   data() {
     return {
@@ -128,11 +128,14 @@ export default {
     this.queryHotData('baidu');
     this.queryHotData('zhengquan');
     this.queryHotData('jishu');
+		// setInterval(()=>{
+		// 	this.queryHotData('weibo');
+		// },3000)
   },
   methods:{
     // 获取微博热搜数据
     queryHotData(name){
-      this.$http.get('/news/news', {
+      service.queryNews({
         'q': name + '_hot'
       }).then( res =>{
         let data = res.data;

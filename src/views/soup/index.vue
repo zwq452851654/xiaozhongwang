@@ -1,14 +1,24 @@
 <template>
-  <div>
-    <div class="content bg">营养鸡汤</div>
-  </div>
+	<div>
+		<autoUpload v-model="form.file"></autoUpload>
+		{{form.file}}
+	</div>
 </template>
 <script>
-
-
-export default {
-  components: {
-
-  }
-}
+	import autoUpload from '../../components/autoUpload.vue'
+	export default {
+		components:{
+			autoUpload
+		},
+		data() {
+			return {
+				form: {
+					file: ""
+				}
+			}
+		},
+		methods: {
+		
+		}
+	}
 </script>

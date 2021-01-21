@@ -8,7 +8,7 @@ export default new Vuex.Store({
   state: {
     isLogin: false,
     bgImg: true,
-		userInfo: {}
+		userInfo: JSON.parse(localStorage.getItem('userInfo')) || {}
   },
   getters:{
 
@@ -26,6 +26,8 @@ export default new Vuex.Store({
       context.commit('setLogin', v);
     },
 		dis_user_info(context, v){
+			let userInfo = JSON.stringify(v)
+			localStorage.setItem('userInfo', userInfo);
 			context.commit('setUserInfo', v);
 		}
   },

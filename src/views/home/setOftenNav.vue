@@ -80,6 +80,7 @@
   </div>
 </template>
 <script>
+	import service from './service.js'
 export default {
   data() {
     return {
@@ -97,7 +98,7 @@ export default {
   methods: {
     // 获取常用导航地址
     query_all_nav() {
-      this.$http.get('/nav/queryAllNav').then( res => {
+      service.queryAllNav().then( res => {
         if(res.data.code){
           let data = res.data.data;
           let obj_A = {};
@@ -127,7 +128,7 @@ export default {
     },
     // 获取常用导航地址
     query_often_nav() {
-      this.$http.get('/nav/query_often_nav').then(res => {
+      service.queryOften().then(res => {
         if(res.data.code){
           let data = res.data.data;
           data.forEach(item => {
@@ -141,7 +142,7 @@ export default {
     },
     // 添加
     addOften(item){
-      this.$http.post('/nav/addOftenNav', {
+      service.addOftenNav( {
         dhbh: item.dhbh,
         len: this.oftenNav.length
       }).then( res => {

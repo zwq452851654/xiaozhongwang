@@ -2,14 +2,16 @@
 	<div :class="{mask:showModal}" ref="mask" @click.self="hideMask">
 		<div class="tools" ref="tools" v-show="showTools">
 			<ul>
-				<li 
+				<li
 					class="tools_item" 
 					v-for="(item, index) in toolsList" 
-					:key="index"
-					@mouseover="mouseItem(item, index)">
-					<i class="seat mr-1" :class="item.icon"></i>
-					<span>{{ item.mc }}</span>
-					<i class="el-icon-arrow-right ml-auto" v-if="item.child"></i>
+					:key="item.value"
+					@click="changeItem(item, index)">
+					<div v-if="item.show">
+						<i class="seat mr-1" :class="item.icon"></i>
+						<span>{{ item.mc }}</span>
+						<i class="el-icon-arrow-right ml-auto" v-if="item.child"></i>
+					</div>
 				</li>
 			</ul>
 		</div>
@@ -84,8 +86,10 @@
 							:class="{active: activeID == item.bh}">
 							<i v-if="item.type == 2" class="el-icon-folder mr-1 font-size-4 ml-4" style="color: #f6b95f;"></i>
 							<i v-else class="el-icon-user-solid font-size-5"></i>
-							<span :contenteditable="false">{{ item.mc }}</span>
-							<i v-if="item.type == 2" class="el-icon-edit font-size-4 ml-auto mr-2 cursor-p"></i>
+							<span 
+								:contenteditable="item.bh == curEditBH" 
+								@blur="editName($event, item)">{{ item.mc }}</span>
+							<i v-if="item.type == 2" class="el-icon-edit font-size-4 ml-auto mr-2 cursor-p" @click="updateFolderName(item)"></i>
 						</li>
 					</ul>
 				</div>
@@ -97,63 +101,37 @@
 		  </span>
 		</el-dialog>
 		
+		<!-- 更换皮肤 -->
+		<editBg v-model="dialogVisible"></editBg>
+
 	</div>
 </template>
 
 <script>
-	
-	const list = [
-	  { id:1, title:"我是百度派来的----", url:"www.baidu.com", icon:"" },
-	  { id:2, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:3, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:4, title:"我是百度派来的====", url:"www.baidu.com", icon:"" },
-	  { id:5, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:6, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:7, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:8, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:9, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:10, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:11, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:12, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:13, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:14, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:15, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:16, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:17, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:18, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:19, title:"我是百度派来的", url:"www.baidu.com", icon:"" },
-	  { id:20, title:"我是百度派来的", url:"www.baidu.com", icon:"" }
-	]
-	
-	const list2 = [
-	  { id:1, title:"我是腾讯派来的----", url:"www.baidu.com", icon:"" },
-	  { id:2, title:"我是腾讯派来的", url:"www.baidu.com", icon:"" },
-	  { id:3, title:"我是腾讯派来的", url:"www.baidu.com", icon:"" },
-	  { id:4, title:"我是腾讯派来的====", url:"www.baidu.com", icon:"" }
-	]
-	
+	import { mapState } from 'vuex';
+	import editBg from "./edit_bg.vue"
 	export default{
 		props:{
 			showTools: false
 		},
+		components:{
+			editBg
+		},
+		computed:{
+		  ...mapState({
+		    isLogin: state=> state.isLogin
+		  })
+		},
 		data(){
 		  return {
 				toolsList:[
-					{ id:"01", mc:"个人中心", icon:"", value:"grzx", child: true },
-					{ id:"02", mc:"收藏夹", icon:"el-icon-star-off", value:"scj", child: true },
-					{ id:"03", mc:"更换皮肤", icon:"", value:"ghpf", child: false },
-					{ id:"04", mc:"退出登录", icon:"", value:"tcdl", child: false }
+					{ mc:"个人中心", icon:"", value:"userCore", child: true, show: true },
+					{ mc:"收藏夹", icon:"el-icon-star-off", value:"scj", child: true, show: true },
+					{ mc:"更换皮肤", icon:"", value:"editBg", child: false, show: true },
+					{ mc:"退出登录", icon:"", value:"logout", child: false, show: true }
 				],
-		    collect:[
-		      // { id:1, title:"使用查询", type: "2", list: list },
-		      // { id:2, title:"技术博客", type: "2", list: list2 },
-		      // { id:3, title:"我是百度派来的", type: "1", url:"https://www.iviewui.com/", list: [] }
-		    ],
-				folderList:[
-					// { id:1, title:"网络收藏夹", type: "1" },
-					// { id:2, bh:"SC001", title:"使用查询", type: "2" },
-					// { id:3, bh:"SC002", title:"技术博客", type: "2" },
-				],
+		    collect:[],
+				folderList:[],
 				showModal: false,
 				top: "",
 				left: "",
@@ -165,14 +143,47 @@
 				editCollectDialog: false,
 				collectForm: {},
 				activeID: "zdy_001",
-				oldBH: ""
+				oldBH: "",
+				queryFlag: true,
+				curEditBH: "",
+				dialogVisible: false
 		  }
+		},
+		watch:{
+			showTools(boo){
+				if(boo){
+					this.toolsList.forEach(item =>{
+						if(item.value == 'logout'){
+							item.show = this.isLogin;
+						}
+					})
+				}
+			}
 		},
 		mounted(){
 			this.CH = window.innerHeight;
-			
 		},
 		methods:{
+			editName(e, item){
+				let text = e.target.innerText;
+				if(text){
+					item.mc = text;
+					this.$http.post('/collect/addFolder', {
+					  mc: item.mc,
+						type: item.type
+					}).then( res => {
+					  if(res.data.code){
+							this.queryCollect();
+					  }
+					})
+				}else{
+					this.folderList.forEach((row,i) =>{
+						if(row.bh == item.bh){
+							this.folderList.splice(i, 1)
+						}
+					})
+				}
+			},
 			queryCollect(){
 				this.folderList = [];
 				this.$http.get('/collect/queryCollect', {}).then(res =>{
@@ -182,36 +193,45 @@
 						this.collect.forEach(item=>{
 							item['list'] = [];
 						})
+						// 将type 为2 的进行过滤
+						let newData = this.collect.filter(item =>{
+							return item.type == 2
+						})
+						newData.unshift({
+							bh:"zdy_001", mc:"网络收藏夹", type: "1"
+						})
+						this.folderList = newData;
 					}else{
 						this.$message({type: 'waring', message: data.msg});
 					}
 				})
 			},
-			mouseItem(item, index){
-				if(item.value == 'scj'){
-					if(this.collect.length == 0){
-						this.queryCollect();
-					}
-					this.showModal = true;
-					this.$refs.mask.style.height = this.CH + "px";
-					this.$nextTick(()=>{
-						let eH = this.collect.length * 38;
-						let h;
-						if((this.CH-70)> eH){
-							this.top = index * 38 + 60 + "px";
-							h = "auto";
-						}else{
-							this.top = "70px";
-							h = this.CH - 80 + "px";
-							this.$refs.collect.style.overflowY = "auto"
+			changeItem(item, index){
+				this.$refs.mask.style.height = "100%";
+				this.showModal = false;
+				this.second = false;
+				switch (item.value){
+					case 'scj':
+						if(!this.isLogin) {
+							this.$message({type:"info", message:"请先登录"});
+							break;
 						}
-						this.$refs.collect.style.height = h;
-						this.left = this.$refs.tools.offsetLeft - this.$refs.collect.offsetWidth + "px";
-					})
-				}else{
-					this.$refs.mask.style.height = "100%";
-					this.showModal = false;
-					this.second = false;
+						this.clickCollect(index);
+						break;
+					case 'userCore':
+						this.$message({type:"info", message:"功能暂未开放"})
+						break;
+					case 'editBg':
+						this.dialogVisible = true;
+						this.$emit('closeTools');
+						break;
+					case 'logout':
+						this.$store.dispatch('loginFun', false);
+						localStorage.removeItem('token');
+						this.$store.dispatch('dis_user_info', {});
+						localStorage.removeItem('userInfo');
+						this.hideMask();
+						break;
 				}
 			},
 			secondLevel(item, index){
@@ -260,15 +280,30 @@
 				this.$refs.mask.style.height = "100%";
 				this.$emit('closeTools');
 			},
+			clickCollect(index){
+				if(this.collect.length == 0){
+					this.queryCollect();
+				}
+				this.showModal = true;
+				this.$refs.mask.style.height = this.CH + "px";
+				this.$nextTick(()=>{
+					let eH = this.collect.length * 38;
+					let h;
+					if((this.CH-70)> eH){
+						this.top = index * 38 + 60 + "px";
+						h = "auto";
+					}else{
+						this.top = "70px";
+						h = this.CH - 80 + "px";
+						this.$refs.collect.style.overflowY = "auto"
+					}
+					this.$refs.collect.style.height = h;
+					this.left = this.$refs.tools.offsetLeft - this.$refs.collect.offsetWidth + "px";
+				})
+			},
 			editCollect(){
 				// this.queryCollect();
-				let newData = this.collect.filter(item =>{
-					return item.type == 2
-				})
-				newData.unshift({
-					bh:"zdy_001", mc:"网络收藏夹", type: "1"
-				})
-				this.folderList = newData;
+				
 				this.editCollectDialog = true;
 				this.hideMask();
 			},
@@ -291,7 +326,16 @@
 				})
 			},
 			// 新建收藏文件夹
-			addFolder(){},
+			addFolder(){
+				this.folderList.push({
+					bh: 'SC0001', mc: '新建文件夹', type: '2'
+				})
+				this.curEditBH = "SC0001";
+			},
+			// 修改文件夹名称
+			updateFolderName(item){
+				// this.curEditBH = item.bh;
+			},
 			// 打开网址
 			openWebsite(item){
 				let a = document.createElement("a");
@@ -321,8 +365,9 @@
 		top: 60px;
 		right: 100px;
 		color: #000;
+		font-size: 12px;
 	}
-	.tools_item{
+	.tools_item div{
 		display: flex;
 		align-items: center;
 		padding: 7px;
@@ -346,6 +391,7 @@
 		padding: 7px;
 		cursor: pointer;
 	}
+	
 	.collect_item:hover{
 		background-color: #E4E4E4;
 	}
@@ -369,6 +415,7 @@
 		z-index: 9;
 		background-color: #fff;
 		color: #000;
+		font-size: 12px;
 	}
 	.collect::-webkit-scrollbar {/*滚动条整体样式*/
 	    width: 4px;     /*高宽分别对应横竖滚动条的尺寸*/

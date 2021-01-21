@@ -14,12 +14,15 @@ module.exports = {
     productionSourceMap: false,
     devServer: {
         port:8088,
-        // open:true,
         proxy: {
             '/api': {
-                target: 'http://localhost:9000/api',
+                target: 'http://localhost:9000',
                 changeOrigin: true
-            }
+            },
+						'/xzwang': {
+						    target: 'http://localhost:8002',
+						    changeOrigin: true
+						}
         }
     }
 };

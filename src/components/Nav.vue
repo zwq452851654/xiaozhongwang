@@ -6,7 +6,9 @@
         <img src="../static/img/xzw-logo.png" alt="">
       </div>
       <div class="ml-5">
-        <ul class="m-0 d-flex anv-ul align-items-center font-size-2">
+        <ul 
+					class="m-0 d-flex anv-ul align-items-center font-size-2"
+					:class="{ item_color: img_url }">
           <router-link tag="li" class="mr-5" to="/home" >首页</router-link>
           <router-link tag="li" class="mr-5" to="/soup" >营养鸡汤</router-link>
           <router-link tag="li" class="mr-5" to="/blog" >博客</router-link>
@@ -22,20 +24,10 @@
 				<div class="mr-3 cursor-p" @click="showToolsHandle()"><i class="el-icon-s-tools font-size-5"></i></div>
         <router-link v-if="!isLogin" class="cursor-p" tag="div" to="/user/login">登录</router-link>
         <div v-else >
-          <el-dropdown @command="handleCommand">
-            <span class="el-dropdown-link">
-              <el-avatar 
-                size="small" 
-                src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg">
-              </el-avatar>
-            </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command='msg'>消息中心</el-dropdown-item>
-              <el-dropdown-item command='info'>个人信息</el-dropdown-item>
-              <el-dropdown-item command='info'>个性设置</el-dropdown-item>
-              <el-dropdown-item command='logout'>退出登录</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+					<el-avatar
+					  size="small" 
+					  src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg">
+					</el-avatar>
         </div>
       </div>
     </div>
@@ -46,7 +38,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import collect from './new_collect.vue'
+import collect from './collect/new_collect.vue'
 
 
 export default {
@@ -69,7 +61,7 @@ export default {
   computed:{
     ...mapState({
       isLogin: state=> state.isLogin,
-      img_url: state=> state.userInfo.img_url
+      img_url: state=> state.userInfo.path
     })
   },
   mounted(){
@@ -100,13 +92,6 @@ export default {
     resetVal(v){
       return v<10 ? '0'+v : v;
     },
-    handleCommand(command){
-      if(command == 'logout'){
-        localStorage.removeItem('token');
-        this.$store.dispatch('loginFun', false);
-				this.$store.dispatch('dis_user_info', {});
-      }
-    },
 		showToolsHandle(){
 			this.showTools = !this.showTools;
 		},
@@ -132,6 +117,9 @@ export default {
     color: #a3a3aa;
     cursor: pointer;
   }
+	.item_color li{
+		color: #fff;
+	}
   .login{
     color: #a3a3aa;
   }

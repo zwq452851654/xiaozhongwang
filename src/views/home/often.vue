@@ -48,6 +48,7 @@
 </template>
 <script>
 import { mapState } from 'vuex';
+import service from './service.js'
 export default {
   data() {
     return {
@@ -126,7 +127,7 @@ export default {
         })
         return false;
       }
-      this.$http.post('/nav/delOftenNav', {
+      service.delOftenNav({
         dhbh: item.dhbh
       }).then( res => {
         if(res.data.code){
@@ -136,7 +137,7 @@ export default {
     },
     // 获取常用导航地址
     query_often_nav() {
-      this.$http.get('/nav/query_often_nav', {}).then( res =>{
+      service.queryOften().then( res =>{
         if(res.data.code){
           let data = res.data.data;
           data.forEach(item => {
@@ -157,7 +158,7 @@ export default {
       if(!zd || !bd || zd==bd){
         return false;
       }
-      this.$http.post('/nav/setOftenNavOrder', {
+      service.setOftenNavOrder({
         zd: zd,
         bd: bd
       }).then( res =>{

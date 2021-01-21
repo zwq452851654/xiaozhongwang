@@ -58,6 +58,7 @@
 </template>
 <script>
 	import md5 from 'js-md5';
+	import service from './service.js'
 	import {
 		testPhoneHandle
 	} from '@/utils/regExp'
@@ -135,7 +136,7 @@
 							})
 						} else {
 							this.accForm.pass = md5(md5(md5(this.accForm.pass)))
-							this.$http.post('/user/reg', this.accForm).then(res => {
+							service.service(this.accForm).then(res => {
 								if (res.data.code) {
 									this.$message({
 										type: 'success',
@@ -166,7 +167,7 @@
 							})
 						} else {
 							this.accForm.md5Pass = md5(md5(md5(this.accForm.pass)))
-							this.$http.post('/user/login', this.accForm).then(res => {
+							service.login(this.accForm).then(res => {
 								if (res.data.code) {
 									localStorage.setItem('token', res.data.token);
 									this.getUserInfo();
@@ -179,9 +180,11 @@
 				}
 			},
 			getUserInfo() {
-				this.$http.get('/user/userInfo', {}).then(res => {
+				service.userInfo().then(res => {
 					if (res.data.code) {
 						this.$store.dispatch('dis_user_info', res.data.data[0] || {});
+						let userInfo = JSON.stringify(res.data.data[0])
+						localStorage.setItem('userInfo', userInfo);
 					}
 				})
 			}
