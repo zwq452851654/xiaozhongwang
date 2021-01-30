@@ -36,6 +36,9 @@ export default {
   },
   mounted(){
     this.obtainClientWH();
+		window.onresize = () => {
+			this.obtainClientWH()
+		}
   },
   methods:{
     obtainClientWH(){
@@ -58,7 +61,7 @@ export default {
     background-size: 100% 100%;
   }
   .content-1{
-    padding-bottom: 15px;
+    /* padding-bottom: 15px; */
     padding-top: 60px;
     overflow-y: auto;
   }

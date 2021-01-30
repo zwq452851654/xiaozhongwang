@@ -93,13 +93,15 @@
 						<el-input v-model="newForm.name" placeholder="输入名称"></el-input>
 					</el-form-item>
 					<el-form-item>
-						<el-input v-model="newForm.name" placeholder="输入网址"></el-input>
+						<el-input v-model="newForm.icon" placeholder="图标" disabled></el-input>
+					</el-form-item>
+					<el-form-item>
+						<el-input v-model="newForm.url" placeholder="输入网址"></el-input>
 					</el-form-item>
 					<el-form-item>
 						<el-cascader
 							v-model="newForm.type"
 							placeholder="选择类型"
-							:props="{ checkStrictly: true }"
 							class="w-100"
 							:options="options"
 							clearable>
@@ -110,7 +112,7 @@
 					</el-form-item>
 				</el-form>
 				<div style="display: flex;justify-content: center;">
-					<el-button type="primary" style="width: 40%;" round>添加</el-button>
+					<el-button type="primary" style="width: 40%;" round @click="addMeun()">添加</el-button>
 					<el-button style="width: 40%;" round>取消</el-button>
 				</div>
 			</div>
@@ -258,13 +260,37 @@ export default {
       a.setAttribute("target", "_blank");
       a.click();
     },
-    // 遗漏补充
+    // 点击遗漏补充
     addNewNavHandle(){
-      // name: "", icon: "", url: "", parentName: "", parentValue: "", childName:"", childvalue:""
-      // this.addNewNavDialog = true;
-			
 			this.drawer = true;
-    }
+    },
+		// 数据处理
+		editDataHandle(arr){
+			this.options.forEach(parent=>{
+				if(arr[0] == parent.value){
+					this.newForm['parentName'] = parent.label;
+					if(arr.length > 1){
+						parent.children.forEach(child =>{
+							if(child.value == arr[1]){
+								this.newForm['childName'] = child.label;
+							}
+						})
+					}
+				}
+			})
+		},
+		addMeun(){
+			let t_all = this.newForm.type;
+			if(t_all[0] == '006'){
+				this.newForm['other'] = t_all[0]
+			}else{
+				this.newForm['parentValue'] = t_all[0];
+				this.newForm['childValue'] = t_all.length > 1 ? t_all[1] : "";
+			}
+			this.editDataHandle(t_all)
+			console.log(this.newForm)
+			this.newForm = {}
+		}
   }
 };
 </script>

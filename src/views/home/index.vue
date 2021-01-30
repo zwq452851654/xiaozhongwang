@@ -2,30 +2,31 @@
   <div>
 		<!-- 搜索栏 -->
     <div class="search" :class="{'nav-bg':img_url}">
-			<div style="margin: 0 auto;" class="d-flex justify-content-center">
-				<div class="d-flex align-items-center search-tag" @click="showHandle()">
-					<div v-for="item in searchList" :key="item.value" >
-						<img :src="item.icon" v-if="curSearchAim == item.value">
+			<div style="width: 420px;margin: 0 auto;position: relative;">
+				<div class="d-flex justify-content-center">
+					<div class="d-flex align-items-center search-tag" @click="showHandle()">
+						<div v-for="item in searchList" :key="item.value" >
+							<img :src="item.icon" v-if="curSearchAim == item.value">
+						</div>
+						<i class="el-icon-caret-bottom ml-1 color-b8c4ce"></i>
+						<el-divider direction="vertical"></el-divider>
 					</div>
-					<i class="el-icon-caret-bottom ml-1 color-b8c4ce"></i>
-					<el-divider direction="vertical"></el-divider>
+					<div class="search_new" style="width: 100%;">
+						<el-input
+							placeholder="请输入搜索内容" 
+							size="medium" 
+							clearable
+							@keyup.enter.native="searchHandle" 
+							v-model="searchValue">
+						</el-input>
+					</div>
 				</div>
-				<div class="search_new" style="width: 285px;">
-					<el-input
-						placeholder="请输入搜索内容" 
-						size="medium" 
-						clearable
-						@keyup.enter.native="searchHandle" 
-						v-model="searchValue">
-					</el-input>
+				<div>
+					<div class="d-flex justify-content-center font-size-1" >
+						<div v-for="i in 7" :key="i" class="p">列表 {{i}}</div>
+					</div>
 				</div>
-			</div>
-			<div v-show="!showSearchList">
-				<div class="d-flex justify-content-center font-size-1" >
-					<div v-for="i in 10" :key="i" class="p">资讯 {{i}}</div>
-				</div>
-			</div>
-			<div class="search_list" v-show="showSearchList">
+				<div class="search_list" v-show="showSearchList">
 				<div 
 					v-for="item in searchList" 
 					:key="item.value" 
@@ -35,7 +36,8 @@
 					<div>{{ item.name}}</div>
 				</div>
 			</div>
-    </div>
+			</div>
+		</div>
     
 		<!-- 内容区 -->
 		<div class="content">
@@ -122,16 +124,13 @@ export default {
       
     },
     searchHandle(){
-      // let p = window.location.protocol;
+			if(!this.searchValue) return false;
       let a = document.createElement("a");
       a.setAttribute("href", `${this.aimsObj.url}${this.searchValue}`);
       a.setAttribute("target", "_blank");
       a.click();
     }
-  },
-	destroyed(){
-		console.log('组件被销售....')
-	}
+  }
 }
 </script>
 
@@ -183,11 +182,14 @@ export default {
 	}
 	.search_list{
 		margin: 2px auto;
-		width: 355px; 
+		width: 420px; 
 		border-radius: 5px;
 		background-color: #fff;
 		color: #000000;
 		overflow-x: auto;
+		position: absolute;
+		left: 0px;
+		top: 35px;
 	}
   .left{
     min-width: 300px;
@@ -200,7 +202,7 @@ export default {
 		float: left;
 		width: 70px;
 		text-align: center;
-		margin: 4px 0px;
+		padding: 5px 0px;
 		cursor: pointer;
 		color: #000000;
 		font-size: 12px;

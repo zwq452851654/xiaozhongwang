@@ -44,6 +44,7 @@ service.interceptors.response.use(response => {
 		// })
 		store.default.dispatch('loginFun', false);
 		localStorage.removeItem('token')
+		localStorage.removeItem('userInfo')
 		// router.push('/user/login');
 		intercept_flag = false;
 		let t = setTimeout(()=>{

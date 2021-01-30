@@ -5,7 +5,11 @@
     </div>
     <div v-if="isLogin">
       <div v-if="!edit">
-        <div class="item" v-for="(item, index) in oftenNav" :key="index">
+        <div 
+					class="item" 
+					v-for="(item, index) in oftenNav" 
+					:key="index"
+					@click="toThirdParty(item)">
           <img :src="item.icon" class="navIcon" alt="">
           {{item.name}}
         </div>
@@ -67,6 +71,18 @@ export default {
       isLogin: state=> state.isLogin
     })
   },
+	watch:{
+		isLogin(boo){
+			if(boo){
+				this.query_often_nav();
+			}
+		},
+		$route(to,from){
+			if(from.path == '/home/setOftenNav'){
+				this.query_often_nav();
+			}
+		}
+	},
   mounted(){
     this.query_often_nav();
   },
@@ -171,8 +187,15 @@ export default {
     },
     toLogin(){
       this.$router.push({path: '/user/login'});
-    }
-  }
+    },
+		// 打开新的页面
+		toThirdParty(item){
+		  let a = document.createElement("a");
+		  a.setAttribute("href", item.url);
+		  a.setAttribute("target", "_blank");
+		  a.click();
+		},
+	}
 };
 </script>
 <style scoped="scoped">
@@ -189,6 +212,9 @@ export default {
     font-size: 14px;
     cursor: pointer;
   }
+	.item:hover{
+		color: deepskyblue;
+	}
   .delete-icon {
     float: right;
     margin-top: 12px;

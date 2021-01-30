@@ -8,10 +8,8 @@
                 <li class="mr-4">腾讯</li>
                 <li class="mr-4">阿里巴巴</li>
             </ul>
-            <div class="text-center font-size-4">
+            <div class="text-center font-size-2">
                 <p class="mt-2">本站相关网址信息若侵害到您的利益，请联系我们删除处理，邮箱452851654@qq.com</p>
-                <p class="mt-2">本站相关网址信息若侵害到您的利益，请联系我们删除处理，邮箱452851654@qq.com</p>
-                <p class="mt-2 mb-2">本站相关网址信息若侵害到您的利益，请联系我们删除处理，邮箱452851654@qq.com</p>
             </div>
         </div>
     </div>

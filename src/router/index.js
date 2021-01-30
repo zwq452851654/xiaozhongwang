@@ -26,22 +26,6 @@ const routes = [
     }
   },
   {
-    path: '/soup',
-    name: 'Soup',
-    component: () => import('../views/soup/index.vue'),
-    meta: {
-      keepAlive: true
-    }
-  },
-  {
-    path: '/blog',
-    name: 'Blog',
-    component: () => import('../views/blog/index.vue'),
-    meta: {
-      keepAlive: true
-    }
-  },
-  {
     path: '/levae',
     name: 'Levae',
     component: () => import('../views/levae/index.vue'),
@@ -65,14 +49,14 @@ const routes = [
       keepAlive: true
     }
   },
-  {
-    path: '/shared',
-    name: 'Shared',
-    component: () => import('../views/shared/index.vue'),
-    meta: {
-      keepAlive: true
-    }
-  },
+	{
+	  path: '/message',
+	  name: 'Message',
+	  component: () => import('../views/message/index.vue'),
+		meta: {
+		  keepAlive: true
+		}
+	},
   {
     path: '/user/login',
     name: 'Login',
