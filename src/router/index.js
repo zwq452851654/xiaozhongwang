@@ -49,6 +49,14 @@ const routes = [
       keepAlive: true
     }
   },
+  {
+    path: '/brief',
+    name: 'brief',
+    component: () => import('../views/brief/index.vue'),
+    meta: {
+      keepAlive: true
+    }
+  },
 	{
 	  path: '/message',
 	  name: 'Message',

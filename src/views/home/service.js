@@ -47,6 +47,12 @@ function addOftenNav(params){
 	return request.post("/nav/addOftenNav", params);
 }
 
+// 补充遗漏
+function addBcyl(params){
+	return request.post("/nav/addBcyl", params);
+}
+
+
 
 export default {
   querySearchList,
@@ -57,5 +63,6 @@ export default {
 	setOftenNavOrder,
 	queryNav,
 	queryAllNav,
-	addOftenNav
+	addOftenNav,
+  addBcyl,
 };

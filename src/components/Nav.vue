@@ -12,6 +12,7 @@
           <router-link tag="li" class="mr-5" to="/home" >首页</router-link>
           <router-link tag="li" class="mr-5" to="/levae" >留言墙</router-link>
           <router-link tag="li" class="mr-5" to="/learn" >学习园</router-link>
+          <router-link tag="li" class="mr-5" to="/brief" >临时管理</router-link>
         </ul>
       </div>
       <div class="d-flex ml-auto font-size-2 align-items-center">

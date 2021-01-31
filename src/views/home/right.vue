@@ -108,7 +108,7 @@
 						</el-cascader>
 					</el-form-item>
 					<el-form-item v-if="newForm.type == '006'" >
-						<el-input v-model="newForm.name" placeholder="输入您认为的所属类型名称"></el-input>
+						<el-input v-model="newForm.other" placeholder="输入您认为的所属类型名称"></el-input>
 					</el-form-item>
 				</el-form>
 				<div style="display: flex;justify-content: center;">
@@ -282,14 +282,23 @@ export default {
 		addMeun(){
 			let t_all = this.newForm.type;
 			if(t_all[0] == '006'){
-				this.newForm['other'] = t_all[0]
+				
 			}else{
 				this.newForm['parentValue'] = t_all[0];
 				this.newForm['childValue'] = t_all.length > 1 ? t_all[1] : "";
 			}
 			this.editDataHandle(t_all)
-			console.log(this.newForm)
-			this.newForm = {}
+      service.addBcyl({
+        ...this.newForm
+      }).then( data =>{
+        if(data.data.code){
+          this.$message({
+            type: "success",
+            message: "提交成功"
+          })
+          this.newForm = {}
+        }
+      })
 		}
   }
 };
