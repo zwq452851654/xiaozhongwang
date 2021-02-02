@@ -4,9 +4,7 @@
       <keep-alive>
         <Nav v-if="$route.meta.keepAlive"></Nav>
       </keep-alive>
-			<keep-alive>
-				<router-view/>
-			</keep-alive>
+			<router-view/>
       <keep-alive>
         <Foot v-if="!$route.meta.showFoot"></Foot>
       </keep-alive>

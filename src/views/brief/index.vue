@@ -2,7 +2,7 @@
   <div class="content">
     <div class="box-card bg">
       <el-container>
-        <el-aside style="width: 300px;" class="border-right">
+        <el-aside style="width: 300px;min-height: 500px;" class="border-right">
           <el-menu default-active="1" class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff"
             active-text-color="#ffd04b">
             <el-menu-item index="1">
@@ -114,7 +114,12 @@
           read_user: this.navForm.userId, 
           relation: this.navForm.relation
         }).then(res =>{
-          
+          let data = res.data;
+					if(data.code){
+						this.sh_dialog = false;
+						this.queryYlbc();
+						this.$message({ type: "success", message: "审核成功" })
+					}
         })
       }
     }

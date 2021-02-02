@@ -55,64 +55,43 @@
           </div>
       </div>
     </el-card>
-
-    <!-- 新增导航 -->
-    <el-dialog title="遗漏补充" :visible.sync="addNewNavDialog" width="350px">
-      <el-form :model="newForm" size="mini" label-width="90px">
-        <el-form-item label="网站名称" >
-          <el-input v-model="newForm.name" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="所属大类">
-          <el-cascader
-            v-model="newForm.type"
-            class="w-100"
-            :options="options"
-            clearable>
-          </el-cascader>
-        </el-form-item>
-        <el-form-item label="网站地址">
-          <el-input v-model="newForm.name" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="">
-          <div class="font-size-1 color-b8c4ce">注:您所提交的将会在审核通过后进行展示</div>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="addNewNavDialog = false" size="mini">取 消</el-button>
-        <el-button type="primary" @click="addNewNavDialog = false" size="mini">提 交</el-button>
-      </div>
-    </el-dialog>
   
 		<!-- 遗漏补充 -->
 		<el-drawer
 		  title="遗漏补充"
 		  :visible.sync="drawer">
 		  <div>
-				<el-form :model="newForm" style="padding: 20px;">
-					<el-form-item>
-						<el-input v-model="newForm.name" placeholder="输入名称"></el-input>
+				<el-form :model="newForm" ref="newForm" :rules="rules" style="padding: 20px;">
+					<el-form-item prop="name">
+						<span class="mr-2" style="color: red;">*</span>
+						<el-input style="width: 95%;" v-model="newForm.name" placeholder="输入名称"></el-input>
+					</el-form-item>
+					<el-form-item prop="url">
+						<span class="mr-2" style="color: red;">*</span>
+						<el-input v-model="newForm.url" style="width: 95%;" placeholder="输入网址"></el-input>
 					</el-form-item>
 					<el-form-item>
-						<el-input v-model="newForm.icon" placeholder="图标" disabled></el-input>
+						<span class="mr-2" style="opacity: 0;">*</span>
+						<el-input v-model="newForm.icon" style="width: 95%;" placeholder="图标" disabled></el-input>
 					</el-form-item>
-					<el-form-item>
-						<el-input v-model="newForm.url" placeholder="输入网址"></el-input>
-					</el-form-item>
-					<el-form-item>
+					<el-form-item prop="type">
+						<span class="mr-2" style="color: red;">*</span>
 						<el-cascader
 							v-model="newForm.type"
 							placeholder="选择类型"
-							class="w-100"
+							style="width: 95%;"
 							:options="options"
 							clearable>
 						</el-cascader>
 					</el-form-item>
 					<el-form-item v-if="newForm.type == '006'" >
-						<el-input v-model="newForm.other" placeholder="输入您认为的所属类型名称"></el-input>
+						<span class="mr-2" style="opacity: 0;">*</span>
+						<el-input v-model="newForm.other" style="width: 95%;" placeholder="输入您认为的所属类型名称"></el-input>
 					</el-form-item>
 				</el-form>
+				<div class="pl-4 pb-4 font-size-1 color-b8c4ce">注：所提交内容在管理员审核通过后进行展示</div>
 				<div style="display: flex;justify-content: center;">
-					<el-button type="primary" style="width: 40%;" round @click="addMeun()">添加</el-button>
+					<el-button type="primary" style="width: 40%;" round @click="addMeun('newForm')">添加</el-button>
 					<el-button style="width: 40%;" round>取消</el-button>
 				</div>
 			</div>
@@ -178,10 +157,14 @@ export default {
       },
       designNav: [],
       toolNav: [],
-      addNewNavDialog: false,
       newForm: {},
       options: options,
 			drawer: false,
+			rules:{
+				name:[{ required: true, message: '请输入网址名称', trigger: 'blur' }],
+				url:[{ required: true, message: '请输入网址', trigger: 'blur' }],
+				type:[{ required: true, message: '请选择所属类型', trigger: 'change' }]
+			}
 		};
   },
   mounted() {
@@ -279,26 +262,36 @@ export default {
 				}
 			})
 		},
-		addMeun(){
-			let t_all = this.newForm.type;
-			if(t_all[0] == '006'){
-				
-			}else{
-				this.newForm['parentValue'] = t_all[0];
-				this.newForm['childValue'] = t_all.length > 1 ? t_all[1] : "";
-			}
-			this.editDataHandle(t_all)
-      service.addBcyl({
-        ...this.newForm
-      }).then( data =>{
-        if(data.data.code){
-          this.$message({
-            type: "success",
-            message: "提交成功"
-          })
-          this.newForm = {}
-        }
-      })
+		addMeun(formName){
+			this.$refs[formName].validate((valid) => {
+				if (valid) {
+					let t_all = this.newForm.type;
+					if(t_all[0] == '006'){
+						
+					}else{
+						this.newForm['parentValue'] = t_all[0];
+						this.newForm['childValue'] = t_all.length > 1 ? t_all[1] : "";
+					}
+					this.editDataHandle(t_all)
+					service.addBcyl({
+					  ...this.newForm
+					}).then( data =>{
+					  if(data.data.code){
+					    this.$message({
+					      type: "success",
+					      message: "提交成功"
+					    })
+					    this.newForm = {}
+					  }
+					})
+				} else {
+					this.$message({
+					  type: "warning",
+					  message: "请填写带*的内容"
+					})
+					return false;
+				}
+			});
 		}
   }
 };

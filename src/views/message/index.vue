@@ -3,58 +3,46 @@
 		<div class="d-flex">
 			<!-- left -->
 			<div class="left">
-				<div class="left_menu active">
-					<i class="el-icon-message font-size-5 count_color"></i>
-					<span class="ml-2 msg_text">U信</span>
-					<span class="ml-auto count_color">14</span>
+				<div class="d-flex tabs">
+					<div class="tab_tetx mr-1" :class="{active: active=='xt'}" @click="active
+					 = 'xt'">系统</div>
+					<div class="tab_tetx" :class="{active: active=='zn'}" @click="active
+					 = 'zn'">站内</div>
+					<div class="tab_tetx ml-auto font-size-1">全部已读</div>
 				</div>
-				<div class="left_menu">
-					<i class="el-icon-star-off font-size-5 count_color"></i>
-					<span class="ml-2 msg_text">关注和赞</span>
-					<span class="ml-auto count_color">14</span>
+				<div class="msg_list scroll-box">
+					<ul v-infinite-scroll="queryMsg" :infinite-scroll-disabled="disabled">
+						<li 
+							class="pt-3 cursor-p mb-2" 
+							:style="{background: content.id==msg.id ? '#F0F2F5' :'#fff'}" 
+							@click="readMsgHandle(msg)"
+							v-for="msg in xt_list" 
+							:key="msg.id">
+							<div class="d-flex align-items-center">
+								<div class="sign" :class="{sign_bg: msg.state == 0}"></div>
+								<i class="el-icon-message ml-1 mr-1 font-size-3"></i>
+								<div class="msg_title font-size-2">{{msg.title}}</div>
+								<div class="ml-auto font-size-1 color-b8c4ce pr-1">{{msg.sendTime}}</div>
+							</div>
+							<div class="pl-2 mt-1 color-b8c4ce font-size-1">{{ msg.content }}</div>
+							<div class="mt-2" style="border-bottom: 1px solid #F0F2F5;"></div>
+						</li>
+					</ul>
+					<p v-if="!disabled" class="text-center font-size-1">加载中...</p>
+					<p v-if="disabled" class="text-center font-size-1">没有更多了</p>
 				</div>
-				<div class="left_menu">
-					<i class="el-icon-chat-line-round font-size-5 count_color"></i>
-					<span class="ml-2 msg_text">评价</span>
-					<span class="ml-auto count_color">14</span>
-				</div>
-				<el-divider></el-divider>
+				
 				<!-- 可以放广告信息 -->
-				<img class="w-100" src="upload/xzwang/bg/jkGcars9XmwkeVAz5DcEddxs.jpg" alt="">
+				<img class="w-100 mt-5" src="upload/xzwang/bg/jkGcars9XmwkeVAz5DcEddxs.jpg" alt="">
 			</div>
 			
 			<!-- center -->
-			<div class="center ml-3">
-				<div class="mb-4 font-size-3 pb-1">
-					<span>收到的消息</span>
-					<span class="color-b8c4ce font-size-2 float-right cursor-p">全部已读</span>
+			<div class="center ml-3 mr-3">
+				<div class="d-flex align-items-center">
+					<div class="title pr-2">{{content.title}}</div>
+					<div class="ml-auto color-b8c4ce font-size-1">{{content.sendTime}}</div>
 				</div>
-				<!-- 无消息时展示的内容 -->
-				<div style="height: 500px;line-height: 500px;text-align: center;" v-show="show">
-					这里还木有内容哦~
-				</div>
-				<!-- 有消息的时展示的内容 -->
-				<div v-for="i in 4" :key="i">
-					<el-divider></el-divider>
-					<div class="media pl-3">
-					  <img
-							style="width: 50px;height: 50px;"
-							class="rounded-circle mr-3"
-							src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg">
-					  <div class="media-body">
-					    <div class="mt-0">Forget_180b评论了你的文章《Element,el-dialog弹出层拖拽及拉伸、双击全屏》</div>
-							<div class="font-size-1 color-b8c4ce">2020.12.10 15:35</div>
-					    <p class="mt-2">同志们 添加拖动后表单input 无法编辑和复制 怎么解决</p>
-					  </div>
-					</div>
-					<div class="d-flex mt-4 pl-3">
-						<div class="d-flex align-items-center color-b8c4ce">
-							<i class="el-icon-chat-square font-size-4"></i>
-							<span class="font-size-2 ml-1">回复</span>
-						</div>
-					</div>
-					
-				</div>
+				<div class="mt-3">{{content.content}}</div>
 			</div>
 			
 			<!-- right -->
@@ -65,6 +53,7 @@
 	</div>
 </template>
 <script>
+	import service from './service.js'
 	import courseInfoRight from "../learn/courseInfoRight.vue"
 	export default {
 		components:{
@@ -72,7 +61,57 @@
 		},
 		data(){
 			return{
-				show: false
+				show: false,
+				xt_list: [],
+				currentPage: 1,
+				active: "xt",
+				content: {},
+				page:{ pageSize: 15, currentPage: 0 },
+				disabled: false,
+				routeQuery: {}
+			}
+		},
+		mounted(){
+			this.routeQuery = this.$route.query;
+			if(this.routeQuery.row){
+				this.content = this.routeQuery.row;
+				this.readMsgHandle(this.content);
+				this.active = this.routeQuery.active;
+			}
+		},
+		methods:{
+			// 获取U信
+			queryMsg(){
+				this.page.currentPage++;
+				service.getMsg({
+					...this.page
+				}).then(res =>{
+					let data = res.data;
+					if(data.code){
+						data.data.forEach(item =>{
+							item.sendTime = item.sendTime.slice(0, 10);
+							this.xt_list.push(item)
+						})
+						if(!this.content.id){
+							this.content = data.data[0];
+						}
+						this.disabled = data.data.length > 0 ? false : true;
+					}
+				})
+			},
+			readMsgHandle(msg){
+				this.content = msg;
+				service.updateMsgState({
+					...msg
+				}).then( res=>{
+					if(res.data.code){
+						this.xt_list.forEach(item=>{
+							if(item.id == this.content.id){
+								item.state = 1;
+							}
+						})
+					}
+				})
 			}
 		}
 	}
@@ -80,28 +119,39 @@
 
 <style scoped="scoped">
 	.left{
-		width: 280px;
+		width: 300px;
 	}
-	.left_menu{
-		display: flex;
-		align-items: center;
+	.tabs{
+		height: 30px;
+		border-bottom: 1px solid #ccc;
+	}
+	.tab_tetx{
+		height: 30px;
+		color: #000;
 		padding: 0 10px;
-		height: 50px;
-		line-height: 50px;
-		border-radius: 5px;
+		font-size: 14px;
 		cursor: pointer;
 	}
-	.left_menu:hover{
-		background-color: #f0f0f0;
-	}
-	.count_color{
-		color: #ea6f5a;
-	}
 	.active{
-		background-color: #f0f0f0;
+		border-bottom: 2px solid #ff787e;
+	}
+	.sign{
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+	}
+	.sign_bg{
+		background-color: #ff787e;
+	}
+	.msg_list{
+		max-height: 450px;
+		/* overflow: hidden;
+		overflow-y: auto; */
 	}
 	.center{
+		flex:1;
 		border-left: 1px solid #CCC;
 		padding-left: 25px;
 	}
+	
 </style>

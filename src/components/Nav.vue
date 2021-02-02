@@ -19,36 +19,22 @@
         <div class="mr-3"><i class="day">{{month}}</i>月<i class="day">{{day}}</i>日</div>
         <div class="mr-3">{{hours}}:{{minutes}}:{{seconds}}</div>
         <div class="mr-3">{{week}}</div>
+				<!-- 消息 -->
 				<div class="mr-3">
-					<el-popover
-					  placement="bottom"
-					  width="230"
-					  trigger="hover">
-						<ul class="message">
-						  <li class="d-flex align-items-center mb-3">
-								<i class="el-icon-message font-size-4" style="color: #ea6f5a;"></i>
-						    <span class="ml-2 msg_text">U信</span>
-						    <span class="ml-auto msg_count">14</span>
-						  </li>
-							<li class="d-flex align-items-center mb-3">
-								<i class="el-icon-star-off font-size-4" style="color: #ea6f5a;"></i>
-							  <span class="ml-2 msg_text">关注和赞</span>
-							  <span class="ml-auto msg_count">14</span>
-							</li>
-							<li class="d-flex align-items-center">
-								<i class="el-icon-chat-line-round font-size-4" style="color: #ea6f5a;"></i>
-							  <span class="ml-2 msg_text">评价</span>
-							  <span class="ml-auto msg_count">14</span>
-							</li>
-						</ul>
-						<div style="height: 50px;line-height: 50px;" class="border-top mt-2">
-							我这里是不是还可以放点东西
-						</div>
+					<el-popover placement="bottom" width="300" trigger="hover">
+						<msg v-model="msgLength"></msg>
 						<router-link to="/message" slot="reference" tag="i" class="el-icon-message font-size-4 cursor-p">
 						</router-link>
 					</el-popover>
+					<el-badge 
+						:is-dot="msgLength>0" 
+						class="item" 
+						style="margin-top: -5px;margin-left: -5px;">
+					</el-badge>
 				</div>
+				<!-- 设置 -->
 				<div class="mr-3 cursor-p" @click="showToolsHandle()"><i class="el-icon-s-tools font-size-5"></i></div>
+			
         <router-link v-if="!isLogin" class="cursor-p" tag="div" to="/user/login">登录</router-link>
         <div v-else >
 					<el-avatar
@@ -69,12 +55,13 @@
 <script>
 import { mapState } from 'vuex';
 import collect from './collect/new_collect.vue'
-
+import msg from './message.vue'
 
 export default {
   props: {},
   components:{
-		collect
+		collect,
+		msg
 	},
   data(){
     return {
@@ -85,7 +72,8 @@ export default {
       seconds:"",
       week:"",
       url: require('../static/img/xzw-logo.png'),
-			showTools: false
+			showTools: false,
+			msgLength: 0
     }
   },
   computed:{
@@ -184,11 +172,6 @@ export default {
 	}
 	.message li:hover{
 		/* border-bottom: 1px solid #F4EDED; */
-		font-weight: bold;
-	}
-	.msg_count{
-		color: #ea6f5a;
-		font-size: 12px;
 		font-weight: bold;
 	}
 </style>

@@ -7,15 +7,17 @@
 					<img src="../../static/img/xzw-logo2.png" alt="">
 				</div>
 				<div class="d-flex justify-content-center mt-3">
-					<el-button icon="iconfont iconQQ" size="small" type="primary">&nbsp;QQ登录</el-button>
-					<el-button icon="iconfont iconweixin1" size="small" type="success">&nbsp;微信登录</el-button>
-					<el-button icon="el-icon-user-solid" v-if="accountType !== 'account'" size="small" type="info" @click="loginType('account')">账户登录</el-button>
-					<el-button icon="el-icon-mobile-phone" v-if="accountType !== 'phone'" size="small" type="danger" @click="loginType('phone')">手机登录</el-button>
+					<el-button icon="iconfont iconQQ" size="small" type="primary" disabled>&nbsp;QQ登录</el-button>
+					<el-button icon="iconfont iconweixin1" size="small" type="success" disabled>&nbsp;微信登录</el-button>
+					<el-button icon="el-icon-user-solid" v-if="accountType !== 'account'" size="small" type="info" @click="loginType('account')" disabled>账户登录</el-button>
+					<el-button icon="el-icon-mobile-phone" v-if="accountType !== 'phone'" size="small" type="danger" @click="loginType('phone')"
+					 disabled>手机登录</el-button>
 				</div>
 				<el-divider>或</el-divider>
 				<div class="form-text">
 					<div class="d-flex">
-						<el-select v-if="accountType == 'phone'" size="medium" class="mr-3" style="width:180px" v-model="accForm.select" slot="prepend">
+						<el-select v-if="accountType == 'phone'" size="medium" class="mr-3" style="width:180px" v-model="accForm.select"
+						 slot="prepend">
 							<el-option label="中国 +86" value="china"></el-option>
 						</el-select>
 						<el-input :placeholder="accText" autocomplete="off" size="medium" v-model="accForm.account"></el-input>
