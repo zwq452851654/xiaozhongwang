@@ -53,6 +53,12 @@ function addBcyl(params){
 }
 
 
+// 搜索提示
+function sugrec(params){
+	return request.get("/nav/sugrec", params);
+}
+
+
 
 export default {
   querySearchList,
@@ -65,4 +71,5 @@ export default {
 	queryAllNav,
 	addOftenNav,
   addBcyl,
+	sugrec
 };

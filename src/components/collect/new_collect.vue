@@ -143,7 +143,6 @@
 				editCollectDialog: false,
 				collectForm: {},
 				activeID: "zdy_001",
-				oldBH: "",
 				queryFlag: true,
 				curEditBH: "",
 				dialogVisible: false
@@ -164,6 +163,7 @@
 			this.CH = window.innerHeight;
 		},
 		methods:{
+			// 新建一级文件夹时，在失去焦点之后执行
 			editName(e, item){
 				let text = e.target.innerText;
 				if(text){
@@ -184,6 +184,7 @@
 					})
 				}
 			},
+			// 一级收藏夹列表查询
 			queryCollect(){
 				this.folderList = [];
 				this.$http.get('/collect/queryCollect', {}).then(res =>{
@@ -200,6 +201,7 @@
 						newData.unshift({
 							bh:"zdy_001", mc:"网络收藏夹", type: "1"
 						})
+						this.collectForm['type'] = '1';
 						this.folderList = newData;
 					}else{
 						this.$message({type: 'waring', message: data.msg});
@@ -234,19 +236,20 @@
 						break;
 				}
 			},
+			// 二级收藏夹列表查询
 			secondLevel(item, index){
 				if(item.type == 1){
 					this.second = false;
 					return false;
 				}
-				if(this.oldBH != item.bh && item.list.length == 0){
-					this.oldBH = item.bh;
+				if(!item.state && item.type == '2'){
 					this.$http.get('/collect/querySecondCollect',{
 						bh: item.bh
 					}).then(res =>{
 						if(res.data.code){
 							this.collect.forEach(row =>{
 								if(row.bh == item.bh){
+									row.state = true;
 									row.list = res.data.data;
 									this.secondLeftList = res.data.data;
 								}
@@ -302,8 +305,6 @@
 				})
 			},
 			editCollect(){
-				// this.queryCollect();
-				
 				this.editCollectDialog = true;
 				this.hideMask();
 			},
@@ -316,10 +317,16 @@
 			},
 			// 点击添加时进行保存
 			saveWebsite(){
+				let reg = /^http(s)?:\/\//;
+				if(!reg.test(this.collectForm.url)){
+					this.$message({type: 'info', message: '请填写包含http://或https://开头的网址信息'});
+					return false
+				}
 				this.$http.post('/collect/addCollect', {
 				  ...this.collectForm
 				}).then( res => {
 				  if(res.data.code){
+						this.queryCollect();
 						this.$message({type: 'success', message: '添加成功'});
 						this.editCollectDialog = false;
 				  }

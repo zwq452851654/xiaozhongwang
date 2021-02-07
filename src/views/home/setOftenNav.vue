@@ -172,7 +172,7 @@ export default {
 };
 </script>
 <style>
-.el-form-item {
+.customize .el-form-item {
   margin-bottom: 0px;
 }
 </style>

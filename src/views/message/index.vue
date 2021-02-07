@@ -42,7 +42,14 @@
 					<div class="title pr-2">{{content.title}}</div>
 					<div class="ml-auto color-b8c4ce font-size-1">{{content.sendTime}}</div>
 				</div>
-				<div class="mt-3">{{content.content}}</div>
+				<div class="mt-3" v-if="content.content">{{content.content}}</div>
+				<div class="text-center m-auto" v-else>
+					<img src="../../static/img/zwnr.jpg" class="mt-5" alt="">
+					<div class="text-center mb-5 color-b8c4ce">暂无内容</div>
+				</div>
+				<div class="ad nav-bg mt-2 text-center">
+					我这里是不是还可以放点东西
+				</div>
 			</div>
 			
 			<!-- right -->
@@ -149,9 +156,17 @@
 		overflow-y: auto; */
 	}
 	.center{
+		position: relative;
 		flex:1;
 		border-left: 1px solid #CCC;
 		padding-left: 25px;
+	}
+	.ad{
+		position: absolute;
+		width: 95%;
+		height: 80px;
+		line-height: 80px;
+		bottom: 0px;
 	}
 	
 </style>

@@ -11,9 +11,16 @@ function sendMsg(params){
 	return request.post("/message/sendMsg", params);
 }
 
+// 审核通过
+function navReview(params){
+	return request.post("/nav/navReview", params);
+}
+
+
 
 
 export default {
   queryYlbc,
-  sendMsg
+  sendMsg,
+	navReview
 };
