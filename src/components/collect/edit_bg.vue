@@ -54,6 +54,7 @@
 </template>
 
 <script>
+	import service from "@/service/service.js"
 	import autoUpload from '../autoUpload.vue'
 	export default {
 		components: {
@@ -100,7 +101,7 @@
 			},
 			// 获取初始背景图
 			query() {
-				this.$http.get("/bg/queryBgPic", {}).then(res => {
+				service.queryBgPic().then(res => {
 					if (res.data.code) {
 						this.picList = res.data.data;
 					}
@@ -109,7 +110,7 @@
 			// 自定义上传图片的回调
 			successHandle(data) {
 				let res = data[0].response.data[0];
-				this.$http.post('/bg/uploadBg', {
+				service.uploadBg({
 					bh: res.bh,
 					bs: ""
 				}).then(res => {
@@ -130,7 +131,7 @@
 				}
 
 				if (this.$store.state.isLogin) {
-					this.$http.post('/bg/setBg', {
+					service.setBg({
 						bh: img.bh
 					}).then(res => {
 						if (res.data.code) {

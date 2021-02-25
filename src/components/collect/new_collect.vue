@@ -30,7 +30,8 @@
 					class="collect_item" 
 					v-for="(item, index) in collect" 
 					:key="item.bh"
-					@mouseover="secondLevel(item, index)">
+					@mouseover="secondLevel(item, index)"
+					@contextmenu.prevent="rightClick($event, item)">
 					<div 
 						v-if="item.type == 1"
 						style="display: flex;align-items: center;"
@@ -39,7 +40,7 @@
 						<span>{{ item.mc }}</span>
 					</div>
 					<div 
-						v-if="item.type == 2" 
+						v-if="item.type == 2"
 						style="display: flex;align-items: center;">
 						<i class="el-icon-folder mr-1 font-size-4" style="color: #f6b95f;"></i>
 						<span>{{ item.mc }}</span>
@@ -59,7 +60,14 @@
 				<li class="collect_item border-bottom" @click="editCollect()">
 					<i class="el-icon-star-off mr-1"></i>添加收藏
 				</li>
-				<li class="collect_item" v-for="item in secondLeftList" :key="item.bh" @click="openWebsite(item)">{{item.mc}}</li>
+				<li 
+					class="collect_item" 
+					v-for="item in secondLeftList" 
+					:key="item.bh" 
+					@click="openWebsite(item)"
+					@contextmenu.prevent="rightClick($event, item)">
+					{{item.mc}}
+				</li>
 			</ul>
 		</div>
 		
@@ -86,20 +94,47 @@
 							:class="{active: activeID == item.bh}">
 							<i v-if="item.type == 2" class="el-icon-folder mr-1 font-size-4 ml-4" style="color: #f6b95f;"></i>
 							<i v-else class="el-icon-user-solid font-size-5"></i>
+							<!-- @blur="editName($event, item)" -->
 							<span 
 								:contenteditable="item.bh == curEditBH" 
-								@blur="editName($event, item)">{{ item.mc }}</span>
-							<i v-if="item.type == 2" class="el-icon-edit font-size-4 ml-auto mr-2 cursor-p" @click="updateFolderName(item)"></i>
+								:ref="item.bh == curEditBH ? 'edSpan' : ''"
+								:class="item.bh == curEditBH ? 'ed-span' : ''"
+								>{{ item.mc }}</span>
+							<i 
+								v-if="item.type == 2 && curEditBH == ''" 
+								class="el-icon-edit font-size-4 ml-auto mr-2 cursor-p" 
+								@click="updateFolderName(item)"></i>
+							<i 
+								v-if="item.type == 2 && item.bh == curEditBH" 
+								@click="editName(item)"
+								class="el-icon-finished font-size-4 ml-auto mr-2 cursor-p"></i>
 						</li>
 					</ul>
 				</div>
 			</div>
 		  <span slot="footer" class="dialog-footer">
 		    <el-button size="medium" style="float: left;" @click="addFolder()">新建文件夹</el-button>
-				<el-button size="medium" type="primary" @click="saveWebsite()">添 加</el-button>
+				<el-button size="medium" type="primary" @click="saveWebsite()">保 存</el-button>
 		    <el-button size="medium" @click="editCollectDialog = false">取 消</el-button>
 		  </span>
 		</el-dialog>
+		
+		
+		<!-- 右键菜单 -->
+		<e-vue-contextmenu
+			ref="ctxshow"
+			id="contextStyle"
+			class="menu">
+			<ul>
+				<li 
+					v-if="rightClickRow.type == 1"
+					@click="openWebsite(rightClickRow)">
+					打开（{{rightClickRow.mc}})
+				</li>
+				<li @click="rightClickEdit(rightClickRow)">编辑</li>
+				<li @click="delCollectItem(rightClickRow)">删除</li>
+			</ul>
+		</e-vue-contextmenu>
 		
 		<!-- 更换皮肤 -->
 		<editBg v-model="dialogVisible"></editBg>
@@ -108,6 +143,7 @@
 </template>
 
 <script>
+	import service from "@/service/service.js"
 	import { mapState } from 'vuex';
 	import editBg from "./edit_bg.vue"
 	export default{
@@ -145,12 +181,16 @@
 				activeID: "zdy_001",
 				queryFlag: true,
 				curEditBH: "",
-				dialogVisible: false
+				dialogVisible: false,
+				newValue:"",
+				rightClickRow: {}
 		  }
 		},
 		watch:{
 			showTools(boo){
 				if(boo){
+					this.queryCollect();
+					this.curEditBH = "";
 					this.toolsList.forEach(item =>{
 						if(item.value == 'logout'){
 							item.show = this.isLogin;
@@ -163,23 +203,75 @@
 			this.CH = window.innerHeight;
 		},
 		methods:{
-			// 新建一级文件夹时，在失去焦点之后执行
-			editName(e, item){
-				let text = e.target.innerText;
+			// 右键菜单
+			rightClick (e, item) {
+				this.rightClickRow = item;
+				this.$refs.ctxshow.showMenu(e);
+			},
+			// 点击右键菜单里的-编辑
+			rightClickEdit(item){
+				console.log(item)
+				this.curEditBH = "";
+				// 1: 是网址
+				if(item.type == 1){
+					this.collectForm = item;
+					this.activeID = item.parentId ? item.parentId : "zdy_001";
+				}
+				// 2: 是目录
+				if(item.type == 2){
+					this.activeID = item.bh;
+					this.curEditBH = item.bh;
+				}
+				this.editCollectDialog = true;
+			},
+			// 右击菜单里的-删除
+			delCollectItem(item){
+				// delCollectItem
+				service.delCollectItem({
+					...item
+				}).then(res =>{
+					if(res.data.code){
+						this.second = false;
+						this.queryCollect();
+						this.rightClickRow = {};
+						this.$refs.ctxshow.hideMenu();
+					}else{
+						this.$message({
+							type: "warning",
+							message: res.data.msg
+						})
+						this.$refs.ctxshow.hideMenu();
+					}
+				})
+			},
+			// 新建收藏文件夹
+			addFolder(){
+				this.folderList.push({
+					bh: 'SC0001', mc: '新建文件夹', type: '2'
+				})
+				this.curEditBH = "SC0001";
+			},
+			// 新建一级文件夹
+			editName(item){
+				let text = this.$refs.edSpan[0].innerText;
 				if(text){
 					item.mc = text;
-					this.$http.post('/collect/addFolder', {
+					service.addFolder({
 					  mc: item.mc,
+						bh: item.bh,
 						type: item.type
 					}).then( res => {
 					  if(res.data.code){
 							this.queryCollect();
+							this.curEditBH = "";
+							this.activeID = "zdy_001";
 					  }
 					})
 				}else{
 					this.folderList.forEach((row,i) =>{
 						if(row.bh == item.bh){
-							this.folderList.splice(i, 1)
+							this.folderList.splice(i, 1);
+							this.activeID = "zdy_001";
 						}
 					})
 				}
@@ -187,7 +279,7 @@
 			// 一级收藏夹列表查询
 			queryCollect(){
 				this.folderList = [];
-				this.$http.get('/collect/queryCollect', {}).then(res =>{
+				service.queryCollect().then(res =>{
 					let data = res.data;
 					if(data.code){
 						this.collect = data.data;
@@ -243,7 +335,7 @@
 					return false;
 				}
 				if(!item.state && item.type == '2'){
-					this.$http.get('/collect/querySecondCollect',{
+					service.querySecondCollect({
 						bh: item.bh
 					}).then(res =>{
 						if(res.data.code){
@@ -304,6 +396,7 @@
 					this.left = this.$refs.tools.offsetLeft - this.$refs.collect.offsetWidth + "px";
 				})
 			},
+			// 点击收藏按钮
 			editCollect(){
 				this.editCollectDialog = true;
 				this.hideMask();
@@ -315,14 +408,14 @@
 				}
 				this.collectForm['type'] = item.type;
 			},
-			// 点击添加时进行保存
+			// 点击保存时执行
 			saveWebsite(){
 				let reg = /^http(s)?:\/\//;
 				if(!reg.test(this.collectForm.url)){
 					this.$message({type: 'info', message: '请填写包含http://或https://开头的网址信息'});
 					return false
 				}
-				this.$http.post('/collect/addCollect', {
+				service.addCollect({
 				  ...this.collectForm
 				}).then( res => {
 				  if(res.data.code){
@@ -332,24 +425,18 @@
 				  }
 				})
 			},
-			// 新建收藏文件夹
-			addFolder(){
-				this.folderList.push({
-					bh: 'SC0001', mc: '新建文件夹', type: '2'
-				})
-				this.curEditBH = "SC0001";
-			},
 			// 修改文件夹名称
 			updateFolderName(item){
-				// this.curEditBH = item.bh;
+				this.curEditBH = item.bh;
 			},
 			// 打开网址
 			openWebsite(item){
+				this.$refs.ctxshow.hideMenu();
 				let a = document.createElement("a");
 				a.setAttribute("href", item.url);
 				a.setAttribute("target", "_blank");
 				a.click();
-				this.hideMask();
+				// this.hideMask();
 			},
 		}
 	}
@@ -458,5 +545,36 @@
 	}
 	.active{
 		background-color: #E4E4E4;
+	}
+	.ed-span{
+		width: 80%;
+		height: 30px;
+		padding: 0 8px;
+		border: 1px solid #c0c4cc;
+		background-color: #fff;
+	}
+	
+	/* 右键菜单 */
+	.ctx-menu-container{
+		padding: 0px !important;
+		box-shadow: none !important;
+		border-radius: 0px !important;
+	}
+	.menu ul {
+	  margin: 0px;
+	  padding: 0px;
+	  text-align: center;
+	  list-style-type: none;
+	}
+	.menu ul li {
+	  padding: 5px 5px;
+	  font-size: 12px;
+	}
+	.menu ul li:hover {
+	  background: #e1dddd;
+	}
+	.menu ul li a:link {
+	  color: #000;
+	  text-decoration: none;
 	}
 </style>

@@ -130,6 +130,7 @@
 				a.click();
 			},
 			changeHandle(q){
+				return false
 				service.sugrec({
 					prod: 'pc',
 					wd: q

@@ -76,7 +76,13 @@
 				accText: "请输入常用手机号",
 				czfs: "login", //操作方式  登录：login   注册：reg
 				topVal: "0",
+				fromPath: ''
 			}
+		},
+		beforeRouteEnter (to, from, next) {
+			next(vm => {
+				vm.fromPath = from.path;
+			}); 
 		},
 		mounted() {
 
@@ -174,7 +180,7 @@
 									localStorage.setItem('token', res.data.token);
 									this.getUserInfo();
 									this.$store.dispatch('loginFun', true);
-									this.$router.replace('/');
+									this.$router.replace( this.fromPath ? this.fromPath : '/');
 								}
 							})
 						}

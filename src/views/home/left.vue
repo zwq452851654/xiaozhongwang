@@ -49,14 +49,6 @@
               <i class="ml-auto">{{ list.hotValue }}</i>
             </li>
           </ul>
-          <ul class="newa" v-if="tab.name == 'zhengquan'">
-            <li class="font-size-2 text-center" v-if="zhengquanObj.list.length == 0">(⊙o⊙)…我好像遇到了点小麻烦</li>
-            <li class="list-item" v-else v-for="(list,index) in zhengquanObj.list" :key="index">
-              <span class="heat" :style="{background: reatColor[index]}">{{ ++index }}</span>
-              <span class="news-title" @click="seeNews(list)">{{ list.title }}</span>
-              <i class="ml-auto">999+</i>
-            </li>
-          </ul>
           <ul class="newa" v-if="tab.name == 'city'">
             <li class="list-item">内容暂定</li> 
           </ul>
@@ -95,7 +87,6 @@ export default {
       newTabs:[
         { label:'微博', name:'weibo' },
         { label:'百度', name:'baidu' },
-        { label:'证券', name:'zhengquan' },
         { label:'北京', name:'city' }
       ],
       showForm: false,
@@ -111,11 +102,6 @@ export default {
         list: [],
         page: 0
       },
-      zhengquan: [],
-      zhengquanObj:{
-        list: [],
-        page: 0
-      },
       jishu: [],
       jishuObj:{
         list: [],
@@ -126,7 +112,6 @@ export default {
   mounted(){
     this.queryHotData('weibo');
     this.queryHotData('baidu');
-    this.queryHotData('zhengquan');
     this.queryHotData('jishu');
 		// setInterval(()=>{
 		// 	this.queryHotData('weibo');

@@ -8,24 +8,32 @@
 			<div class="tab_tetx ml-auto">全部已读</div>
 		</div>
 		<div class="msg_list scroll-box">
-			<ul v-infinite-scroll="queryMsg" :infinite-scroll-disabled="disabled" infinite-scroll-delay>
-				<li 
-					class="pt-3 pb-2 cursor-p"
-					v-for="msg in xt_list"
-					:key="msg.id"
-					 @click="toMsg(msg)">
-					<div class="d-flex align-items-center">
-						<div class="sign" :class="{sign_bg: msg.state === 0}"></div>
-						<i class="el-icon-message ml-1 mr-1 font-size-3"></i>
-						<div class="msg_title">{{msg.title}}</div>
-						<div class="ml-auto">{{msg.sendTime}}</div>
-					</div>
-					<div class="pl-2 mt-1 color-b8c4ce font-size-1">{{ msg.content }}</div>
-					<div class="border-bottom mt-2"></div>
-				</li>
-			</ul>
-			<p v-if="!disabled" class="text-center font-size-1">加载中...</p>
-			<p v-if="disabled" class="text-center font-size-1">没有更多了</p>
+			<div v-if="!isLogin" class="p text-center">
+				登录后查看， <router-link tag="span" class="to-login" to="/user/login">去登录</router-link>
+			</div>
+			<div v-else>
+				<ul
+					v-infinite-scroll="queryMsg" 
+					:infinite-scroll-disabled="disabled" 
+					infinite-scroll-delay>
+					<li 
+						class="pt-3 pb-2 cursor-p"
+						v-for="msg in xt_list"
+						:key="msg.id"
+						 @click="toMsg(msg)">
+						<div class="d-flex align-items-center">
+							<div class="sign" :class="{sign_bg: msg.state === 0}"></div>
+							<i class="el-icon-message ml-1 mr-1 font-size-3"></i>
+							<div class="msg_title">{{msg.title}}</div>
+							<div class="ml-auto">{{msg.sendTime}}</div>
+						</div>
+						<div class="pl-2 mt-1 color-b8c4ce font-size-1">{{ msg.content }}</div>
+						<div class="border-bottom mt-2"></div>
+					</li>
+				</ul>
+				<p v-if="!disabled" class="text-center font-size-1">加载中...</p>
+				<p v-if="disabled" class="text-center font-size-1">没有更多了</p>
+			</div>
 		</div>
 		<div style="height: 50px;line-height: 50px;" class="nav-bg mt-2 text-center">
 			我这里是不是还可以放点东西
@@ -126,5 +134,9 @@
 	}
 	.msg_list{
 		max-height: 300px;
+	}
+	.to-login{
+	  color: #409EFF;
+	  cursor: pointer;
 	}
 </style>

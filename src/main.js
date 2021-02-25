@@ -17,6 +17,9 @@ import "element-ui/lib/theme-chalk/index.css";
 
 import './mock/mock.js'
 
+import Contextmenu from "e-vue-contextmenu"
+Vue.use(Contextmenu)
+
 Vue.use(ElementUI);
 
 Vue.config.productionTip = false
