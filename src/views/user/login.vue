@@ -35,7 +35,7 @@
 					</div>
 
 					<div class="d-flex mt-4 align-items-center" v-if="accountType == 'account'">
-						<el-input placeholder="请输入登录密码" autocomplete="off" type="password" size="medium" v-model="accForm.pass"></el-input>
+						<el-input placeholder="请输入登录密码" autocomplete="off" type="password" size="medium" v-model="accForm.pass" @keyup.enter.native="login"></el-input>
 						<div class="ml-3 font-size-2 pass-strength">
 							<div class="strength-text" :style="{marginTop: topVal + 'px' }">
 								<span>低</span>
@@ -47,7 +47,7 @@
 
 					<div class="mt-4">
 						<el-button v-if="czfs == 'reg'" size="small" type="success" class="w-100" @click="regHandle()">注册</el-button>
-						<el-button v-else size="small" type="success" class="w-100" @click="login()">登录</el-button>
+						<el-button v-else size="small" type="primary" class="w-100" @click="login()">登录</el-button>
 					</div>
 					<div class="text-right font-size-1 mt-2">
 						<div v-if="czfs !== 'reg'">没有账号？<a href="##" @click="operatingHandle('reg')">立即注册</a></div>
@@ -69,8 +69,8 @@
 			return {
 				accForm: {
 					select: 'china',
-					account: 'admin',
-					pass: 'admin'
+					account: '',
+					pass: ''
 				},
 				accountType: "account", // 账户类型  手机：phone  账户：account
 				accText: "请输入常用手机号",
@@ -143,18 +143,25 @@
 								message: '密码不能空且不少于六位数'
 							})
 						} else {
-							this.accForm.pass = md5(md5(md5(this.accForm.pass)))
-							service.service(this.accForm).then(res => {
+							let pass = md5(md5(md5(this.accForm.pass)))
+							service.reg({
+                ...this.accForm,
+                pass,
+              }).then(res => {
 								if (res.data.code) {
+                  this.czfs = "login";
 									this.$message({
 										type: 'success',
-										message: '完成注册，请直接登录'
+										message: '完成注册，请登录'
 									})
+                  this.accForm.pass = '';
 								} else {
 									this.$message({
 										type: 'warning',
 										message: res.data.msg
 									})
+                  this.accForm.account = '';
+                  this.accForm.pass = '';
 								}
 							})
 						}
@@ -181,7 +188,12 @@
 									this.getUserInfo();
 									this.$store.dispatch('loginFun', true);
 									this.$router.replace( this.fromPath ? this.fromPath : '/');
-								}
+								}else{
+                  this.$message({
+                  	type: 'warning',
+                  	message: res.data.msg
+                  })
+                }
 							})
 						}
 					}
@@ -192,7 +204,7 @@
 					if (res.data.code) {
 						this.$store.dispatch('dis_user_info', res.data.data[0] || {});
 						let userInfo = JSON.stringify(res.data.data[0])
-						localStorage.setItem('userInfo', userInfo);
+            if(userInfo) localStorage.setItem('userInfo', userInfo);
 					}
 				})
 			}

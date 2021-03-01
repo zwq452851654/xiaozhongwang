@@ -10,7 +10,7 @@
         <el-tab-pane :label="itemName[key]" :name="key" v-for="(item, key) in itemName" :key="key">
             <div class="skill-div">
                 <div class="skill-con">
-                    <div class="col skill-con-item font-size-1" v-for="child in skillNav[key]" :key="child.id" @click="toThirdParty(child)">
+                    <div class="col skill-con-item font-size-3" v-for="child in skillNav[key]" :key="child.id" @click="toThirdParty(child)">
                       <img v-if="child.icon" :src="child.icon" class="navIcon" alt="">
                       {{ child.name }}
                     </div>
@@ -28,7 +28,7 @@
       </div>
       <div class="design-div">
           <div class="skill-con">
-              <div class="col skill-con-item font-size-1" v-for="item in designNav" :key="item.id" @click="toThirdParty(item)">
+              <div class="col skill-con-item font-size-3" v-for="item in designNav" :key="item.id" @click="toThirdParty(item)">
                 <img v-if="item.icon" :src="item.icon" class="navIcon" alt="">
                 {{ item.name }}
               </div>
@@ -45,7 +45,7 @@
       <div class="design-div">
           <div class="skill-con">
               <div 
-                class="col skill-con-item font-size-1" 
+                class="col skill-con-item font-size-3" 
                 v-for="item in toolNav" 
                 :key="item.id"
                 @click="toThirdParty(item)">

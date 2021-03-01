@@ -210,7 +210,6 @@
 			},
 			// 点击右键菜单里的-编辑
 			rightClickEdit(item){
-				console.log(item)
 				this.curEditBH = "";
 				// 1: 是网址
 				if(item.type == 1){
@@ -325,6 +324,7 @@
 						this.$store.dispatch('dis_user_info', {});
 						localStorage.removeItem('userInfo');
 						this.hideMask();
+            this.$router.push({path:'/home'})
 						break;
 				}
 			},

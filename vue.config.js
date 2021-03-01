@@ -20,7 +20,7 @@ module.exports = {
                 changeOrigin: true
             },
 						'/xzwang': {
-						    target: 'http://localhost:8002',
+						    target: 'http://39.107.227.98:8002',
 						    changeOrigin: true
 						}
         }

@@ -17,10 +17,33 @@ function navReview(params){
 }
 
 
+// -------------------   导航类型维护   --------------------
+// 新增、修改
+function editBzx(params){
+	return request.post("/bzx/editBzx", params);
+}
+
+// 网址类型查询
+function queryWebType(params){
+	return request.get("/bzx/queryWebType", params);
+}
+
+// 删除
+function delWebType(params){
+	return request.post("/bzx/delWebType", params);
+}
+
+
+
+
+
 
 
 export default {
   queryYlbc,
   sendMsg,
-	navReview
+	navReview,
+  editBzx,
+  queryWebType,
+  delWebType
 };

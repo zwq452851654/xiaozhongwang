@@ -110,28 +110,27 @@ export default {
     };
   },
   mounted(){
-    this.queryHotData('weibo');
-    this.queryHotData('baidu');
-    this.queryHotData('jishu');
 		// setInterval(()=>{
 		// 	this.queryHotData('weibo');
 		// },3000)
+    
+    this.queryNews();
   },
   methods:{
-    // 获取微博热搜数据
-    queryHotData(name){
-      service.queryNews({
-        'q': name + '_hot'
-      }).then( res =>{
+    // 获取热门资讯
+    queryNews(){
+      service.queryNews().then(res =>{
         let data = res.data;
         if(data.code){
-          if(name == 'jishu'){
-            data.data.forEach((item,i) =>{
-              item.rank = ++i;
-            })
-          }
-          this[name] = data.data;
-          this.changeList(name)
+          this.weibo = data.data.weibo;
+          this.baidu = data.data.baidu;
+          data.data.cto_51.forEach((element, i) => {
+            element.rank = ++i;
+          });
+          this.jishu = data.data.cto_51;
+          this.changeList('weibo')
+          this.changeList('baidu')
+          this.changeList('jishu')
         }
       })
     },

@@ -11,9 +11,10 @@ function setSearchAims(params){
 	return request.post("/nav/setSearchAims", params);
 }
 
+
 // 获取资讯列表
 function queryNews(params){
-	return request.get("/news/news", params);
+	return request.get("/news/queryNews", params);
 }
 
 // 获取常用导航列表

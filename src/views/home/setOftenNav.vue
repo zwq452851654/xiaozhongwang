@@ -24,9 +24,9 @@
             全部地址
             <i class="prompt-text">点击加号添加至常用栏</i>
           </div>
-          <!-- <div>
-            <el-input style="width: 250px" v-model="input" size="mini" placeholder="输入内容进行搜索"></el-input>
-          </div> -->
+          <div>
+            <el-input style="width: 200px" v-model="searchAims" size="mini" placeholder="输入名称搜索" @input="searchAimsHandle"></el-input>
+          </div>
         </div>
 
 
@@ -88,7 +88,9 @@ export default {
       allNav: {},
       navForm: {},
       input:"",
-      navArr:[]
+      navArr:[],
+      searchAims: "",
+      listData: []
     };
   },
   mounted() {
@@ -101,30 +103,47 @@ export default {
       service.queryAllNav().then( res => {
         if(res.data.code){
           let data = res.data.data;
-          let obj_A = {};
-          data.forEach(item => {
-            if(item.icon){
-              item.icon = require('../../static/icon/'+ item.icon)
-            }
-
+          this.listData = res.data.data;
+          this.listHandle(data);
+        }
+      })
+    },
+    // 数据处理
+    listHandle(data){
+      let obj_A = {};
+      this.allNav = {};
+      data.forEach(item => {
+        if(item.icon){
+          item.icon = require('../../static/icon/'+ item.icon)
+        }
+        if(obj_A[item.parentValue]){
+          obj_A[item.parentValue].push(item);
+        }else{
+          if(!item.parentValue){
+            item.parentValue = '999';
             if(obj_A[item.parentValue]){
               obj_A[item.parentValue].push(item);
             }else{
-              if(!item.parentValue){
-                item.parentValue = '999';
-                if(obj_A[item.parentValue]){
-                  obj_A[item.parentValue].push(item);
-                }else{
-                  obj_A['999'] = [];
-                }
-              }else{
-                obj_A[`${item.parentValue}`] = [];
-              }
+              obj_A['999'] = [];
             }
-          })
-          this.allNav = obj_A;
+          }else{
+            obj_A[`${item.parentValue}`] = [];
+          }
         }
       })
+      this.allNav = obj_A;
+    },
+    // 对全部导航信息进行模糊匹配
+    searchAimsHandle(v){
+      // let list = this.listData;
+      // let len = list.length;
+      // let arr = [];
+      // for(let i=0;i<len;i++){
+      //     if(list[i].name.indexOf(v)>=0){
+      //         arr.push(list[i]);
+      //     }
+      // }
+      // console.log(arr)
     },
     // 获取常用导航地址
     query_often_nav() {
