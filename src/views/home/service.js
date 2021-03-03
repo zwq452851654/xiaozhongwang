@@ -59,6 +59,11 @@ function sugrec(params){
 	return request.get("/nav/sugrec", params);
 }
 
+// 百度翻译
+function fanyi(params){
+	return request.get("/nav/fanyi", params);
+}
+
 
 
 export default {
@@ -72,5 +77,6 @@ export default {
 	queryAllNav,
 	addOftenNav,
   addBcyl,
-	sugrec
+	sugrec,
+  fanyi
 };

@@ -3,7 +3,7 @@
     <div class="d-flex align-items-center" style="width:1300px;margin:0 auto">
       <!-- <div class="mr-5"><b>小众网</b></div> -->
       <div class="logo">
-        <img src="../static/img/xzw-logo.png" alt="">
+        <img src="../../static/img/xzw-logo.png" alt="">
       </div>
       <div class="ml-5">
         <ul 
@@ -54,8 +54,8 @@
 
 <script>
 import { mapState } from 'vuex';
-import collect from './collect/new_collect.vue'
-import msg from './message.vue'
+import collect from '../collect/new_collect.vue'
+import msg from '../message/message.vue'
 
 export default {
   props: {},
@@ -71,7 +71,7 @@ export default {
       minutes:"",
       seconds:"",
       week:"",
-      url: require('../static/img/xzw-logo.png'),
+      url: require('../../static/img/xzw-logo.png'),
 			showTools: false,
 			msgLength: 0
     }

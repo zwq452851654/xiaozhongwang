@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-import Nav from './components/Nav'
+import Nav from './components/navCom/Nav.vue'
 import Foot from './components/Foot'
 import { mapState } from 'vuex';
 
