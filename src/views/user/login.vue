@@ -23,7 +23,7 @@
 						<el-input :placeholder="accText" autocomplete="off" size="medium" v-model="accForm.account"></el-input>
 					</div>
 
-					<div class="d-flex align-items-center mt-4">
+					<div class="d-flex align-items-center mt-4" v-if="czfs == 'reg'">
 						<el-input placeholder="图形验证码" autocomplete="off" style="width:180px" size="medium" v-model="accForm.picCode"></el-input>
 						<div style="width:210px;height:35px;background: aliceblue;" class="ml-3 mr-3"></div>
 						<i class="el-icon-refresh font-size-5 cursor-p"></i>
@@ -36,7 +36,7 @@
 
 					<div class="d-flex mt-4 align-items-center" v-if="accountType == 'account'">
 						<el-input placeholder="请输入登录密码" autocomplete="off" type="password" size="medium" v-model="accForm.pass" @keyup.enter.native="login"></el-input>
-						<div class="ml-3 font-size-2 pass-strength">
+						<div class="ml-3 font-size-2 pass-strength" v-if="czfs == 'reg'">
 							<div class="strength-text" :style="{marginTop: topVal + 'px' }">
 								<span>低</span>
 								<span>中</span>
@@ -73,7 +73,7 @@
 					pass: ''
 				},
 				accountType: "account", // 账户类型  手机：phone  账户：account
-				accText: "请输入常用手机号",
+				accText: "请输入手机号/用户名称",
 				czfs: "login", //操作方式  登录：login   注册：reg
 				topVal: "0",
 				fromPath: ''
@@ -205,9 +205,21 @@
 						this.$store.dispatch('dis_user_info', res.data.data[0] || {});
 						let userInfo = JSON.stringify(res.data.data[0])
             if(userInfo) localStorage.setItem('userInfo', userInfo);
+            // this.queryMenu();
 					}
 				})
-			}
+			},
+      // 获取菜单
+      queryMenu(){
+        service.queryMenu().then( res =>{
+          let data = res.data;
+          if(data.code){
+            let info = JSON.parse(localStorage.getItem('userInfo'));
+            info['menu'] = data.data[0];
+            this.$store.dispatch('dis_user_info', info || {});
+          }
+        })
+      },
 		}
 	}
 </script>

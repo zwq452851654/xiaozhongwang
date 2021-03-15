@@ -13,9 +13,11 @@
       </el-select>
       <el-button class="ml-3" type="primary" size="mini" @click="translate()">翻 译</el-button>
     </div>
-    <el-input type="textarea" rows="4" v-model="fanyi_value"></el-input>
+    <el-input type="textarea" rows="5" clearable v-model="fanyi_value" @keyup.enter.native="translate()"></el-input>
     <div class="text-center font-size-4"><i class="el-icon-caret-bottom"></i></div>
-    <div class="w-100 bg-light border p" style="min-height: 100px;">{{ translateValue.dst }}</div>
+    <el-input type="textarea" rows="5" clearable v-model="translateValue.dst"></el-input>
+    <!-- <div class="w-100 bg-light border p" style="min-height: 100px;">{{ translateValue.dst }}</div> -->
+    
   </div>
 </template>
 
@@ -26,7 +28,7 @@
       return {
         fanyi_value: "",
         formValue: "auto",
-        toValue: "en",
+        toValue: "zh",
         options: [{
             value: 'auto',
             label: '自动检测'
@@ -40,10 +42,28 @@
             label: '英文'
           }
         ],
-        translateValue: {}
+        translateValue: {},
+        timer: null
       }
     },
     methods: {
+      fnThrottle(method, duration){
+        var that = this;
+        return function(){
+          if(!that.timer){
+            that.timer = setTimeout(function(){
+              method();
+              clearTimeout(that.timer);
+              that.timer = null;
+            },duration)
+          }
+        }
+      },
+      changeInput(v){
+        if(v){
+          this.fnThrottle(this.translate, 1000)();
+        }
+      },
       translate() {
         service.fanyi({
           from: this.formValue,

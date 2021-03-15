@@ -92,7 +92,7 @@
 				<div class="pl-4 pb-4 font-size-1 color-b8c4ce">注：所提交内容在管理员审核通过后进行展示</div>
 				<div style="display: flex;justify-content: center;">
 					<el-button type="primary" style="width: 40%;" round @click="addMeun('newForm')">添加</el-button>
-					<el-button style="width: 40%;" round>取消</el-button>
+					<el-button style="width: 40%;" round @click="drawer = false">取消</el-button>
 				</div>
 			</div>
 		</el-drawer>

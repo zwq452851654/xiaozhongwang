@@ -16,9 +16,15 @@ function userInfo(params){
 	return request.get("/user/userInfo", params);
 }
 
+// 获取导航菜单
+function queryMenu(params){
+	return request.get("/user/queryMenu", params);
+}
+
 
 export default {
   reg,
 	login,
 	userInfo,
+  queryMenu,
 };

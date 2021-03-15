@@ -162,11 +162,11 @@
 		padding-left: 25px;
 	}
 	.ad{
-		position: absolute;
+		/* position: absolute; */
 		width: 95%;
 		height: 80px;
 		line-height: 80px;
-		bottom: 0px;
+		/* bottom: 0px; */
 	}
 	
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 资讯顶置 -->
-    <div class="bg">
+    <!-- <div class="bg">
       <div class="d-flex align-items-center">
         <i class="iconfont iconshuxian"></i>
         <span class="font-size-2">定制一个属于你的资讯栏</span>
@@ -28,7 +28,7 @@
           </div>
         </el-collapse-transition>
       </div>
-    </div>
+    </div> -->
     <!-- 新闻资讯 -->
     <div class="bg mb-3">
       <el-tabs v-model="activeName" :stretch="true">
@@ -110,10 +110,6 @@ export default {
     };
   },
   mounted(){
-		// setInterval(()=>{
-		// 	this.queryHotData('weibo');
-		// },3000)
-    
     this.queryNews();
   },
   methods:{

@@ -162,7 +162,7 @@
 		  return {
 				toolsList:[
 					{ mc:"个人中心", icon:"", value:"userCore", child: true, show: true },
-					{ mc:"收藏夹", icon:"el-icon-star-off", value:"scj", child: true, show: true },
+					// { mc:"收藏夹", icon:"el-icon-star-off", value:"scj", child: true, show: true },
 					{ mc:"更换皮肤", icon:"", value:"editBg", child: false, show: true },
 					{ mc:"退出登录", icon:"", value:"logout", child: false, show: true }
 				],
@@ -324,7 +324,7 @@
 						this.$store.dispatch('dis_user_info', {});
 						localStorage.removeItem('userInfo');
 						this.hideMask();
-            this.$router.push({path:'/home'})
+            if(this.$route.name != 'Home') this.$router.push({path:'/home'})
 						break;
 				}
 			},

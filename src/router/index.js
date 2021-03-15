@@ -72,6 +72,14 @@ const routes = [
     meta: {
       keepAlive: true
     }
+  },
+  {
+    path: '/timeAxis',
+    name: 'timeAxis',
+    component: () => import('../views/timeAxis.vue'),
+    meta: {
+      keepAlive: true
+    }
   }
 ]
 

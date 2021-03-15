@@ -1,6 +1,6 @@
 <template>
   <div id="app" :style="{backgroundImage: 'url('+ img_url +')'}">
-    <div class="content-1" :style="{width: CW, height: CH}">
+    <div class="content-1" :style="{width: CW, height: CH}" ref="content">
       <keep-alive>
         <Nav v-if="$route.meta.keepAlive"></Nav>
       </keep-alive>

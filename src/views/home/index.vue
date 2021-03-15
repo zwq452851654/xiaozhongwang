@@ -1,18 +1,17 @@
 <template>
   <div>
-    <div :class="{'nav-bg':img_url}" class="text-right p-1 search">
-      <el-popover
-        placement="bottom"
-        width="400"
-        trigger="click">
+    <!--  :class="{'nav-bg':img_url}"  -->
+    <div class="text-right p-1 search">
+      <el-popover placement="bottom" width="500" trigger="click">
         <fanyi />
         <el-button slot="reference" size="mini" rows="4">百度翻译</el-button>
       </el-popover>
     </div>
-    <!-- 搜索栏 -->
-    <div class="search" :class="{'nav-bg':img_url}">
+    <!-- 搜索栏  :class="{'nav-bg':img_url}"  -->
+    <div class="search">
       <div style="width: 420px;margin: 0 auto;position: relative;">
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center" style="border: 1px solid #30bfc6;
+    border-radius: 8px;">
           <div class="d-flex align-items-center search-tag" @click="showHandle()">
             <div v-for="item in searchList" :key="item.value">
               <img :src="item.icon" v-if="curSearchAim == item.value">
@@ -21,8 +20,14 @@
             <el-divider direction="vertical"></el-divider>
           </div>
           <div class="search_new" style="width: 100%;">
-            <el-input placeholder="请输入搜索内容" size="medium" clearable @input="changeHandle" @keyup.enter.native="searchHandle"
-              v-model="searchValue">
+            <el-input 
+              placeholder="请输入搜索内容" 
+              size="medium" clearable 
+              @input="changeHandle"
+              @keyup.enter.native="searchHandle" 
+              v-model="searchValue" 
+              @keyup.down.native="upAndDownHandle('down')" 
+              @keyup.up.native="upAndDownHandle('up')">
             </el-input>
           </div>
         </div>
@@ -32,7 +37,7 @@
             <div v-for="i in 7" :key="i" class="p">列表 {{i}}</div>
           </div>
         </div>
-        
+
         <!-- 搜索目标列表 -->
         <div class="search_list" v-show="showSearchList">
           <div v-for="item in searchList" :key="item.value" @click="setSearch(item)" class="search_item">
@@ -40,11 +45,16 @@
             <div>{{ item.name}}</div>
           </div>
         </div>
-        
+
         <!-- 搜索模糊匹配列表 -->
-        <div class="search_list border" style="z-index: 9;" v-show="sugrecList.length">
+        <div class="search_list border" style="z-index: 9;background-color: #fff;" v-show="sugrecList.length">
           <ul class="p-1">
-            <li class="font-size-2 p-1 cursor-p" v-for="item in sugrecList" @click="searchTarget(item)">{{item.q}}</li>
+            <li 
+              class="font-size-2 p-1 cursor-p" 
+              :style="{ color: (activeText == item.sa ? '#009CFF' : '#000')}"
+              v-for="item in sugrecList" 
+              @click="searchTarget(item)">{{item.q}}
+            </li>
           </ul>
         </div>
       </div>
@@ -100,13 +110,31 @@
         showSearchList: false,
         timer: null,
         sugrecList: [],
-        sugrecValue: ""
+        sugrecValue: "",
+        activeText: "",
+        num: -1,
+        oldSearchValue: ""
       }
     },
     mounted() {
       this.queryList();
     },
     methods: {
+      upAndDownHandle(action){
+        let len = this.sugrecList.length;
+        if(!len) return false;
+        if(!this.oldSearchValue) this.oldSearchValue = this.searchValue;
+        let n = this.num;
+        n = action == 'down' ? n+1 : (n<0 ? Number(len-1) : n-1);
+        this.num = n >= len ? -1 : (n<0 ? -1 : n);
+        if(this.num >= 0){
+          this.activeText = this.sugrecList[this.num].sa;
+          this.searchValue = this.sugrecList[this.num].q;
+        }else{
+          this.activeText = "";
+          this.searchValue = this.oldSearchValue;
+        }
+      },
       // 搜索目标list
       queryList() {
         service.querySearchList().then(res => {
@@ -149,44 +177,45 @@
         a.setAttribute("href", `${this.aimsObj.url}${this.searchValue}`);
         a.setAttribute("target", "_blank");
         a.click();
+        this.sugrecList = []
       },
       // 搜索提示-节流
       fnThrottle(method, duration) {
         var that = this;
-        return function(){
-          if(!that.timer){
-            that.timer = setTimeout(function(){
+        return function() {
+          if (!that.timer) {
+            that.timer = setTimeout(function() {
               method();
               clearTimeout(that.timer);
               that.timer = null;
-            },duration)
+            }, duration)
           }
         }
       },
       // 输入框事件
       changeHandle(q) {
         this.sugrecValue = q;
-        if(!q) {
+        if (!q) {
           this.sugrecList = [];
           return false;
         }
-        this.fnThrottle(this.sugrecHandle, 300)();
+        this.fnThrottle(this.sugrecHandle, 500)();
       },
       // 查询提示内容
-      sugrecHandle(q){
+      sugrecHandle(q) {
         service.sugrec({
-        	prod: 'pc',
-        	wd: this.sugrecValue
-        }).then(res =>{
-          if(res.data.code){
-            this.sugrecList = res.data.data
-          }else{
+          prod: 'pc',
+          wd: this.sugrecValue
+        }).then(res => {
+          if (res.data.code) {
+            this.sugrecList = res.data.data;
+          } else {
             this.sugrecList = [];
           }
         })
       },
       // 点击提示内容项执行
-      searchTarget(item){
+      searchTarget(item) {
         this.searchValue = item.q;
         this.searchHandle();
         this.sugrecList = [];
@@ -231,7 +260,7 @@
   .search {
     width: 100%;
     padding: 80px 0px 70px 0;
-    background: #f1f1f19e;
+    /* background: #f1f1f19e; */
     /* #f5f5f59e */
   }
 
@@ -254,7 +283,7 @@
     margin: 2px auto;
     width: 420px;
     border-radius: 5px;
-    background-color: #fff;
+    background-color: #30bfc6;
     color: #000000;
     overflow-x: auto;
     position: absolute;
@@ -279,6 +308,7 @@
     cursor: pointer;
     color: #000000;
     font-size: 12px;
+    /* background-color: #ccc; */
   }
 
   .search_item img {
@@ -288,11 +318,11 @@
   }
 
   .search_item:hover {
-    background-color: #ccc;
+    background-color: #e5e5e5ba;
   }
-  
-  .search_list li:hover{
+
+  .search_list li:hover {
     color: #009CFF;
+    /* 009CFF */
   }
-  
 </style>

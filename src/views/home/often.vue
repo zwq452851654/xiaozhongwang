@@ -1,9 +1,24 @@
 <template>
   <div>
-    <div class="text-right mb-3" v-show="isLogin">
-      <el-switch v-model="edit" :inactive-text="edit ? '拖拽移动' : ''"></el-switch>
+    <div class="mb-3 d-flex align-items-center" >
+      <span class="" style="display: block;">快速通道</span>
+      <div class="font-size-1 ml-2" v-if="!isLogin">
+        <el-popover
+          placement="top-end"
+          title="展示"
+          trigger="hover">
+          <img src="../../static/img/often_nav.jpg" style="width: 600px" alt="">
+          <div slot="reference">
+            <span>登录后可设置属于自己的快捷通道，</span>
+            <span class="to-login" @click="toLogin()">去登录</span>
+          </div>
+        </el-popover>
+      </div>
+      <el-switch class="ml-auto" v-show="isLogin" v-model="edit" :inactive-text="edit ? '拖拽移动' : ''"></el-switch>
     </div>
-    <div v-if="isLogin">
+    <!-- v-if="isLogin" -->
+    <div>
+      
       <div v-if="!edit">
         <div 
 					class="item" 
@@ -25,15 +40,15 @@
           @dragover.prevent="handleDragover($event, item)"
           @dragleave="dragLeave($event, item)"
           @drop="handleDrop($event, item)"
-          @dragend="handleDragEnd($event, item)"
-        >
+          @dragend="handleDragEnd($event, item)">
           <img :src="item.icon" class="navIcon" alt="">
           {{item.name}}
           <i class="el-icon-close delete-icon" v-show="edit" @click="delItem(item)"></i>
         </div>
       </div>
     </div>
-    <div v-else class="text-center font-size-2">
+
+    <!-- <div v-else class="text-center font-size-2">
       <el-popover
         placement="top-end"
         title="展示"
@@ -44,7 +59,7 @@
           <span class="to-login" @click="toLogin()">去登录</span>
         </div>
       </el-popover>
-    </div>
+    </div> -->
     <div class="text-right" v-show="isLogin">
       <router-link to="/home/setOftenNav" tag="i" class="el-icon-menu ml-1 font-size-5 cursor-p"></router-link>
     </div>
@@ -84,6 +99,7 @@ export default {
 		}
 	},
   mounted(){
+    // if(this.isLogin) this.query_often_nav();
     this.query_often_nav();
   },
   methods: {
