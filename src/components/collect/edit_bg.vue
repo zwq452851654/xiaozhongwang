@@ -77,11 +77,11 @@
 						title: "热门",
 						type: "rm"
 					},
-					// {
-					// 	id: "001",
-					// 	title: "自定义",
-					// 	type: "zdy"
-					// }
+					{
+						id: "001",
+						title: "自定义",
+						type: "zdy"
+					}
 				],
 				activeType: "rm",
 				picList: [],

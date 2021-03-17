@@ -4,6 +4,7 @@ import Home from '../views/home/index.vue'
 
 Vue.use(VueRouter)
 
+
 const routes = [
   {
     path: '/',
@@ -12,7 +13,8 @@ const routes = [
   {
     path: '/home',
     name: "Home",
-    component: Home,
+    // component: Home,
+		component: resolve => require(['@/views/home/index'], resolve),
     meta: {
       keepAlive: true
     }
@@ -20,7 +22,8 @@ const routes = [
   {
     path: '/home/setOftenNav',
     name: "SetOftenNav",
-    component: () => import('../views/home/setOftenNav.vue'),
+    // component: () => import('../views/home/setOftenNav.vue'),
+		component: resolve => require(['@/views/home/setOftenNav'], resolve),
     meta: {
       keepAlive: true
     }
@@ -28,7 +31,8 @@ const routes = [
   {
     path: '/levae',
     name: 'Levae',
-    component: () => import('../views/levae/index.vue'),
+    // component: () => import('../views/levae/index.vue'),
+		component: resolve => require(['@/views/levae/index'], resolve),
     meta: {
       keepAlive: true
     }
@@ -36,7 +40,8 @@ const routes = [
   {
     path: '/learn',
     name: 'Learn',
-    component: () => import('../views/learn/index.vue'),
+    // component: () => import('../views/learn/index.vue'),
+		component: resolve => require(['@/views/learn/index'], resolve),
     meta: {
       keepAlive: true
     }
@@ -44,7 +49,8 @@ const routes = [
   {
     path: '/learn/courseInfo',
     name: 'CourseInfo',
-    component: () => import('../views/learn/courseInfo.vue'),
+    // component: () => import('../views/learn/courseInfo.vue'),
+		component: resolve => require(['@/views/learn/courseInfo'], resolve),
     meta: {
       keepAlive: true
     }
@@ -52,7 +58,8 @@ const routes = [
   {
     path: '/brief',
     name: 'brief',
-    component: () => import('../views/brief/index.vue'),
+    // component: () => import('../views/brief/index.vue'),
+		component: resolve => require(['@/views/brief/index'], resolve),
     meta: {
       keepAlive: true
     }
@@ -60,7 +67,8 @@ const routes = [
 	{
 	  path: '/message',
 	  name: 'Message',
-	  component: () => import('../views/message/index.vue'),
+	  // component: () => import('../views/message/index.vue'),
+		component: resolve => require(['@/views/message/index'], resolve),
 		meta: {
 		  keepAlive: true
 		}
@@ -68,7 +76,8 @@ const routes = [
   {
     path: '/user/login',
     name: 'Login',
-    component: () => import('../views/user/login.vue'),
+    // component: () => import('../views/user/login.vue'),
+		component: resolve => require(['@/views/user/login'], resolve),
     meta: {
       keepAlive: true
     }
@@ -76,7 +85,8 @@ const routes = [
   {
     path: '/timeAxis',
     name: 'timeAxis',
-    component: () => import('../views/timeAxis.vue'),
+    // component: () => import('../views/timeAxis.vue'),
+		component: resolve => require(['@/views/timeAxis'], resolve),
     meta: {
       keepAlive: true
     }

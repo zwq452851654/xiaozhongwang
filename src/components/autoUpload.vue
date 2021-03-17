@@ -4,6 +4,7 @@
 			ref="upload" 
 			:multiple="multiple" 
 			:limit="limit"
+			:headers="{'path': 'icon'}"
 			:action="action" 
 			:on-change="handleChange" 
 			:on-remove="handleRemove"
